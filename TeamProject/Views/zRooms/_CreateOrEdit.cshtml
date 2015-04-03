@@ -1,0 +1,36 @@
+@model TeamProject.zRoom
+
+@* This partial view defines form fields that will appear when creating and editing entities *@
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Capacity)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.Capacity)
+    @Html.ValidationMessageFor(model => model.Capacity)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.BuildingCode)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.BuildingCode)
+    @Html.ValidationMessageFor(model => model.BuildingCode)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.ImgLink)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.ImgLink)
+    @Html.ValidationMessageFor(model => model.ImgLink)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Private)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.Private)
+    @Html.ValidationMessageFor(model => model.Private)
+</div>
+

@@ -1,0 +1,28 @@
+@model TeamProject.Models.UserModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section id="loginForm">
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true, "Login Failed! Check your login credentials.")
+
+        <fieldset>
+            <legend>Login Form</legend>
+            <ol>
+                <li>
+                    @Html.LabelFor(m => m.DeptCode)
+                    @Html.DropDownListFor(m => m.DeptName, new SelectList(ViewBag.deptList))
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.Password)
+                    @Html.PasswordFor(m => m.Password)
+                    @Html.ValidationMessageFor(m => m.Password)
+                </li>
+            </ol>
+            <input type="submit" value="Log in" />
+        </fieldset>
+    }
+</section>

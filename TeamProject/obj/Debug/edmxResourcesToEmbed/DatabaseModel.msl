@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DatabaseModelStoreContainer" CdmEntityContainer="DatabaseContext">
+    <EntitySetMapping Name="zBuilding">
+      <EntityTypeMapping TypeName="DatabaseModel.zBuilding">
+        <MappingFragment StoreEntitySet="zBuilding">
+          <ScalarProperty Name="BuildingCode" ColumnName="BuildingCode" />
+          <ScalarProperty Name="BuildingName" ColumnName="BuildingName" />
+          <ScalarProperty Name="ParkId" ColumnName="ParkId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="zDay">
+      <EntityTypeMapping TypeName="DatabaseModel.zDay">
+        <MappingFragment StoreEntitySet="zDay">
+          <ScalarProperty Name="DayId" ColumnName="DayId" />
+          <ScalarProperty Name="DayValue" ColumnName="DayValue" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="zDepartment">
+      <EntityTypeMapping TypeName="DatabaseModel.zDepartment">
+        <MappingFragment StoreEntitySet="zDepartment">
+          <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+          <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="zFacility">
+      <EntityTypeMapping TypeName="DatabaseModel.zFacility">
+        <MappingFragment StoreEntitySet="zFacility">
+          <ScalarProperty Name="FacilityId" ColumnName="FacilityId" />
+          <ScalarProperty Name="FacilityName" ColumnName="FacilityName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="zLecturer">
+      <EntityTypeMapping TypeName="DatabaseModel.zLecturer">
+        <MappingFragment StoreEntitySet="zLecturer">
+          <ScalarProperty Name="LecturerId" ColumnName="LecturerId" />
+          <ScalarProperty Name="LecturerName" ColumnName="LecturerName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="zModule">
+      <EntityTypeMapping TypeName="DatabaseModel.zModule">
+        <MappingFragment StoreEntitySet="zModule">
+          <ScalarProperty Name="ModCode" ColumnName="ModCode" />
+          <ScalarProperty Name="ModTitle" ColumnName="ModTitle" />
+          <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+          <ScalarProperty Name="Part" ColumnName="Part" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="zPark">
+      <EntityTypeMapping TypeName="DatabaseModel.zPark">
+        <MappingFragment StoreEntitySet="zPark">
+          <ScalarProperty Name="ParkId" ColumnName="ParkId" />
+          <ScalarProperty Name="ParkName" ColumnName="ParkName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="zPeriod">
+      <EntityTypeMapping TypeName="DatabaseModel.zPeriod">
+        <MappingFragment StoreEntitySet="zPeriod">
+          <ScalarProperty Name="PeriodId" ColumnName="PeriodId" />
+          <ScalarProperty Name="PeriodValue" ColumnName="PeriodValue" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="zPreference">
+      <EntityTypeMapping TypeName="DatabaseModel.zPreference">
+        <MappingFragment StoreEntitySet="zPreference">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="PlaceHolder" ColumnName="PlaceHolder" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="zProgramme">
+      <EntityTypeMapping TypeName="DatabaseModel.zProgramme">
+        <MappingFragment StoreEntitySet="zProgramme">
+          <ScalarProperty Name="ProgrammeCode" ColumnName="ProgrammeCode" />
+          <ScalarProperty Name="ProgrammeTitle" ColumnName="ProgrammeTitle" />
+          <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="zRequest">
+      <EntityTypeMapping TypeName="DatabaseModel.zRequest">
+        <MappingFragment StoreEntitySet="zRequest">
+          <ScalarProperty Name="RequestId" ColumnName="RequestId" />
+          <ScalarProperty Name="ModCode" ColumnName="ModCode" />
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="WeekId" ColumnName="WeekId" />
+          <ScalarProperty Name="DayId" ColumnName="DayId" />
+          <ScalarProperty Name="PeriodId" ColumnName="PeriodId" />
+          <ScalarProperty Name="SessionLength" ColumnName="SessionLength" />
+          <ScalarProperty Name="Semester" ColumnName="Semester" />
+          <ScalarProperty Name="RoundNo" ColumnName="RoundNo" />
+          <ScalarProperty Name="SpecialRequirement" ColumnName="SpecialRequirement" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="zRoom">
+      <EntityTypeMapping TypeName="DatabaseModel.zRoom">
+        <MappingFragment StoreEntitySet="zRoom">
+          <ScalarProperty Name="RoomCode" ColumnName="RoomCode" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="BuildingCode" ColumnName="BuildingCode" />
+          <ScalarProperty Name="ImgLink" ColumnName="ImgLink" />
+          <ScalarProperty Name="Private" ColumnName="Private" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="zRound">
+      <EntityTypeMapping TypeName="DatabaseModel.zRound">
+        <MappingFragment StoreEntitySet="zRound">
+          <ScalarProperty Name="RoundNo" ColumnName="RoundNo" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="zStatus">
+      <EntityTypeMapping TypeName="DatabaseModel.zStatus">
+        <MappingFragment StoreEntitySet="zStatus">
+          <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+          <ScalarProperty Name="StatusValue" ColumnName="StatusValue" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="zUser">
+      <EntityTypeMapping TypeName="DatabaseModel.zUser">
+        <MappingFragment StoreEntitySet="zUser">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="zWeek">
+      <EntityTypeMapping TypeName="DatabaseModel.zWeek">
+        <MappingFragment StoreEntitySet="zWeek">
+          <ScalarProperty Name="WeekId" ColumnName="WeekId" />
+          <ScalarProperty Name="Week1" ColumnName="Week1" />
+          <ScalarProperty Name="Week2" ColumnName="Week2" />
+          <ScalarProperty Name="Week3" ColumnName="Week3" />
+          <ScalarProperty Name="Week4" ColumnName="Week4" />
+          <ScalarProperty Name="Week5" ColumnName="Week5" />
+          <ScalarProperty Name="Week6" ColumnName="Week6" />
+          <ScalarProperty Name="Week7" ColumnName="Week7" />
+          <ScalarProperty Name="Week8" ColumnName="Week8" />
+          <ScalarProperty Name="Week9" ColumnName="Week9" />
+          <ScalarProperty Name="Week10" ColumnName="Week10" />
+          <ScalarProperty Name="Week11" ColumnName="Week11" />
+          <ScalarProperty Name="Week12" ColumnName="Week12" />
+          <ScalarProperty Name="Week13" ColumnName="Week13" />
+          <ScalarProperty Name="Week14" ColumnName="Week14" />
+          <ScalarProperty Name="Week15" ColumnName="Week15" />
+          <ScalarProperty Name="Week16" ColumnName="Week16" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="zFacilityInRequest" TypeName="DatabaseModel.zFacilityInRequest" StoreEntitySet="zFacilityInRequest">
+      <EndProperty Name="zFacility">
+        <ScalarProperty Name="FacilityId" ColumnName="FacilityId" />
+      </EndProperty>
+      <EndProperty Name="zRequest">
+        <ScalarProperty Name="RequestId" ColumnName="RequestId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="zFacilityInRoom" TypeName="DatabaseModel.zFacilityInRoom" StoreEntitySet="zFacilityInRoom">
+      <EndProperty Name="zFacility">
+        <ScalarProperty Name="FacilityId" ColumnName="FacilityId" />
+      </EndProperty>
+      <EndProperty Name="zRoom">
+        <ScalarProperty Name="RoomCode" ColumnName="RoomCode" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="zLecturerInModule" TypeName="DatabaseModel.zLecturerInModule" StoreEntitySet="zLecturerInModule">
+      <EndProperty Name="zLecturer">
+        <ScalarProperty Name="LecturerId" ColumnName="LecturerId" />
+      </EndProperty>
+      <EndProperty Name="zModule">
+        <ScalarProperty Name="ModCode" ColumnName="ModCode" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="zModuleInProgramme" TypeName="DatabaseModel.zModuleInProgramme" StoreEntitySet="zModuleInProgramme">
+      <EndProperty Name="zModule">
+        <ScalarProperty Name="ModCode" ColumnName="ModCode" />
+      </EndProperty>
+      <EndProperty Name="zProgramme">
+        <ScalarProperty Name="ProgrammeCode" ColumnName="ProgrammeCode" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="zRoomInDepartment" TypeName="DatabaseModel.zRoomInDepartment" StoreEntitySet="zRoomInDepartment">
+      <EndProperty Name="zDepartment">
+        <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+      </EndProperty>
+      <EndProperty Name="zRoom">
+        <ScalarProperty Name="RoomCode" ColumnName="RoomCode" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="zRoomInRequest" TypeName="DatabaseModel.zRoomInRequest" StoreEntitySet="zRoomInRequest">
+      <EndProperty Name="zRequest">
+        <ScalarProperty Name="RequestId" ColumnName="RequestId" />
+      </EndProperty>
+      <EndProperty Name="zRoom">
+        <ScalarProperty Name="RoomCode" ColumnName="RoomCode" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>

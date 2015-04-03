@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <header>
+
+
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p class="site-title">@Html.ActionLink("Loughborough Timetabling System", "Index", "Home")</p>
+            </div>
+            <div class="float-right">
+                <nav>
+                    <ul id="menu">
+                        @if (Request.IsAuthenticated)
+                        {
+                            <li><strong>@Html.Encode(User.Identity.Name)</strong></li>
+                            //if (@Html.Encode(User.Identity.Name)=="CA")
+                            //{
+                                @Html.ActionLink("Edit Facilities", "Index", "zFacilities")
+                                @Html.ActionLink("Edit Pool Rooms", "Index", "zRooms")
+                                @Html.ActionLink("Edit Rounds", "Index", "zRounds")
+                            //}
+                            @Html.ActionLink("Log out", "Logout", "User")
+                        }
+                        else
+                        {
+                            <li><strong>Please log in</strong></li>
+                        }
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    </header>
+    <div id="body">
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
+    </div>
+    <footer>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p>&copy; @DateTime.Now.Year - Loughborough Timetabling System</p>
+            </div>
+        </div>
+    </footer>
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
