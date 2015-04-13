@@ -34,7 +34,7 @@
       <PropertyRef Name="FacilityId" />
     </Key>
     <Property Name="FacilityId" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="FacilityName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FacilityName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <NavigationProperty Name="zRequest" Relationship="Self.zFacilityInRequest" FromRole="zFacility" ToRole="zRequest" />
     <NavigationProperty Name="zRoom" Relationship="Self.zFacilityInRoom" FromRole="zFacility" ToRole="zRoom" />
   </EntityType>
@@ -113,6 +113,8 @@
     <NavigationProperty Name="zWeek" Relationship="Self.FK_zRequest_zWeek" FromRole="zRequest" ToRole="zWeek" />
     <NavigationProperty Name="zFacility" Relationship="Self.zFacilityInRequest" FromRole="zRequest" ToRole="zFacility" />
     <NavigationProperty Name="zRoom" Relationship="Self.zRoomInRequest" FromRole="zRequest" ToRole="zRoom" />
+    <Property Name="UserId" Type="Int16" Nullable="false" />
+    <NavigationProperty Name="zUser" Relationship="DatabaseModel.FK_zRequest_zUser" FromRole="zRequest" ToRole="zUser" />
   </EntityType>
   <EntityType Name="zRoom">
     <Key>
@@ -154,6 +156,7 @@
     <Property Name="DeptCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
     <NavigationProperty Name="zDepartment" Relationship="Self.FK_zUser_zDepartment" FromRole="zUser" ToRole="zDepartment" />
     <NavigationProperty Name="zPreference" Relationship="Self.FK_zPreference_zUser" FromRole="zUser" ToRole="zPreference" />
+    <NavigationProperty Name="zRequest" Relationship="DatabaseModel.FK_zRequest_zUser" FromRole="zUser" ToRole="zRequest" />
   </EntityType>
   <EntityType Name="zWeek">
     <Key>
@@ -419,5 +422,21 @@
       <End Role="zRequest" EntitySet="zRequest" />
       <End Role="zRoom" EntitySet="zRoom" />
     </AssociationSet>
+    <AssociationSet Name="FK_zRequest_zUser" Association="DatabaseModel.FK_zRequest_zUser">
+      <End Role="zUser" EntitySet="zUser" />
+      <End Role="zRequest" EntitySet="zRequest" />
+    </AssociationSet>
   </EntityContainer>
+  <Association Name="FK_zRequest_zUser">
+    <End Type="DatabaseModel.zUser" Role="zUser" Multiplicity="1" />
+    <End Type="DatabaseModel.zRequest" Role="zRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zUser">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="zRequest">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

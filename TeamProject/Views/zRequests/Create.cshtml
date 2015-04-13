@@ -1,0 +1,96 @@
+@model TeamProject.zRequest
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<script src="~/Scripts/weekselector.js"></script>
+<link rel="stylesheet" type="text/css" href="~/Content/weekselector.css" />
+
+<h2>Create</h2>
+
+<ul>
+    @foreach (var pair in ViewData)
+    {
+        <li>@pair.Key : @pair.Value</li>
+    }
+</ul>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>zRequest</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.zUser.zDepartment.DeptName)
+        </div>
+        <div class="editor-field">
+            @if (User.Identity.Name == "CA")
+            {
+                @Html.DropDownListFor(model => model.zUser.DeptCode, new SelectList(ViewBag.deptList))
+            }
+            else
+            {
+                @User.Identity.Name;
+            }
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ModCode)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.ModCode, new SelectList(ViewBag.moduleList))
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.WeekId)
+        </div>
+        <div class="editor-field">
+            <ol id="weekSelector">
+                <li class="ui-state-default ui-selected">1</li>
+                <li class="ui-state-default ui-selected">2</li>
+                <li class="ui-state-default ui-selected">3</li>
+                <li class="ui-state-default ui-selected">4</li>
+                <li class="ui-state-default ui-selected">5</li>
+                <li class="ui-state-default ui-selected">6</li>
+                <li class="ui-state-default ui-selected">7</li>
+                <li class="ui-state-default ui-selected">8</li>
+                <li class="ui-state-default ui-selected">9</li>
+                <li class="ui-state-default ui-selected">10</li>
+                <li class="ui-state-default ui-selected">11</li>
+                <li class="ui-state-default ui-selected">12</li>
+                <li class="ui-state-default">13</li>
+                <li class="ui-state-default">14</li>
+                <li class="ui-state-default">15</li>
+            </ol>
+            <br /><br />
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.zDay.DayValue)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.zDay.DayValue, new SelectList(ViewBag.dayList))
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.zPeriod.PeriodValue)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownListFor(model => model.zDay.DayValue, new SelectList(ViewBag.periodList))
+        </div>
+
+        @*
+		@Html.Partial("_CreateOrEdit", Model)
+        *@
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+

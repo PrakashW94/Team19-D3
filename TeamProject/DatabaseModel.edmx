@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="zBuilding">
           <Key>
             <PropertyRef Name="BuildingCode" />
@@ -32,7 +32,7 @@
             <PropertyRef Name="FacilityId" />
           </Key>
           <Property Name="FacilityId" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FacilityName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FacilityName" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="zFacilityInRequest">
           <Key>
@@ -125,6 +125,7 @@
           <Property Name="Semester" Type="smallint" Nullable="false" />
           <Property Name="RoundNo" Type="smallint" Nullable="false" />
           <Property Name="SpecialRequirement" Type="varchar" MaxLength="50" />
+          <Property Name="UserId" Type="smallint" Nullable="false" />
         </EntityType>
         <EntityType Name="zRoom">
           <Key>
@@ -389,6 +390,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_zRequest_zUser">
+          <End Role="zUser" Type="Self.zUser" Multiplicity="1" />
+          <End Role="zRequest" Type="Self.zRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="zUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="zRequest">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_zRequest_zWeek">
           <End Role="zWeek" Type="Self.zWeek" Multiplicity="1" />
           <End Role="zRequest" Type="Self.zRequest" Multiplicity="*" />
@@ -560,6 +573,10 @@
             <End Role="zStatus" EntitySet="zStatus" />
             <End Role="zRequest" EntitySet="zRequest" />
           </AssociationSet>
+          <AssociationSet Name="FK_zRequest_zUser" Association="Self.FK_zRequest_zUser">
+            <End Role="zUser" EntitySet="zUser" />
+            <End Role="zRequest" EntitySet="zRequest" />
+          </AssociationSet>
           <AssociationSet Name="FK_zRequest_zWeek" Association="Self.FK_zRequest_zWeek">
             <End Role="zWeek" EntitySet="zWeek" />
             <End Role="zRequest" EntitySet="zRequest" />
@@ -589,8 +606,7 @@
             <End Role="zUser" EntitySet="zUser" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -628,7 +644,7 @@
             <PropertyRef Name="FacilityId" />
           </Key>
           <Property Name="FacilityId" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FacilityName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FacilityName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="zRequest" Relationship="Self.zFacilityInRequest" FromRole="zFacility" ToRole="zRequest" />
           <NavigationProperty Name="zRoom" Relationship="Self.zFacilityInRoom" FromRole="zFacility" ToRole="zRoom" />
         </EntityType>
@@ -707,6 +723,8 @@
           <NavigationProperty Name="zWeek" Relationship="Self.FK_zRequest_zWeek" FromRole="zRequest" ToRole="zWeek" />
           <NavigationProperty Name="zFacility" Relationship="Self.zFacilityInRequest" FromRole="zRequest" ToRole="zFacility" />
           <NavigationProperty Name="zRoom" Relationship="Self.zRoomInRequest" FromRole="zRequest" ToRole="zRoom" />
+          <Property Name="UserId" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="zUser" Relationship="DatabaseModel.FK_zRequest_zUser" FromRole="zRequest" ToRole="zUser" />
         </EntityType>
         <EntityType Name="zRoom">
           <Key>
@@ -748,6 +766,7 @@
           <Property Name="DeptCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="zDepartment" Relationship="Self.FK_zUser_zDepartment" FromRole="zUser" ToRole="zDepartment" />
           <NavigationProperty Name="zPreference" Relationship="Self.FK_zPreference_zUser" FromRole="zUser" ToRole="zPreference" />
+          <NavigationProperty Name="zRequest" Relationship="DatabaseModel.FK_zRequest_zUser" FromRole="zUser" ToRole="zRequest" />
         </EntityType>
         <EntityType Name="zWeek">
           <Key>
@@ -1013,7 +1032,23 @@
             <End Role="zRequest" EntitySet="zRequest" />
             <End Role="zRoom" EntitySet="zRoom" />
           </AssociationSet>
+          <AssociationSet Name="FK_zRequest_zUser" Association="DatabaseModel.FK_zRequest_zUser">
+            <End Role="zUser" EntitySet="zUser" />
+            <End Role="zRequest" EntitySet="zRequest" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_zRequest_zUser">
+          <End Type="DatabaseModel.zUser" Role="zUser" Multiplicity="1" />
+          <End Type="DatabaseModel.zRequest" Role="zRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="zUser">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="zRequest">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1107,6 +1142,7 @@
           <EntitySetMapping Name="zRequest">
             <EntityTypeMapping TypeName="DatabaseModel.zRequest">
               <MappingFragment StoreEntitySet="zRequest">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="RequestId" ColumnName="RequestId" />
                 <ScalarProperty Name="ModCode" ColumnName="ModCode" />
                 <ScalarProperty Name="StatusId" ColumnName="StatusId" />

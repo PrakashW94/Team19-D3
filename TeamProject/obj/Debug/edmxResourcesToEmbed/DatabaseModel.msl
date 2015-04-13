@@ -88,6 +88,7 @@
     <EntitySetMapping Name="zRequest">
       <EntityTypeMapping TypeName="DatabaseModel.zRequest">
         <MappingFragment StoreEntitySet="zRequest">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="RequestId" ColumnName="RequestId" />
           <ScalarProperty Name="ModCode" ColumnName="ModCode" />
           <ScalarProperty Name="StatusId" ColumnName="StatusId" />

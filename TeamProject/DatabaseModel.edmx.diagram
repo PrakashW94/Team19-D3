@@ -38,6 +38,7 @@
         <AssociationConnector Association="DatabaseModel.zModuleInProgramme" ManuallyRouted="false" />
         <AssociationConnector Association="DatabaseModel.zRoomInDepartment" ManuallyRouted="false" />
         <AssociationConnector Association="DatabaseModel.zRoomInRequest" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_zRequest_zUser" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

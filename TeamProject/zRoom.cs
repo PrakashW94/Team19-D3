@@ -11,8 +11,7 @@ namespace TeamProject
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class zRoom
     {
         public zRoom()
@@ -22,7 +21,6 @@ namespace TeamProject
             this.zRequest = new HashSet<zRequest>();
         }
     
-        [Key]
         public string RoomCode { get; set; }
         public int Capacity { get; set; }
         public string BuildingCode { get; set; }

@@ -28,24 +28,18 @@ namespace TeamProject
         public DbSet<zBuilding> zBuilding { get; set; }
         public DbSet<zDay> zDay { get; set; }
         public DbSet<zDepartment> zDepartment { get; set; }
-        public DbSet<zFacility> zFacility { get; set; }
+        public DbSet<zFacility> zFacilities { get; set; }
         public DbSet<zLecturer> zLecturer { get; set; }
         public DbSet<zModule> zModule { get; set; }
         public DbSet<zPark> zPark { get; set; }
         public DbSet<zPeriod> zPeriod { get; set; }
         public DbSet<zPreference> zPreference { get; set; }
         public DbSet<zProgramme> zProgramme { get; set; }
-        public DbSet<zRequest> zRequest { get; set; }
-        public DbSet<zRoom> zRoom { get; set; }
-        public DbSet<zRound> zRound { get; set; }
+        public DbSet<zRequest> zRequests { get; set; }
+        public DbSet<zRoom> zRooms { get; set; }
+        public DbSet<zRound> zRounds { get; set; }
         public DbSet<zStatus> zStatus { get; set; }
         public DbSet<zUser> zUser { get; set; }
-        public DbSet<zWeek> zWeek { get; set; }
-
-        public DbSet<TeamProject.zFacility> zFacilities { get; set; }
-
-        public DbSet<TeamProject.zRoom> zRooms { get; set; }
-
-        public DbSet<TeamProject.zRound> zRounds { get; set; }
+        public DbSet<zWeek> zWeeks { get; set; }
     }
 }

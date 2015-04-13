@@ -27,7 +27,7 @@
       <PropertyRef Name="FacilityId" />
     </Key>
     <Property Name="FacilityId" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="FacilityName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="FacilityName" Type="varchar" MaxLength="50" Nullable="false" />
   </EntityType>
   <EntityType Name="zFacilityInRequest">
     <Key>
@@ -120,6 +120,7 @@
     <Property Name="Semester" Type="smallint" Nullable="false" />
     <Property Name="RoundNo" Type="smallint" Nullable="false" />
     <Property Name="SpecialRequirement" Type="varchar" MaxLength="50" />
+    <Property Name="UserId" Type="smallint" Nullable="false" />
   </EntityType>
   <EntityType Name="zRoom">
     <Key>
@@ -384,6 +385,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_zRequest_zUser">
+    <End Role="zUser" Type="Self.zUser" Multiplicity="1" />
+    <End Role="zRequest" Type="Self.zRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zUser">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="zRequest">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_zRequest_zWeek">
     <End Role="zWeek" Type="Self.zWeek" Multiplicity="1" />
     <End Role="zRequest" Type="Self.zRequest" Multiplicity="*" />
@@ -553,6 +566,10 @@
     </AssociationSet>
     <AssociationSet Name="FK_zRequest_zStatus" Association="Self.FK_zRequest_zStatus">
       <End Role="zStatus" EntitySet="zStatus" />
+      <End Role="zRequest" EntitySet="zRequest" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zRequest_zUser" Association="Self.FK_zRequest_zUser">
+      <End Role="zUser" EntitySet="zUser" />
       <End Role="zRequest" EntitySet="zRequest" />
     </AssociationSet>
     <AssociationSet Name="FK_zRequest_zWeek" Association="Self.FK_zRequest_zWeek">

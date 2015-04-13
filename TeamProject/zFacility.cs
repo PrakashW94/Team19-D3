@@ -11,8 +11,7 @@ namespace TeamProject
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class zFacility
     {
         public zFacility()
@@ -21,7 +20,6 @@ namespace TeamProject
             this.zRoom = new HashSet<zRoom>();
         }
     
-        [Key]
         public short FacilityId { get; set; }
         public string FacilityName { get; set; }
     

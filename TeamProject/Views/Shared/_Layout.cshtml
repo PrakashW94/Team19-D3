@@ -1,11 +1,24 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+
+    <script src="~/Scripts/jquery-1.8.2.js"></script>
+    <script src="~/Scripts/jquery-ui-1.8.24.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    
+    <link rel="stylesheet" type="text/css" href="~/Content/jquery.datetimepicker.css" />
+    <script src="~/Scripts/jquery.datetimepicker.js"></script>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    
+    @*
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+    *@
 </head>
 <body>
     <header>
@@ -27,6 +40,7 @@
                                 @Html.ActionLink("Edit Pool Rooms", "Index", "zRooms")
                                 @Html.ActionLink("Edit Rounds", "Index", "zRounds")
                             //}
+                            @Html.ActionLink("Edit Requests", "Index", "zRequests")
                             @Html.ActionLink("Log out", "Logout", "User")
                         }
                         else
@@ -51,7 +65,8 @@
             </div>
         </div>
     </footer>
-    @Scripts.Render("~/bundles/jquery")
-    @RenderSection("scripts", required: false)
+    
 </body>
+
+
 </html>

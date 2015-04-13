@@ -30,6 +30,7 @@ namespace TeamProject
         public short Semester { get; set; }
         public short RoundNo { get; set; }
         public string SpecialRequirement { get; set; }
+        public short UserId { get; set; }
     
         public virtual zDay zDay { get; set; }
         public virtual zPeriod zPeriod { get; set; }
@@ -38,5 +39,6 @@ namespace TeamProject
         public virtual zWeek zWeek { get; set; }
         public virtual ICollection<zFacility> zFacility { get; set; }
         public virtual ICollection<zRoom> zRoom { get; set; }
+        public virtual zUser zUser { get; set; }
     }
 }

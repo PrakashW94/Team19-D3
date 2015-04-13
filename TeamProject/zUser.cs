@@ -14,11 +14,17 @@ namespace TeamProject
     
     public partial class zUser
     {
+        public zUser()
+        {
+            this.zRequest = new HashSet<zRequest>();
+        }
+    
         public short UserId { get; set; }
         public string Password { get; set; }
         public string DeptCode { get; set; }
     
         public virtual zDepartment zDepartment { get; set; }
         public virtual zPreference zPreference { get; set; }
+        public virtual ICollection<zRequest> zRequest { get; set; }
     }
 }

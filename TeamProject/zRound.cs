@@ -11,7 +11,6 @@ namespace TeamProject
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     
     public partial class zRound
     {
@@ -20,7 +19,6 @@ namespace TeamProject
             this.zRequest = new HashSet<zRequest>();
         }
     
-        [Key]
         public short RoundNo { get; set; }
         public System.DateTime StartDate { get; set; }
         public System.DateTime EndDate { get; set; }
