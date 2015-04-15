@@ -16,8 +16,8 @@
     }
 </ul>
 
-@using (Html.BeginForm()) {
-    @Html.ValidationSummary(true)
+@using (Html.BeginForm("Create", "zRequests")) 
+{
     <fieldset>
         <legend>zRequest</legend>
 
@@ -27,7 +27,7 @@
         <div class="editor-field">
             @if (User.Identity.Name == "CA")
             {
-                @Html.DropDownListFor(model => model.zUser.DeptCode, new SelectList(ViewBag.deptList))
+                @Html.DropDownList("DeptCode", new SelectList(ViewBag.deptList))
             }
             else
             {
@@ -39,7 +39,7 @@
             @Html.LabelFor(model => model.ModCode)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.ModCode, new SelectList(ViewBag.moduleList))
+            @Html.DropDownList("ModCode", new SelectList(ViewBag.moduleList))
         </div>
 
         <div class="editor-label">
@@ -66,18 +66,51 @@
             <br /><br />
         </div>
 
+        @Html.Hidden("Weeks")
+
         <div class="editor-label">
             @Html.LabelFor(model => model.zDay.DayValue)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.zDay.DayValue, new SelectList(ViewBag.dayList))
+            @Html.DropDownList("Day", new SelectList(ViewBag.dayList))
         </div>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.zPeriod.PeriodValue)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.zDay.DayValue, new SelectList(ViewBag.periodList))
+            @Html.DropDownList("Period", new SelectList(ViewBag.periodList))
+        </div>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#Period").change(function () {
+                    var pID = parseInt($(this).val());
+                    var select = $("#SeshLength");
+                    select.empty();
+                    select.append("<option value = 1> 1 Hour </option>");
+                    var hour = 2;
+                    for (var i = pID; i <= 8; i++)
+                    {
+                        select.append("<option value = " + hour + ">" + hour + " Hours </option>");
+                        hour++;
+                    }
+                });
+            });
+        </script>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SessionLength)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("SeshLength", new SelectList(ViewBag.seshLengthList))
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SpecialRequirement)
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.SpecialRequirement)
         </div>
 
         @*

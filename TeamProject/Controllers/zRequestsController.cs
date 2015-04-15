@@ -28,7 +28,20 @@ namespace TeamProject.Controllers
         public ViewResult Index()
         {
             populateStatusList();
-            return View(zrequestRepository.AllIncluding(zrequest => zrequest.zFacility, zrequest => zrequest.zRoom));
+            var db = new DatabaseContext();
+            var userQry = from user in db.zUser where user.DeptCode == User.Identity.Name select user.UserId;
+            var userID = userQry.FirstOrDefault();
+            if(userID == 1)
+            {
+                var reqQry = from request in db.zRequests select request;
+                return View(reqQry);
+            }
+            else
+            {
+                var reqQry = from request in db.zRequests where request.UserId == userID select request;
+                return View(reqQry);
+            }
+            //zrequestRepository.AllIncluding(zrequest => zrequest.zFacility, zrequest => zrequest.zRoom)
         }
 
         //
@@ -97,8 +110,26 @@ namespace TeamProject.Controllers
         public void populatePeriodList()
         {
             var db = new DatabaseContext();
+            var periodList = new List<string>();
             var periodQry = from Period in db.zPeriod select Period.PeriodValue;
-            ViewBag.periodList = periodQry.ToList();
+            var period = 1;
+            foreach (var item in periodQry.ToList())
+            {
+                periodList.Add(period + " - " + item);
+                period++;
+            }
+            ViewBag.periodList = periodList;
+        }
+
+        public void populateSeshLengthList()
+        {
+            var seshLengthList = new List<string>();
+            seshLengthList.Add("1 Hour");
+            for (int i = 2; i < 10; i++)
+            {
+                seshLengthList.Add(i + " Hours");
+            }
+                ViewBag.seshLengthList = seshLengthList;
         }
 
         public ActionResult Create()
@@ -107,6 +138,7 @@ namespace TeamProject.Controllers
             populateModuleList();
             populateDayList();
             populatePeriodList();
+            populateSeshLengthList();
             return View();
         } 
 
@@ -114,15 +146,54 @@ namespace TeamProject.Controllers
         // POST: /zRequests/Create
 
         [HttpPost]
-        public ActionResult Create(zRequest zrequest)
+        public ActionResult Create
+        (
+            string DeptCode,
+            string ModCode,
+            string Day,
+            string Period,
+            string SeshLength,
+            string Weeks,
+            zRequest zrequest
+        )
         {
-            if (ModelState.IsValid) {
+            var db = new DatabaseContext();
+
+            if (User.Identity.Name == "CA")
+            {
+                var userQry = from user in db.zUser where user.DeptCode == DeptCode select user.UserId;
+                zrequest.UserId = userQry.FirstOrDefault();
+            }
+            else
+            {
+                var userQry = from user in db.zUser where user.DeptCode == User.Identity.Name select user.UserId;
+                zrequest.UserId = userQry.FirstOrDefault();
+            }
+            zrequest.ModCode = ModCode.Substring(0, 6);
+            var dayQry = from day in db.zDay where day.DayValue == Day select day.DayId;
+            zrequest.DayId = dayQry.FirstOrDefault();
+            zrequest.PeriodId = short.Parse(Period.Substring(0, 1));
+            zrequest.SessionLength = short.Parse(SeshLength.Substring(0, 1));
+
+            string[] separator = { "," };
+            string[] weeksStringArray = Weeks.Split(separator, StringSplitOptions.RemoveEmptyEntries);
+            int[] weeksIntArray = Array.ConvertAll(weeksStringArray, int.Parse);
+
+            zrequest.RoundNo = 1;
+            zrequest.Semester = 1;
+            zrequest.StatusId = 3;
+            zrequest.WeekId = 1;
+
+            zrequestRepository.InsertOrUpdate(zrequest);
+            zrequestRepository.Save();
+            return RedirectToAction("Index");
+            /*if (ModelState.IsValid) {
                 zrequestRepository.InsertOrUpdate(zrequest);
                 zrequestRepository.Save();
                 return RedirectToAction("Index");
             } else {
 				return View();
-			}
+			}*/
         }
         
         //

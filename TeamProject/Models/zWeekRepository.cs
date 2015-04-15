@@ -34,6 +34,8 @@ namespace TeamProject.Models
 
         public void InsertOrUpdate(zWeek zweek)
         {
+            context.zWeeks.Add(zweek);
+            /*
             if (zweek.WeekId == default(int)) {
                 // New entity
                 context.zWeeks.Add(zweek);
@@ -41,6 +43,7 @@ namespace TeamProject.Models
                 // Existing entity
                 context.Entry(zweek).State = System.Data.Entity.EntityState.Modified;
             }
+            */
         }
 
         public void Delete(int id)

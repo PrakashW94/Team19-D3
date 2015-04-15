@@ -5,6 +5,7 @@ var selectedItems = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
 		var numSelecting = 0;		// Keep count of how many elements we have selected during selecting event
 		var selectAll = false;
 		var removeAll = false;
+		$("#Weeks").val(selectedItems.toString());
 
 		$("#weekSelector").bind("mousedown", function(e) {				
 			e.metaKey = true;		// Simulates holding down control to select non-adjacent elements
@@ -56,9 +57,11 @@ var selectedItems = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
 				// For every selected element, add it to the array
 				$(".ui-selected", this).each(function() 
 				{
-					selectedItems.push(this.innerHTML);
+				    selectedItems.push(this.innerHTML);
+				    
 				});
 				updateSelectedWeeks(selectedItems);
+				$("#Weeks").val(selectedItems.toString());
 			},
 	
 			distance: 1			// This is so we can register normal mouse click events
@@ -90,5 +93,44 @@ var selectedItems = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '1
 			});				
 	
 			updateSelectedWeeks(selectedItems);
+			$("#Weeks").val(selectedItems.toString());
 		});
 	});
+
+function updateSelectedWeeks(selectedItems)
+{		
+	var length = selectedItems.length;
+	var output = [];
+	var i, j;
+	
+	for (i = 0; i < length; i = j + 1)
+	{
+	    // Beginning of range or single
+	    output.push(selectedItems[i]);
+		
+	    // Find end of range
+	    for (var j = i + 1; j < length && parseInt(selectedItems[j]) == parseInt(selectedItems[j-1]) + 1; j++);
+	    j--;
+		
+	    if (i == j) 
+	    {
+	        // single number
+	        output.push(",");
+	    } 
+	    else 
+	    {
+	        if (i == j)
+	        {
+	            // two numbers
+	            output.push(",", selectedItems[j], ",");
+	        }
+	        else 
+	        { 
+	            // range
+	            output.push("-", selectedItems[j], ",");
+	        }		
+	    } 		
+	}
+	output.pop(); // remove trailing comma
+	return output.join("");
+}
