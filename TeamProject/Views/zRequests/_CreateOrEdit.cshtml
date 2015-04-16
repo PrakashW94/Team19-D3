@@ -14,7 +14,8 @@
     @Html.LabelFor(model => model.StatusId)
 </div>
 <div class="editor-field">
-    @Html.DropDownListFor(model => model.zStatus.StatusValue, new SelectList(ViewBag.statusList))
+    @Html.EditorFor(model => model.StatusId)
+    @Html.ValidationMessageFor(model => model.StatusId)
 </div>
 
 <div class="editor-label">

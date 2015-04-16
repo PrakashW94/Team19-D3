@@ -36,9 +36,9 @@ namespace TeamProject
         public virtual zPeriod zPeriod { get; set; }
         public virtual zRound zRound { get; set; }
         public virtual zStatus zStatus { get; set; }
+        public virtual zUser zUser { get; set; }
         public virtual zWeek zWeek { get; set; }
         public virtual ICollection<zFacility> zFacility { get; set; }
         public virtual ICollection<zRoom> zRoom { get; set; }
-        public virtual zUser zUser { get; set; }
     }
 }

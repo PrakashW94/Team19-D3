@@ -40,13 +40,13 @@
             <td>
                 @if (@Html.Encode(User.Identity.Name) == "CA")
                 {
-                    @Html.ActionLink("Edit", "Edit", new { id = item.RoomCode })
-                    @Html.ActionLink("Details", "Details", new { id = item.RoomCode })
-                    @Html.ActionLink("Delete", "Delete", new { id = item.RoomCode })
+                    @Html.ActionLink("Edit", "Edit", new { id = item.RoomId })
+                    @Html.ActionLink("Details", "Details", new { id = item.RoomId })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.RoomId })
                 }
                 else
                 {
-                    @Html.ActionLink("Details", "Details", new { id = item.RoomCode })
+                    @Html.ActionLink("Details", "Details", new { id = item.RoomId })
                 }
             </td>
             <td>

@@ -34,7 +34,7 @@ namespace TeamProject.Controllers
         //
         // GET: /zRooms/Details/5
 
-        public ViewResult Details(string id)
+        public ViewResult Details(int id)
         {
             return View(zroomRepository.Find(id));
         }
@@ -74,7 +74,7 @@ namespace TeamProject.Controllers
         //
         // GET: /zRooms/Edit/5
  
-        public ActionResult Edit(string id)
+        public ActionResult Edit(int id)
         {
             string accName = User.Identity.Name;
             if (accName == "CA")
@@ -105,7 +105,7 @@ namespace TeamProject.Controllers
         //
         // GET: /zRooms/Delete/5
  
-        public ActionResult Delete(string id)
+        public ActionResult Delete(int id)
         {
             string accName = User.Identity.Name;
             if (accName == "CA")
@@ -122,7 +122,7 @@ namespace TeamProject.Controllers
         // POST: /zRooms/Delete/5
 
         [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(string id)
+        public ActionResult DeleteConfirmed(int id)
         {
             zroomRepository.Delete(id);
             zroomRepository.Save();

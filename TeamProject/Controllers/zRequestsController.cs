@@ -33,12 +33,12 @@ namespace TeamProject.Controllers
             var userID = userQry.FirstOrDefault();
             if(userID == 1)
             {
-                var reqQry = from request in db.zRequests select request;
+                var reqQry = from request in db.zRequest select request;
                 return View(reqQry);
             }
             else
             {
-                var reqQry = from request in db.zRequests where request.UserId == userID select request;
+                var reqQry = from request in db.zRequest where request.UserId == userID select request;
                 return View(reqQry);
             }
             //zrequestRepository.AllIncluding(zrequest => zrequest.zFacility, zrequest => zrequest.zRoom)
@@ -132,6 +132,13 @@ namespace TeamProject.Controllers
                 ViewBag.seshLengthList = seshLengthList;
         }
 
+        public void populateFacilityList()
+        {
+            var db = new DatabaseContext();
+            var facilityQry = from Facility in db.zFacility select Facility.FacilityName;
+            ViewBag.facilityList = facilityQry.ToList();
+        }
+
         public ActionResult Create()
         {
             populateDeptList();
@@ -139,6 +146,7 @@ namespace TeamProject.Controllers
             populateDayList();
             populatePeriodList();
             populateSeshLengthList();
+            populateFacilityList();
             return View();
         } 
 
@@ -154,6 +162,7 @@ namespace TeamProject.Controllers
             string Period,
             string SeshLength,
             string Weeks,
+            string[] Facilities,
             zRequest zrequest
         )
         {
@@ -179,13 +188,38 @@ namespace TeamProject.Controllers
             string[] weeksStringArray = Weeks.Split(separator, StringSplitOptions.RemoveEmptyEntries);
             int[] weeksIntArray = Array.ConvertAll(weeksStringArray, int.Parse);
 
+            foreach (var number in weeksIntArray)
+            {
+                zrequest.zWeek.GetType().GetProperty("Week" + number).SetValue(zrequest.zWeek, true, null);
+            }
+
+            //var facQry = from fac in db.zFacilities select fac;
+            if (Facilities != null)
+            {
+                foreach (var facility in Facilities)
+                {
+                    var facName = facility.Replace(".", " ");
+                    var facQry = from fac in db.zFacility where fac.FacilityName == facName select fac;
+                    var test = facQry.ToList();
+                    var item = new zFacility();
+                    item.FacilityId = test.FirstOrDefault().FacilityId;
+                    item.FacilityName = test.FirstOrDefault().FacilityName;
+                    //db.Entry(item).State = System.Data.Entity.EntityState.Unchanged;
+                    zrequest.zFacility.Add(item);
+                }
+            }
             zrequest.RoundNo = 1;
             zrequest.Semester = 1;
             zrequest.StatusId = 3;
-            zrequest.WeekId = 1;
 
+            //foreach (var facility in zrequest.zFacility)
+            //{
+                
+            //}
+            
             zrequestRepository.InsertOrUpdate(zrequest);
             zrequestRepository.Save();
+
             return RedirectToAction("Index");
             /*if (ModelState.IsValid) {
                 zrequestRepository.InsertOrUpdate(zrequest);
@@ -246,6 +280,8 @@ namespace TeamProject.Controllers
             }
             base.Dispose(disposing);
         }
+
+        public zFacility tempFac { get; set; }
     }
 }
 

@@ -21,6 +21,7 @@ namespace TeamProject
             this.zRequest = new HashSet<zRequest>();
         }
     
+        public int RoomId { get; set; }
         public string RoomCode { get; set; }
         public int Capacity { get; set; }
         public string BuildingCode { get; set; }

@@ -8,21 +8,21 @@
 <link rel="stylesheet" type="text/css" href="~/Content/weekselector.css" />
 
 <h2>Create</h2>
-
+@* code to display ViewBag
 <ul>
     @foreach (var pair in ViewData)
     {
         <li>@pair.Key : @pair.Value</li>
     }
 </ul>
-
+*@
 @using (Html.BeginForm("Create", "zRequests")) 
 {
     <fieldset>
         <legend>zRequest</legend>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.zUser.zDepartment.DeptName)
+            @Html.Label("Department Code")
         </div>
         <div class="editor-field">
             @if (User.Identity.Name == "CA")
@@ -36,14 +36,14 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.ModCode)
+            @Html.Label("Module")
         </div>
         <div class="editor-field">
             @Html.DropDownList("ModCode", new SelectList(ViewBag.moduleList))
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.WeekId)
+            @Html.Label("Weeks")
         </div>
         <div class="editor-field">
             <ol id="weekSelector">
@@ -67,16 +67,17 @@
         </div>
 
         @Html.Hidden("Weeks")
+        @Html.HiddenFor(model => model.zWeek.Week1)
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.zDay.DayValue)
+            @Html.Label("Day")
         </div>
         <div class="editor-field">
             @Html.DropDownList("Day", new SelectList(ViewBag.dayList))
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.zPeriod.PeriodValue)
+            @Html.Label("Period")
         </div>
         <div class="editor-field">
             @Html.DropDownList("Period", new SelectList(ViewBag.periodList))
@@ -100,26 +101,36 @@
         </script>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.SessionLength)
+            @Html.Label("Session Length")
         </div>
         <div class="editor-field">
             @Html.DropDownList("SeshLength", new SelectList(ViewBag.seshLengthList))
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.SpecialRequirement)
+            @Html.Label("Special Requirements")
         </div>
         <div class="editor-field">
             @Html.TextAreaFor(model => model.SpecialRequirement)
         </div>
 
+        <div class="editor-label">
+            @Html.Label("Facilities")
+        </div>
+        <div class="editor-field">
+            @foreach (var item in ViewBag.facilityList)
+            {
+                <input type="checkbox" name="Facilities" id="Facilities" value=@item.Replace(" ", ".") /> @item <br />
+            }
+        </div>
+
         @*
-		@Html.Partial("_CreateOrEdit", Model)
+        @Html.Partial("_CreateOrEdit", Model)
         *@
         <p>
             <input type="submit" value="Create" />
         </p>
-    </fieldset>
+</fieldset>
 }
 
 <div>

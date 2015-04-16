@@ -15,38 +15,38 @@ namespace TeamProject.Models
 
         public IQueryable<zRoom> All
         {
-            get { return context.zRooms; }
+            get { return context.zRoom; }
         }
 
         public IQueryable<zRoom> AllIncluding(params Expression<Func<zRoom, object>>[] includeProperties)
         {
-            IQueryable<zRoom> query = context.zRooms;
+            IQueryable<zRoom> query = context.zRoom;
             foreach (var includeProperty in includeProperties) {
                 query = query.Include(includeProperty);
             }
             return query;
         }
 
-        public zRoom Find(string id)
+        public zRoom Find(int id)
         {
-            return context.zRooms.Find(id);
+            return context.zRoom.Find(id);
         }
 
         public void InsertOrUpdate(zRoom zroom)
         {
             if (zroom.RoomCode == default(string)) {
                 // New entity
-                context.zRooms.Add(zroom);
+                context.zRoom.Add(zroom);
             } else {
                 // Existing entity
                 context.Entry(zroom).State = System.Data.Entity.EntityState.Modified;
             }
         }
 
-        public void Delete(string id)
+        public void Delete(int id)
         {
-            var zroom = context.zRooms.Find(id);
-            context.zRooms.Remove(zroom);
+            var zroom = context.zRoom.Find(id);
+            context.zRoom.Remove(zroom);
         }
 
         public void Save()
@@ -64,9 +64,9 @@ namespace TeamProject.Models
     {
         IQueryable<zRoom> All { get; }
         IQueryable<zRoom> AllIncluding(params Expression<Func<zRoom, object>>[] includeProperties);
-        zRoom Find(string id);
+        zRoom Find(int id);
         void InsertOrUpdate(zRoom zroom);
-        void Delete(string id);
+        void Delete(int id);
         void Save();
     }
 }

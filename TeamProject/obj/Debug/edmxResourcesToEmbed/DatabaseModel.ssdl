@@ -40,10 +40,10 @@
   <EntityType Name="zFacilityInRoom">
     <Key>
       <PropertyRef Name="FacilityId" />
-      <PropertyRef Name="RoomCode" />
+      <PropertyRef Name="RoomId" />
     </Key>
     <Property Name="FacilityId" Type="smallint" Nullable="false" />
-    <Property Name="RoomCode" Type="nvarchar" MaxLength="15" Nullable="false" />
+    <Property Name="RoomId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="zLecturer">
     <Key>
@@ -124,8 +124,9 @@
   </EntityType>
   <EntityType Name="zRoom">
     <Key>
-      <PropertyRef Name="RoomCode" />
+      <PropertyRef Name="RoomId" />
     </Key>
+    <Property Name="RoomId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="RoomCode" Type="nvarchar" MaxLength="15" Nullable="false" />
     <Property Name="Capacity" Type="int" Nullable="false" />
     <Property Name="BuildingCode" Type="nvarchar" MaxLength="10" Nullable="false" />
@@ -135,18 +136,18 @@
   <EntityType Name="zRoomInDepartment">
     <Key>
       <PropertyRef Name="DeptCode" />
-      <PropertyRef Name="RoomCode" />
+      <PropertyRef Name="RoomId" />
     </Key>
     <Property Name="DeptCode" Type="varchar" MaxLength="5" Nullable="false" />
-    <Property Name="RoomCode" Type="nvarchar" MaxLength="15" Nullable="false" />
+    <Property Name="RoomId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="zRoomInRequest">
     <Key>
       <PropertyRef Name="RequestId" />
-      <PropertyRef Name="RoomCode" />
+      <PropertyRef Name="RoomId" />
     </Key>
     <Property Name="RequestId" Type="int" Nullable="false" />
-    <Property Name="RoomCode" Type="nvarchar" MaxLength="15" Nullable="false" />
+    <Property Name="RoomId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="zRound">
     <Key>
@@ -246,10 +247,10 @@
     <End Role="zFacilityInRoom" Type="Self.zFacilityInRoom" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="zRoom">
-        <PropertyRef Name="RoomCode" />
+        <PropertyRef Name="RoomId" />
       </Principal>
       <Dependent Role="zFacilityInRoom">
-        <PropertyRef Name="RoomCode" />
+        <PropertyRef Name="RoomId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -438,10 +439,10 @@
     <End Role="zRoomInDepartment" Type="Self.zRoomInDepartment" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="zRoom">
-        <PropertyRef Name="RoomCode" />
+        <PropertyRef Name="RoomId" />
       </Principal>
       <Dependent Role="zRoomInDepartment">
-        <PropertyRef Name="RoomCode" />
+        <PropertyRef Name="RoomId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -462,10 +463,10 @@
     <End Role="zRoomInRequest" Type="Self.zRoomInRequest" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="zRoom">
-        <PropertyRef Name="RoomCode" />
+        <PropertyRef Name="RoomId" />
       </Principal>
       <Dependent Role="zRoomInRequest">
-        <PropertyRef Name="RoomCode" />
+        <PropertyRef Name="RoomId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

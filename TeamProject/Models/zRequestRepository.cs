@@ -15,12 +15,12 @@ namespace TeamProject.Models
 
         public IQueryable<zRequest> All
         {
-            get { return context.zRequests; }
+            get { return context.zRequest; }
         }
 
         public IQueryable<zRequest> AllIncluding(params Expression<Func<zRequest, object>>[] includeProperties)
         {
-            IQueryable<zRequest> query = context.zRequests;
+            IQueryable<zRequest> query = context.zRequest;
             foreach (var includeProperty in includeProperties) {
                 query = query.Include(includeProperty);
             }
@@ -29,14 +29,18 @@ namespace TeamProject.Models
 
         public zRequest Find(int id)
         {
-            return context.zRequests.Find(id);
+            return context.zRequest.Find(id);
         }
 
         public void InsertOrUpdate(zRequest zrequest)
         {
             if (zrequest.RequestId == default(int)) {
                 // New entity
-                context.zRequests.Add(zrequest);
+                foreach (var facility in zrequest.zFacility)
+                {
+                    context.zFacility.Attach(facility);
+                }
+                context.zRequest.Add(zrequest);
             } else {
                 // Existing entity
                 context.Entry(zrequest).State = System.Data.Entity.EntityState.Modified;
@@ -45,8 +49,8 @@ namespace TeamProject.Models
 
         public void Delete(int id)
         {
-            var zrequest = context.zRequests.Find(id);
-            context.zRequests.Remove(zrequest);
+            var zrequest = context.zRequest.Find(id);
+            context.zRequest.Remove(zrequest);
         }
 
         public void Save()

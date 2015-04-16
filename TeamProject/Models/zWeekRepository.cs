@@ -15,12 +15,12 @@ namespace TeamProject.Models
 
         public IQueryable<zWeek> All
         {
-            get { return context.zWeeks; }
+            get { return context.zWeek; }
         }
 
         public IQueryable<zWeek> AllIncluding(params Expression<Func<zWeek, object>>[] includeProperties)
         {
-            IQueryable<zWeek> query = context.zWeeks;
+            IQueryable<zWeek> query = context.zWeek;
             foreach (var includeProperty in includeProperties) {
                 query = query.Include(includeProperty);
             }
@@ -29,12 +29,12 @@ namespace TeamProject.Models
 
         public zWeek Find(int id)
         {
-            return context.zWeeks.Find(id);
+            return context.zWeek.Find(id);
         }
 
         public void InsertOrUpdate(zWeek zweek)
         {
-            context.zWeeks.Add(zweek);
+            context.zWeek.Add(zweek);
             /*
             if (zweek.WeekId == default(int)) {
                 // New entity
@@ -48,8 +48,8 @@ namespace TeamProject.Models
 
         public void Delete(int id)
         {
-            var zweek = context.zWeeks.Find(id);
-            context.zWeeks.Remove(zweek);
+            var zweek = context.zWeek.Find(id);
+            context.zWeek.Remove(zweek);
         }
 
         public void Save()

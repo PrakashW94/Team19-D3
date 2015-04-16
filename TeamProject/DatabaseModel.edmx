@@ -45,10 +45,10 @@
         <EntityType Name="zFacilityInRoom">
           <Key>
             <PropertyRef Name="FacilityId" />
-            <PropertyRef Name="RoomCode" />
+            <PropertyRef Name="RoomId" />
           </Key>
           <Property Name="FacilityId" Type="smallint" Nullable="false" />
-          <Property Name="RoomCode" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="RoomId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="zLecturer">
           <Key>
@@ -129,8 +129,9 @@
         </EntityType>
         <EntityType Name="zRoom">
           <Key>
-            <PropertyRef Name="RoomCode" />
+            <PropertyRef Name="RoomId" />
           </Key>
+          <Property Name="RoomId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RoomCode" Type="nvarchar" MaxLength="15" Nullable="false" />
           <Property Name="Capacity" Type="int" Nullable="false" />
           <Property Name="BuildingCode" Type="nvarchar" MaxLength="10" Nullable="false" />
@@ -140,18 +141,18 @@
         <EntityType Name="zRoomInDepartment">
           <Key>
             <PropertyRef Name="DeptCode" />
-            <PropertyRef Name="RoomCode" />
+            <PropertyRef Name="RoomId" />
           </Key>
           <Property Name="DeptCode" Type="varchar" MaxLength="5" Nullable="false" />
-          <Property Name="RoomCode" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="RoomId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="zRoomInRequest">
           <Key>
             <PropertyRef Name="RequestId" />
-            <PropertyRef Name="RoomCode" />
+            <PropertyRef Name="RoomId" />
           </Key>
           <Property Name="RequestId" Type="int" Nullable="false" />
-          <Property Name="RoomCode" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="RoomId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="zRound">
           <Key>
@@ -251,10 +252,10 @@
           <End Role="zFacilityInRoom" Type="Self.zFacilityInRoom" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="zRoom">
-              <PropertyRef Name="RoomCode" />
+              <PropertyRef Name="RoomId" />
             </Principal>
             <Dependent Role="zFacilityInRoom">
-              <PropertyRef Name="RoomCode" />
+              <PropertyRef Name="RoomId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -443,10 +444,10 @@
           <End Role="zRoomInDepartment" Type="Self.zRoomInDepartment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="zRoom">
-              <PropertyRef Name="RoomCode" />
+              <PropertyRef Name="RoomId" />
             </Principal>
             <Dependent Role="zRoomInDepartment">
-              <PropertyRef Name="RoomCode" />
+              <PropertyRef Name="RoomId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -467,10 +468,10 @@
           <End Role="zRoomInRequest" Type="Self.zRoomInRequest" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="zRoom">
-              <PropertyRef Name="RoomCode" />
+              <PropertyRef Name="RoomId" />
             </Principal>
             <Dependent Role="zRoomInRequest">
-              <PropertyRef Name="RoomCode" />
+              <PropertyRef Name="RoomId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -610,79 +611,169 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="DatabaseContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="zBuilding" EntityType="DatabaseModel.zBuilding" />
+          <EntitySet Name="zDay" EntityType="DatabaseModel.zDay" />
+          <EntitySet Name="zDepartment" EntityType="DatabaseModel.zDepartment" />
+          <EntitySet Name="zFacility" EntityType="DatabaseModel.zFacility" />
+          <EntitySet Name="zLecturer" EntityType="DatabaseModel.zLecturer" />
+          <EntitySet Name="zModule" EntityType="DatabaseModel.zModule" />
+          <EntitySet Name="zPark" EntityType="DatabaseModel.zPark" />
+          <EntitySet Name="zPeriod" EntityType="DatabaseModel.zPeriod" />
+          <EntitySet Name="zPreference" EntityType="DatabaseModel.zPreference" />
+          <EntitySet Name="zProgramme" EntityType="DatabaseModel.zProgramme" />
+          <EntitySet Name="zRequest" EntityType="DatabaseModel.zRequest" />
+          <EntitySet Name="zRoom" EntityType="DatabaseModel.zRoom" />
+          <EntitySet Name="zRound" EntityType="DatabaseModel.zRound" />
+          <EntitySet Name="zStatus" EntityType="DatabaseModel.zStatus" />
+          <EntitySet Name="zUser" EntityType="DatabaseModel.zUser" />
+          <EntitySet Name="zWeek" EntityType="DatabaseModel.zWeek" />
+          <AssociationSet Name="FK_zBuilding_zPark" Association="DatabaseModel.FK_zBuilding_zPark">
+            <End Role="zPark" EntitySet="zPark" />
+            <End Role="zBuilding" EntitySet="zBuilding" />
+          </AssociationSet>
+          <AssociationSet Name="FK_zRoom_zBuilding" Association="DatabaseModel.FK_zRoom_zBuilding">
+            <End Role="zBuilding" EntitySet="zBuilding" />
+            <End Role="zRoom" EntitySet="zRoom" />
+          </AssociationSet>
+          <AssociationSet Name="FK_zRequest_zDay" Association="DatabaseModel.FK_zRequest_zDay">
+            <End Role="zDay" EntitySet="zDay" />
+            <End Role="zRequest" EntitySet="zRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_zModule1_zDepartment1" Association="DatabaseModel.FK_zModule1_zDepartment1">
+            <End Role="zDepartment" EntitySet="zDepartment" />
+            <End Role="zModule" EntitySet="zModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_zProgramme_zDepartment" Association="DatabaseModel.FK_zProgramme_zDepartment">
+            <End Role="zDepartment" EntitySet="zDepartment" />
+            <End Role="zProgramme" EntitySet="zProgramme" />
+          </AssociationSet>
+          <AssociationSet Name="FK_zUser_zDepartment" Association="DatabaseModel.FK_zUser_zDepartment">
+            <End Role="zDepartment" EntitySet="zDepartment" />
+            <End Role="zUser" EntitySet="zUser" />
+          </AssociationSet>
+          <AssociationSet Name="FK_zRequest_zPeriod" Association="DatabaseModel.FK_zRequest_zPeriod">
+            <End Role="zPeriod" EntitySet="zPeriod" />
+            <End Role="zRequest" EntitySet="zRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_zPreference_zUser" Association="DatabaseModel.FK_zPreference_zUser">
+            <End Role="zUser" EntitySet="zUser" />
+            <End Role="zPreference" EntitySet="zPreference" />
+          </AssociationSet>
+          <AssociationSet Name="FK_zRequest_zRound" Association="DatabaseModel.FK_zRequest_zRound">
+            <End Role="zRound" EntitySet="zRound" />
+            <End Role="zRequest" EntitySet="zRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_zRequest_zStatus" Association="DatabaseModel.FK_zRequest_zStatus">
+            <End Role="zStatus" EntitySet="zStatus" />
+            <End Role="zRequest" EntitySet="zRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_zRequest_zUser" Association="DatabaseModel.FK_zRequest_zUser">
+            <End Role="zUser" EntitySet="zUser" />
+            <End Role="zRequest" EntitySet="zRequest" />
+          </AssociationSet>
+          <AssociationSet Name="FK_zRequest_zWeek" Association="DatabaseModel.FK_zRequest_zWeek">
+            <End Role="zWeek" EntitySet="zWeek" />
+            <End Role="zRequest" EntitySet="zRequest" />
+          </AssociationSet>
+          <AssociationSet Name="zFacilityInRequest" Association="DatabaseModel.zFacilityInRequest">
+            <End Role="zFacility" EntitySet="zFacility" />
+            <End Role="zRequest" EntitySet="zRequest" />
+          </AssociationSet>
+          <AssociationSet Name="zFacilityInRoom" Association="DatabaseModel.zFacilityInRoom">
+            <End Role="zFacility" EntitySet="zFacility" />
+            <End Role="zRoom" EntitySet="zRoom" />
+          </AssociationSet>
+          <AssociationSet Name="zLecturerInModule" Association="DatabaseModel.zLecturerInModule">
+            <End Role="zLecturer" EntitySet="zLecturer" />
+            <End Role="zModule" EntitySet="zModule" />
+          </AssociationSet>
+          <AssociationSet Name="zModuleInProgramme" Association="DatabaseModel.zModuleInProgramme">
+            <End Role="zModule" EntitySet="zModule" />
+            <End Role="zProgramme" EntitySet="zProgramme" />
+          </AssociationSet>
+          <AssociationSet Name="zRoomInDepartment" Association="DatabaseModel.zRoomInDepartment">
+            <End Role="zDepartment" EntitySet="zDepartment" />
+            <End Role="zRoom" EntitySet="zRoom" />
+          </AssociationSet>
+          <AssociationSet Name="zRoomInRequest" Association="DatabaseModel.zRoomInRequest">
+            <End Role="zRequest" EntitySet="zRequest" />
+            <End Role="zRoom" EntitySet="zRoom" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="zBuilding">
           <Key>
             <PropertyRef Name="BuildingCode" />
           </Key>
-          <Property Name="BuildingCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="BuildingName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BuildingCode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="BuildingName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="ParkId" Type="Int16" Nullable="false" />
-          <NavigationProperty Name="zPark" Relationship="Self.FK_zBuilding_zPark" FromRole="zBuilding" ToRole="zPark" />
-          <NavigationProperty Name="zRoom" Relationship="Self.FK_zRoom_zBuilding" FromRole="zBuilding" ToRole="zRoom" />
+          <NavigationProperty Name="zPark" Relationship="DatabaseModel.FK_zBuilding_zPark" FromRole="zBuilding" ToRole="zPark" />
+          <NavigationProperty Name="zRoom" Relationship="DatabaseModel.FK_zRoom_zBuilding" FromRole="zBuilding" ToRole="zRoom" />
         </EntityType>
         <EntityType Name="zDay">
           <Key>
             <PropertyRef Name="DayId" />
           </Key>
           <Property Name="DayId" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DayValue" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="zRequest" Relationship="Self.FK_zRequest_zDay" FromRole="zDay" ToRole="zRequest" />
+          <Property Name="DayValue" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="zRequest" Relationship="DatabaseModel.FK_zRequest_zDay" FromRole="zDay" ToRole="zRequest" />
         </EntityType>
         <EntityType Name="zDepartment">
           <Key>
             <PropertyRef Name="DeptCode" />
           </Key>
-          <Property Name="DeptCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="DeptName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="zModule" Relationship="Self.FK_zModule1_zDepartment1" FromRole="zDepartment" ToRole="zModule" />
-          <NavigationProperty Name="zProgramme" Relationship="Self.FK_zProgramme_zDepartment" FromRole="zDepartment" ToRole="zProgramme" />
-          <NavigationProperty Name="zUser" Relationship="Self.FK_zUser_zDepartment" FromRole="zDepartment" ToRole="zUser" />
-          <NavigationProperty Name="zRoom" Relationship="Self.zRoomInDepartment" FromRole="zDepartment" ToRole="zRoom" />
+          <Property Name="DeptCode" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="DeptName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="zModule" Relationship="DatabaseModel.FK_zModule1_zDepartment1" FromRole="zDepartment" ToRole="zModule" />
+          <NavigationProperty Name="zProgramme" Relationship="DatabaseModel.FK_zProgramme_zDepartment" FromRole="zDepartment" ToRole="zProgramme" />
+          <NavigationProperty Name="zUser" Relationship="DatabaseModel.FK_zUser_zDepartment" FromRole="zDepartment" ToRole="zUser" />
+          <NavigationProperty Name="zRoom" Relationship="DatabaseModel.zRoomInDepartment" FromRole="zDepartment" ToRole="zRoom" />
         </EntityType>
         <EntityType Name="zFacility">
           <Key>
             <PropertyRef Name="FacilityId" />
           </Key>
           <Property Name="FacilityId" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FacilityName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="zRequest" Relationship="Self.zFacilityInRequest" FromRole="zFacility" ToRole="zRequest" />
-          <NavigationProperty Name="zRoom" Relationship="Self.zFacilityInRoom" FromRole="zFacility" ToRole="zRoom" />
+          <Property Name="FacilityName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="zRequest" Relationship="DatabaseModel.zFacilityInRequest" FromRole="zFacility" ToRole="zRequest" />
+          <NavigationProperty Name="zRoom" Relationship="DatabaseModel.zFacilityInRoom" FromRole="zFacility" ToRole="zRoom" />
         </EntityType>
         <EntityType Name="zLecturer">
           <Key>
             <PropertyRef Name="LecturerId" />
           </Key>
           <Property Name="LecturerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LecturerName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="zModule" Relationship="Self.zLecturerInModule" FromRole="zLecturer" ToRole="zModule" />
+          <Property Name="LecturerName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="zModule" Relationship="DatabaseModel.zLecturerInModule" FromRole="zLecturer" ToRole="zModule" />
         </EntityType>
         <EntityType Name="zModule">
           <Key>
             <PropertyRef Name="ModCode" />
           </Key>
-          <Property Name="ModCode" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ModTitle" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="DeptCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Part" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="zDepartment" Relationship="Self.FK_zModule1_zDepartment1" FromRole="zModule" ToRole="zDepartment" />
-          <NavigationProperty Name="zLecturer" Relationship="Self.zLecturerInModule" FromRole="zModule" ToRole="zLecturer" />
-          <NavigationProperty Name="zProgramme" Relationship="Self.zModuleInProgramme" FromRole="zModule" ToRole="zProgramme" />
+          <Property Name="ModCode" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="ModTitle" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DeptCode" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Part" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="zDepartment" Relationship="DatabaseModel.FK_zModule1_zDepartment1" FromRole="zModule" ToRole="zDepartment" />
+          <NavigationProperty Name="zLecturer" Relationship="DatabaseModel.zLecturerInModule" FromRole="zModule" ToRole="zLecturer" />
+          <NavigationProperty Name="zProgramme" Relationship="DatabaseModel.zModuleInProgramme" FromRole="zModule" ToRole="zProgramme" />
         </EntityType>
         <EntityType Name="zPark">
           <Key>
             <PropertyRef Name="ParkId" />
           </Key>
           <Property Name="ParkId" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ParkName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="zBuilding" Relationship="Self.FK_zBuilding_zPark" FromRole="zPark" ToRole="zBuilding" />
+          <Property Name="ParkName" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="zBuilding" Relationship="DatabaseModel.FK_zBuilding_zPark" FromRole="zPark" ToRole="zBuilding" />
         </EntityType>
         <EntityType Name="zPeriod">
           <Key>
             <PropertyRef Name="PeriodId" />
           </Key>
           <Property Name="PeriodId" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="PeriodValue" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="zRequest" Relationship="Self.FK_zRequest_zPeriod" FromRole="zPeriod" ToRole="zRequest" />
+          <Property Name="PeriodValue" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="zRequest" Relationship="DatabaseModel.FK_zRequest_zPeriod" FromRole="zPeriod" ToRole="zRequest" />
         </EntityType>
         <EntityType Name="zPreference">
           <Key>
@@ -690,24 +781,24 @@
           </Key>
           <Property Name="UserId" Type="Int16" Nullable="false" />
           <Property Name="PlaceHolder" Type="Int16" Nullable="false" />
-          <NavigationProperty Name="zUser" Relationship="Self.FK_zPreference_zUser" FromRole="zPreference" ToRole="zUser" />
+          <NavigationProperty Name="zUser" Relationship="DatabaseModel.FK_zPreference_zUser" FromRole="zPreference" ToRole="zUser" />
         </EntityType>
         <EntityType Name="zProgramme">
           <Key>
             <PropertyRef Name="ProgrammeCode" />
           </Key>
-          <Property Name="ProgrammeCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ProgrammeTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="DeptCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="zDepartment" Relationship="Self.FK_zProgramme_zDepartment" FromRole="zProgramme" ToRole="zDepartment" />
-          <NavigationProperty Name="zModule" Relationship="Self.zModuleInProgramme" FromRole="zProgramme" ToRole="zModule" />
+          <Property Name="ProgrammeCode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ProgrammeTitle" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DeptCode" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="zDepartment" Relationship="DatabaseModel.FK_zProgramme_zDepartment" FromRole="zProgramme" ToRole="zDepartment" />
+          <NavigationProperty Name="zModule" Relationship="DatabaseModel.zModuleInProgramme" FromRole="zProgramme" ToRole="zModule" />
         </EntityType>
         <EntityType Name="zRequest">
           <Key>
             <PropertyRef Name="RequestId" />
           </Key>
           <Property Name="RequestId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ModCode" Type="String" MaxLength="8" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ModCode" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="true" />
           <Property Name="StatusId" Type="Int16" Nullable="false" />
           <Property Name="WeekId" Type="Int32" Nullable="false" />
           <Property Name="DayId" Type="Int16" Nullable="false" />
@@ -716,29 +807,30 @@
           <Property Name="Semester" Type="Int16" Nullable="false" />
           <Property Name="RoundNo" Type="Int16" Nullable="false" />
           <Property Name="SpecialRequirement" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="zDay" Relationship="Self.FK_zRequest_zDay" FromRole="zRequest" ToRole="zDay" />
-          <NavigationProperty Name="zPeriod" Relationship="Self.FK_zRequest_zPeriod" FromRole="zRequest" ToRole="zPeriod" />
-          <NavigationProperty Name="zRound" Relationship="Self.FK_zRequest_zRound" FromRole="zRequest" ToRole="zRound" />
-          <NavigationProperty Name="zStatus" Relationship="Self.FK_zRequest_zStatus" FromRole="zRequest" ToRole="zStatus" />
-          <NavigationProperty Name="zWeek" Relationship="Self.FK_zRequest_zWeek" FromRole="zRequest" ToRole="zWeek" />
-          <NavigationProperty Name="zFacility" Relationship="Self.zFacilityInRequest" FromRole="zRequest" ToRole="zFacility" />
-          <NavigationProperty Name="zRoom" Relationship="Self.zRoomInRequest" FromRole="zRequest" ToRole="zRoom" />
           <Property Name="UserId" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="zDay" Relationship="DatabaseModel.FK_zRequest_zDay" FromRole="zRequest" ToRole="zDay" />
+          <NavigationProperty Name="zPeriod" Relationship="DatabaseModel.FK_zRequest_zPeriod" FromRole="zRequest" ToRole="zPeriod" />
+          <NavigationProperty Name="zRound" Relationship="DatabaseModel.FK_zRequest_zRound" FromRole="zRequest" ToRole="zRound" />
+          <NavigationProperty Name="zStatus" Relationship="DatabaseModel.FK_zRequest_zStatus" FromRole="zRequest" ToRole="zStatus" />
           <NavigationProperty Name="zUser" Relationship="DatabaseModel.FK_zRequest_zUser" FromRole="zRequest" ToRole="zUser" />
+          <NavigationProperty Name="zWeek" Relationship="DatabaseModel.FK_zRequest_zWeek" FromRole="zRequest" ToRole="zWeek" />
+          <NavigationProperty Name="zFacility" Relationship="DatabaseModel.zFacilityInRequest" FromRole="zRequest" ToRole="zFacility" />
+          <NavigationProperty Name="zRoom" Relationship="DatabaseModel.zRoomInRequest" FromRole="zRequest" ToRole="zRoom" />
         </EntityType>
         <EntityType Name="zRoom">
           <Key>
-            <PropertyRef Name="RoomCode" />
+            <PropertyRef Name="RoomId" />
           </Key>
-          <Property Name="RoomCode" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RoomId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoomCode" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="Capacity" Type="Int32" Nullable="false" />
-          <Property Name="BuildingCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ImgLink" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BuildingCode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ImgLink" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Private" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="zBuilding" Relationship="Self.FK_zRoom_zBuilding" FromRole="zRoom" ToRole="zBuilding" />
-          <NavigationProperty Name="zFacility" Relationship="Self.zFacilityInRoom" FromRole="zRoom" ToRole="zFacility" />
-          <NavigationProperty Name="zDepartment" Relationship="Self.zRoomInDepartment" FromRole="zRoom" ToRole="zDepartment" />
-          <NavigationProperty Name="zRequest" Relationship="Self.zRoomInRequest" FromRole="zRoom" ToRole="zRequest" />
+          <NavigationProperty Name="zBuilding" Relationship="DatabaseModel.FK_zRoom_zBuilding" FromRole="zRoom" ToRole="zBuilding" />
+          <NavigationProperty Name="zFacility" Relationship="DatabaseModel.zFacilityInRoom" FromRole="zRoom" ToRole="zFacility" />
+          <NavigationProperty Name="zDepartment" Relationship="DatabaseModel.zRoomInDepartment" FromRole="zRoom" ToRole="zDepartment" />
+          <NavigationProperty Name="zRequest" Relationship="DatabaseModel.zRoomInRequest" FromRole="zRoom" ToRole="zRequest" />
         </EntityType>
         <EntityType Name="zRound">
           <Key>
@@ -747,25 +839,25 @@
           <Property Name="RoundNo" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="zRequest" Relationship="Self.FK_zRequest_zRound" FromRole="zRound" ToRole="zRequest" />
+          <NavigationProperty Name="zRequest" Relationship="DatabaseModel.FK_zRequest_zRound" FromRole="zRound" ToRole="zRequest" />
         </EntityType>
         <EntityType Name="zStatus">
           <Key>
             <PropertyRef Name="StatusId" />
           </Key>
           <Property Name="StatusId" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="StatusValue" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="zRequest" Relationship="Self.FK_zRequest_zStatus" FromRole="zStatus" ToRole="zRequest" />
+          <Property Name="StatusValue" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="zRequest" Relationship="DatabaseModel.FK_zRequest_zStatus" FromRole="zStatus" ToRole="zRequest" />
         </EntityType>
         <EntityType Name="zUser">
           <Key>
             <PropertyRef Name="UserId" />
           </Key>
           <Property Name="UserId" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="DeptCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="zDepartment" Relationship="Self.FK_zUser_zDepartment" FromRole="zUser" ToRole="zDepartment" />
-          <NavigationProperty Name="zPreference" Relationship="Self.FK_zPreference_zUser" FromRole="zUser" ToRole="zPreference" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DeptCode" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="zDepartment" Relationship="DatabaseModel.FK_zUser_zDepartment" FromRole="zUser" ToRole="zDepartment" />
+          <NavigationProperty Name="zPreference" Relationship="DatabaseModel.FK_zPreference_zUser" FromRole="zUser" ToRole="zPreference" />
           <NavigationProperty Name="zRequest" Relationship="DatabaseModel.FK_zRequest_zUser" FromRole="zUser" ToRole="zRequest" />
         </EntityType>
         <EntityType Name="zWeek">
@@ -789,11 +881,11 @@
           <Property Name="Week14" Type="Boolean" Nullable="false" />
           <Property Name="Week15" Type="Boolean" Nullable="false" />
           <Property Name="Week16" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="zRequest" Relationship="Self.FK_zRequest_zWeek" FromRole="zWeek" ToRole="zRequest" />
+          <NavigationProperty Name="zRequest" Relationship="DatabaseModel.FK_zRequest_zWeek" FromRole="zWeek" ToRole="zRequest" />
         </EntityType>
         <Association Name="FK_zBuilding_zPark">
-          <End Role="zPark" Type="Self.zPark" Multiplicity="1" />
-          <End Role="zBuilding" Type="Self.zBuilding" Multiplicity="*" />
+          <End Type="DatabaseModel.zPark" Role="zPark" Multiplicity="1" />
+          <End Type="DatabaseModel.zBuilding" Role="zBuilding" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="zPark">
               <PropertyRef Name="ParkId" />
@@ -804,8 +896,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_zRoom_zBuilding">
-          <End Role="zBuilding" Type="Self.zBuilding" Multiplicity="1" />
-          <End Role="zRoom" Type="Self.zRoom" Multiplicity="*" />
+          <End Type="DatabaseModel.zBuilding" Role="zBuilding" Multiplicity="1" />
+          <End Type="DatabaseModel.zRoom" Role="zRoom" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="zBuilding">
               <PropertyRef Name="BuildingCode" />
@@ -816,8 +908,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_zRequest_zDay">
-          <End Role="zDay" Type="Self.zDay" Multiplicity="1" />
-          <End Role="zRequest" Type="Self.zRequest" Multiplicity="*" />
+          <End Type="DatabaseModel.zDay" Role="zDay" Multiplicity="1" />
+          <End Type="DatabaseModel.zRequest" Role="zRequest" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="zDay">
               <PropertyRef Name="DayId" />
@@ -828,8 +920,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_zModule1_zDepartment1">
-          <End Role="zDepartment" Type="Self.zDepartment" Multiplicity="1" />
-          <End Role="zModule" Type="Self.zModule" Multiplicity="*" />
+          <End Type="DatabaseModel.zDepartment" Role="zDepartment" Multiplicity="1" />
+          <End Type="DatabaseModel.zModule" Role="zModule" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="zDepartment">
               <PropertyRef Name="DeptCode" />
@@ -840,8 +932,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_zProgramme_zDepartment">
-          <End Role="zDepartment" Type="Self.zDepartment" Multiplicity="1" />
-          <End Role="zProgramme" Type="Self.zProgramme" Multiplicity="*" />
+          <End Type="DatabaseModel.zDepartment" Role="zDepartment" Multiplicity="1" />
+          <End Type="DatabaseModel.zProgramme" Role="zProgramme" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="zDepartment">
               <PropertyRef Name="DeptCode" />
@@ -852,8 +944,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_zUser_zDepartment">
-          <End Role="zDepartment" Type="Self.zDepartment" Multiplicity="1" />
-          <End Role="zUser" Type="Self.zUser" Multiplicity="*" />
+          <End Type="DatabaseModel.zDepartment" Role="zDepartment" Multiplicity="1" />
+          <End Type="DatabaseModel.zUser" Role="zUser" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="zDepartment">
               <PropertyRef Name="DeptCode" />
@@ -864,8 +956,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_zRequest_zPeriod">
-          <End Role="zPeriod" Type="Self.zPeriod" Multiplicity="1" />
-          <End Role="zRequest" Type="Self.zRequest" Multiplicity="*" />
+          <End Type="DatabaseModel.zPeriod" Role="zPeriod" Multiplicity="1" />
+          <End Type="DatabaseModel.zRequest" Role="zRequest" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="zPeriod">
               <PropertyRef Name="PeriodId" />
@@ -876,8 +968,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_zPreference_zUser">
-          <End Role="zUser" Type="Self.zUser" Multiplicity="1" />
-          <End Role="zPreference" Type="Self.zPreference" Multiplicity="0..1" />
+          <End Type="DatabaseModel.zUser" Role="zUser" Multiplicity="1" />
+          <End Type="DatabaseModel.zPreference" Role="zPreference" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="zUser">
               <PropertyRef Name="UserId" />
@@ -888,8 +980,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_zRequest_zRound">
-          <End Role="zRound" Type="Self.zRound" Multiplicity="1" />
-          <End Role="zRequest" Type="Self.zRequest" Multiplicity="*" />
+          <End Type="DatabaseModel.zRound" Role="zRound" Multiplicity="1" />
+          <End Type="DatabaseModel.zRequest" Role="zRequest" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="zRound">
               <PropertyRef Name="RoundNo" />
@@ -900,8 +992,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_zRequest_zStatus">
-          <End Role="zStatus" Type="Self.zStatus" Multiplicity="1" />
-          <End Role="zRequest" Type="Self.zRequest" Multiplicity="*" />
+          <End Type="DatabaseModel.zStatus" Role="zStatus" Multiplicity="1" />
+          <End Type="DatabaseModel.zRequest" Role="zRequest" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="zStatus">
               <PropertyRef Name="StatusId" />
@@ -911,132 +1003,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_zRequest_zWeek">
-          <End Role="zWeek" Type="Self.zWeek" Multiplicity="1" />
-          <End Role="zRequest" Type="Self.zRequest" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="zWeek">
-              <PropertyRef Name="WeekId" />
-            </Principal>
-            <Dependent Role="zRequest">
-              <PropertyRef Name="WeekId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="zFacilityInRequest">
-          <End Role="zFacility" Type="Self.zFacility" Multiplicity="*" />
-          <End Role="zRequest" Type="Self.zRequest" Multiplicity="*" />
-        </Association>
-        <Association Name="zFacilityInRoom">
-          <End Role="zFacility" Type="Self.zFacility" Multiplicity="*" />
-          <End Role="zRoom" Type="Self.zRoom" Multiplicity="*" />
-        </Association>
-        <Association Name="zLecturerInModule">
-          <End Role="zLecturer" Type="Self.zLecturer" Multiplicity="*" />
-          <End Role="zModule" Type="Self.zModule" Multiplicity="*" />
-        </Association>
-        <Association Name="zModuleInProgramme">
-          <End Role="zModule" Type="Self.zModule" Multiplicity="*" />
-          <End Role="zProgramme" Type="Self.zProgramme" Multiplicity="*" />
-        </Association>
-        <Association Name="zRoomInDepartment">
-          <End Role="zDepartment" Type="Self.zDepartment" Multiplicity="*" />
-          <End Role="zRoom" Type="Self.zRoom" Multiplicity="*" />
-        </Association>
-        <Association Name="zRoomInRequest">
-          <End Role="zRequest" Type="Self.zRequest" Multiplicity="*" />
-          <End Role="zRoom" Type="Self.zRoom" Multiplicity="*" />
-        </Association>
-        <EntityContainer Name="DatabaseContext" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="zBuilding" EntityType="Self.zBuilding" />
-          <EntitySet Name="zDay" EntityType="Self.zDay" />
-          <EntitySet Name="zDepartment" EntityType="Self.zDepartment" />
-          <EntitySet Name="zFacility" EntityType="Self.zFacility" />
-          <EntitySet Name="zLecturer" EntityType="Self.zLecturer" />
-          <EntitySet Name="zModule" EntityType="Self.zModule" />
-          <EntitySet Name="zPark" EntityType="Self.zPark" />
-          <EntitySet Name="zPeriod" EntityType="Self.zPeriod" />
-          <EntitySet Name="zPreference" EntityType="Self.zPreference" />
-          <EntitySet Name="zProgramme" EntityType="Self.zProgramme" />
-          <EntitySet Name="zRequest" EntityType="Self.zRequest" />
-          <EntitySet Name="zRoom" EntityType="Self.zRoom" />
-          <EntitySet Name="zRound" EntityType="Self.zRound" />
-          <EntitySet Name="zStatus" EntityType="Self.zStatus" />
-          <EntitySet Name="zUser" EntityType="Self.zUser" />
-          <EntitySet Name="zWeek" EntityType="Self.zWeek" />
-          <AssociationSet Name="FK_zBuilding_zPark" Association="Self.FK_zBuilding_zPark">
-            <End Role="zPark" EntitySet="zPark" />
-            <End Role="zBuilding" EntitySet="zBuilding" />
-          </AssociationSet>
-          <AssociationSet Name="FK_zRoom_zBuilding" Association="Self.FK_zRoom_zBuilding">
-            <End Role="zBuilding" EntitySet="zBuilding" />
-            <End Role="zRoom" EntitySet="zRoom" />
-          </AssociationSet>
-          <AssociationSet Name="FK_zRequest_zDay" Association="Self.FK_zRequest_zDay">
-            <End Role="zDay" EntitySet="zDay" />
-            <End Role="zRequest" EntitySet="zRequest" />
-          </AssociationSet>
-          <AssociationSet Name="FK_zModule1_zDepartment1" Association="Self.FK_zModule1_zDepartment1">
-            <End Role="zDepartment" EntitySet="zDepartment" />
-            <End Role="zModule" EntitySet="zModule" />
-          </AssociationSet>
-          <AssociationSet Name="FK_zProgramme_zDepartment" Association="Self.FK_zProgramme_zDepartment">
-            <End Role="zDepartment" EntitySet="zDepartment" />
-            <End Role="zProgramme" EntitySet="zProgramme" />
-          </AssociationSet>
-          <AssociationSet Name="FK_zUser_zDepartment" Association="Self.FK_zUser_zDepartment">
-            <End Role="zDepartment" EntitySet="zDepartment" />
-            <End Role="zUser" EntitySet="zUser" />
-          </AssociationSet>
-          <AssociationSet Name="FK_zRequest_zPeriod" Association="Self.FK_zRequest_zPeriod">
-            <End Role="zPeriod" EntitySet="zPeriod" />
-            <End Role="zRequest" EntitySet="zRequest" />
-          </AssociationSet>
-          <AssociationSet Name="FK_zPreference_zUser" Association="Self.FK_zPreference_zUser">
-            <End Role="zUser" EntitySet="zUser" />
-            <End Role="zPreference" EntitySet="zPreference" />
-          </AssociationSet>
-          <AssociationSet Name="FK_zRequest_zRound" Association="Self.FK_zRequest_zRound">
-            <End Role="zRound" EntitySet="zRound" />
-            <End Role="zRequest" EntitySet="zRequest" />
-          </AssociationSet>
-          <AssociationSet Name="FK_zRequest_zStatus" Association="Self.FK_zRequest_zStatus">
-            <End Role="zStatus" EntitySet="zStatus" />
-            <End Role="zRequest" EntitySet="zRequest" />
-          </AssociationSet>
-          <AssociationSet Name="FK_zRequest_zWeek" Association="Self.FK_zRequest_zWeek">
-            <End Role="zWeek" EntitySet="zWeek" />
-            <End Role="zRequest" EntitySet="zRequest" />
-          </AssociationSet>
-          <AssociationSet Name="zFacilityInRequest" Association="Self.zFacilityInRequest">
-            <End Role="zFacility" EntitySet="zFacility" />
-            <End Role="zRequest" EntitySet="zRequest" />
-          </AssociationSet>
-          <AssociationSet Name="zFacilityInRoom" Association="Self.zFacilityInRoom">
-            <End Role="zFacility" EntitySet="zFacility" />
-            <End Role="zRoom" EntitySet="zRoom" />
-          </AssociationSet>
-          <AssociationSet Name="zLecturerInModule" Association="Self.zLecturerInModule">
-            <End Role="zLecturer" EntitySet="zLecturer" />
-            <End Role="zModule" EntitySet="zModule" />
-          </AssociationSet>
-          <AssociationSet Name="zModuleInProgramme" Association="Self.zModuleInProgramme">
-            <End Role="zModule" EntitySet="zModule" />
-            <End Role="zProgramme" EntitySet="zProgramme" />
-          </AssociationSet>
-          <AssociationSet Name="zRoomInDepartment" Association="Self.zRoomInDepartment">
-            <End Role="zDepartment" EntitySet="zDepartment" />
-            <End Role="zRoom" EntitySet="zRoom" />
-          </AssociationSet>
-          <AssociationSet Name="zRoomInRequest" Association="Self.zRoomInRequest">
-            <End Role="zRequest" EntitySet="zRequest" />
-            <End Role="zRoom" EntitySet="zRoom" />
-          </AssociationSet>
-          <AssociationSet Name="FK_zRequest_zUser" Association="DatabaseModel.FK_zRequest_zUser">
-            <End Role="zUser" EntitySet="zUser" />
-            <End Role="zRequest" EntitySet="zRequest" />
-          </AssociationSet>
-        </EntityContainer>
         <Association Name="FK_zRequest_zUser">
           <End Type="DatabaseModel.zUser" Role="zUser" Multiplicity="1" />
           <End Type="DatabaseModel.zRequest" Role="zRequest" Multiplicity="*" />
@@ -1049,7 +1015,43 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <Association Name="FK_zRequest_zWeek">
+          <End Type="DatabaseModel.zWeek" Role="zWeek" Multiplicity="1" />
+          <End Type="DatabaseModel.zRequest" Role="zRequest" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="zWeek">
+              <PropertyRef Name="WeekId" />
+            </Principal>
+            <Dependent Role="zRequest">
+              <PropertyRef Name="WeekId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="zFacilityInRequest">
+          <End Type="DatabaseModel.zFacility" Role="zFacility" Multiplicity="*" />
+          <End Type="DatabaseModel.zRequest" Role="zRequest" Multiplicity="*" />
+        </Association>
+        <Association Name="zFacilityInRoom">
+          <End Type="DatabaseModel.zFacility" Role="zFacility" Multiplicity="*" />
+          <End Type="DatabaseModel.zRoom" Role="zRoom" Multiplicity="*" />
+        </Association>
+        <Association Name="zLecturerInModule">
+          <End Type="DatabaseModel.zLecturer" Role="zLecturer" Multiplicity="*" />
+          <End Type="DatabaseModel.zModule" Role="zModule" Multiplicity="*" />
+        </Association>
+        <Association Name="zModuleInProgramme">
+          <End Type="DatabaseModel.zModule" Role="zModule" Multiplicity="*" />
+          <End Type="DatabaseModel.zProgramme" Role="zProgramme" Multiplicity="*" />
+        </Association>
+        <Association Name="zRoomInDepartment">
+          <End Type="DatabaseModel.zDepartment" Role="zDepartment" Multiplicity="*" />
+          <End Type="DatabaseModel.zRoom" Role="zRoom" Multiplicity="*" />
+        </Association>
+        <Association Name="zRoomInRequest">
+          <End Type="DatabaseModel.zRequest" Role="zRequest" Multiplicity="*" />
+          <End Type="DatabaseModel.zRoom" Role="zRoom" Multiplicity="*" />
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -1058,84 +1060,84 @@
           <EntitySetMapping Name="zBuilding">
             <EntityTypeMapping TypeName="DatabaseModel.zBuilding">
               <MappingFragment StoreEntitySet="zBuilding">
-                <ScalarProperty Name="BuildingCode" ColumnName="BuildingCode" />
-                <ScalarProperty Name="BuildingName" ColumnName="BuildingName" />
                 <ScalarProperty Name="ParkId" ColumnName="ParkId" />
+                <ScalarProperty Name="BuildingName" ColumnName="BuildingName" />
+                <ScalarProperty Name="BuildingCode" ColumnName="BuildingCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="zDay">
             <EntityTypeMapping TypeName="DatabaseModel.zDay">
               <MappingFragment StoreEntitySet="zDay">
-                <ScalarProperty Name="DayId" ColumnName="DayId" />
                 <ScalarProperty Name="DayValue" ColumnName="DayValue" />
+                <ScalarProperty Name="DayId" ColumnName="DayId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="zDepartment">
             <EntityTypeMapping TypeName="DatabaseModel.zDepartment">
               <MappingFragment StoreEntitySet="zDepartment">
-                <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
                 <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+                <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="zFacility">
             <EntityTypeMapping TypeName="DatabaseModel.zFacility">
               <MappingFragment StoreEntitySet="zFacility">
-                <ScalarProperty Name="FacilityId" ColumnName="FacilityId" />
                 <ScalarProperty Name="FacilityName" ColumnName="FacilityName" />
+                <ScalarProperty Name="FacilityId" ColumnName="FacilityId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="zLecturer">
             <EntityTypeMapping TypeName="DatabaseModel.zLecturer">
               <MappingFragment StoreEntitySet="zLecturer">
-                <ScalarProperty Name="LecturerId" ColumnName="LecturerId" />
                 <ScalarProperty Name="LecturerName" ColumnName="LecturerName" />
+                <ScalarProperty Name="LecturerId" ColumnName="LecturerId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="zModule">
             <EntityTypeMapping TypeName="DatabaseModel.zModule">
               <MappingFragment StoreEntitySet="zModule">
-                <ScalarProperty Name="ModCode" ColumnName="ModCode" />
-                <ScalarProperty Name="ModTitle" ColumnName="ModTitle" />
-                <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
                 <ScalarProperty Name="Part" ColumnName="Part" />
+                <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+                <ScalarProperty Name="ModTitle" ColumnName="ModTitle" />
+                <ScalarProperty Name="ModCode" ColumnName="ModCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="zPark">
             <EntityTypeMapping TypeName="DatabaseModel.zPark">
               <MappingFragment StoreEntitySet="zPark">
-                <ScalarProperty Name="ParkId" ColumnName="ParkId" />
                 <ScalarProperty Name="ParkName" ColumnName="ParkName" />
+                <ScalarProperty Name="ParkId" ColumnName="ParkId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="zPeriod">
             <EntityTypeMapping TypeName="DatabaseModel.zPeriod">
               <MappingFragment StoreEntitySet="zPeriod">
-                <ScalarProperty Name="PeriodId" ColumnName="PeriodId" />
                 <ScalarProperty Name="PeriodValue" ColumnName="PeriodValue" />
+                <ScalarProperty Name="PeriodId" ColumnName="PeriodId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="zPreference">
             <EntityTypeMapping TypeName="DatabaseModel.zPreference">
               <MappingFragment StoreEntitySet="zPreference">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="PlaceHolder" ColumnName="PlaceHolder" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="zProgramme">
             <EntityTypeMapping TypeName="DatabaseModel.zProgramme">
               <MappingFragment StoreEntitySet="zProgramme">
-                <ScalarProperty Name="ProgrammeCode" ColumnName="ProgrammeCode" />
-                <ScalarProperty Name="ProgrammeTitle" ColumnName="ProgrammeTitle" />
                 <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+                <ScalarProperty Name="ProgrammeTitle" ColumnName="ProgrammeTitle" />
+                <ScalarProperty Name="ProgrammeCode" ColumnName="ProgrammeCode" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1143,125 +1145,126 @@
             <EntityTypeMapping TypeName="DatabaseModel.zRequest">
               <MappingFragment StoreEntitySet="zRequest">
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="RequestId" ColumnName="RequestId" />
-                <ScalarProperty Name="ModCode" ColumnName="ModCode" />
-                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-                <ScalarProperty Name="WeekId" ColumnName="WeekId" />
-                <ScalarProperty Name="DayId" ColumnName="DayId" />
-                <ScalarProperty Name="PeriodId" ColumnName="PeriodId" />
-                <ScalarProperty Name="SessionLength" ColumnName="SessionLength" />
-                <ScalarProperty Name="Semester" ColumnName="Semester" />
-                <ScalarProperty Name="RoundNo" ColumnName="RoundNo" />
                 <ScalarProperty Name="SpecialRequirement" ColumnName="SpecialRequirement" />
+                <ScalarProperty Name="RoundNo" ColumnName="RoundNo" />
+                <ScalarProperty Name="Semester" ColumnName="Semester" />
+                <ScalarProperty Name="SessionLength" ColumnName="SessionLength" />
+                <ScalarProperty Name="PeriodId" ColumnName="PeriodId" />
+                <ScalarProperty Name="DayId" ColumnName="DayId" />
+                <ScalarProperty Name="WeekId" ColumnName="WeekId" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="ModCode" ColumnName="ModCode" />
+                <ScalarProperty Name="RequestId" ColumnName="RequestId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="zRoom">
             <EntityTypeMapping TypeName="DatabaseModel.zRoom">
               <MappingFragment StoreEntitySet="zRoom">
-                <ScalarProperty Name="RoomCode" ColumnName="RoomCode" />
-                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
-                <ScalarProperty Name="BuildingCode" ColumnName="BuildingCode" />
-                <ScalarProperty Name="ImgLink" ColumnName="ImgLink" />
                 <ScalarProperty Name="Private" ColumnName="Private" />
+                <ScalarProperty Name="ImgLink" ColumnName="ImgLink" />
+                <ScalarProperty Name="BuildingCode" ColumnName="BuildingCode" />
+                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+                <ScalarProperty Name="RoomCode" ColumnName="RoomCode" />
+                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="zRound">
             <EntityTypeMapping TypeName="DatabaseModel.zRound">
               <MappingFragment StoreEntitySet="zRound">
-                <ScalarProperty Name="RoundNo" ColumnName="RoundNo" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="RoundNo" ColumnName="RoundNo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="zStatus">
             <EntityTypeMapping TypeName="DatabaseModel.zStatus">
               <MappingFragment StoreEntitySet="zStatus">
-                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
                 <ScalarProperty Name="StatusValue" ColumnName="StatusValue" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="zUser">
             <EntityTypeMapping TypeName="DatabaseModel.zUser">
               <MappingFragment StoreEntitySet="zUser">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="zWeek">
             <EntityTypeMapping TypeName="DatabaseModel.zWeek">
               <MappingFragment StoreEntitySet="zWeek">
-                <ScalarProperty Name="WeekId" ColumnName="WeekId" />
-                <ScalarProperty Name="Week1" ColumnName="Week1" />
-                <ScalarProperty Name="Week2" ColumnName="Week2" />
-                <ScalarProperty Name="Week3" ColumnName="Week3" />
-                <ScalarProperty Name="Week4" ColumnName="Week4" />
-                <ScalarProperty Name="Week5" ColumnName="Week5" />
-                <ScalarProperty Name="Week6" ColumnName="Week6" />
-                <ScalarProperty Name="Week7" ColumnName="Week7" />
-                <ScalarProperty Name="Week8" ColumnName="Week8" />
-                <ScalarProperty Name="Week9" ColumnName="Week9" />
-                <ScalarProperty Name="Week10" ColumnName="Week10" />
-                <ScalarProperty Name="Week11" ColumnName="Week11" />
-                <ScalarProperty Name="Week12" ColumnName="Week12" />
-                <ScalarProperty Name="Week13" ColumnName="Week13" />
-                <ScalarProperty Name="Week14" ColumnName="Week14" />
-                <ScalarProperty Name="Week15" ColumnName="Week15" />
                 <ScalarProperty Name="Week16" ColumnName="Week16" />
+                <ScalarProperty Name="Week15" ColumnName="Week15" />
+                <ScalarProperty Name="Week14" ColumnName="Week14" />
+                <ScalarProperty Name="Week13" ColumnName="Week13" />
+                <ScalarProperty Name="Week12" ColumnName="Week12" />
+                <ScalarProperty Name="Week11" ColumnName="Week11" />
+                <ScalarProperty Name="Week10" ColumnName="Week10" />
+                <ScalarProperty Name="Week9" ColumnName="Week9" />
+                <ScalarProperty Name="Week8" ColumnName="Week8" />
+                <ScalarProperty Name="Week7" ColumnName="Week7" />
+                <ScalarProperty Name="Week6" ColumnName="Week6" />
+                <ScalarProperty Name="Week5" ColumnName="Week5" />
+                <ScalarProperty Name="Week4" ColumnName="Week4" />
+                <ScalarProperty Name="Week3" ColumnName="Week3" />
+                <ScalarProperty Name="Week2" ColumnName="Week2" />
+                <ScalarProperty Name="Week1" ColumnName="Week1" />
+                <ScalarProperty Name="WeekId" ColumnName="WeekId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <AssociationSetMapping Name="zFacilityInRequest" TypeName="DatabaseModel.zFacilityInRequest" StoreEntitySet="zFacilityInRequest">
-            <EndProperty Name="zFacility">
-              <ScalarProperty Name="FacilityId" ColumnName="FacilityId" />
-            </EndProperty>
             <EndProperty Name="zRequest">
               <ScalarProperty Name="RequestId" ColumnName="RequestId" />
+            </EndProperty>
+            <EndProperty Name="zFacility">
+              <ScalarProperty Name="FacilityId" ColumnName="FacilityId" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="zFacilityInRoom" TypeName="DatabaseModel.zFacilityInRoom" StoreEntitySet="zFacilityInRoom">
+            <EndProperty Name="zRoom">
+              <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+            </EndProperty>
             <EndProperty Name="zFacility">
               <ScalarProperty Name="FacilityId" ColumnName="FacilityId" />
             </EndProperty>
-            <EndProperty Name="zRoom">
-              <ScalarProperty Name="RoomCode" ColumnName="RoomCode" />
-            </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="zLecturerInModule" TypeName="DatabaseModel.zLecturerInModule" StoreEntitySet="zLecturerInModule">
+            <EndProperty Name="zModule">
+              <ScalarProperty Name="ModCode" ColumnName="ModCode" />
+            </EndProperty>
             <EndProperty Name="zLecturer">
               <ScalarProperty Name="LecturerId" ColumnName="LecturerId" />
             </EndProperty>
-            <EndProperty Name="zModule">
-              <ScalarProperty Name="ModCode" ColumnName="ModCode" />
-            </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="zModuleInProgramme" TypeName="DatabaseModel.zModuleInProgramme" StoreEntitySet="zModuleInProgramme">
-            <EndProperty Name="zModule">
-              <ScalarProperty Name="ModCode" ColumnName="ModCode" />
-            </EndProperty>
             <EndProperty Name="zProgramme">
               <ScalarProperty Name="ProgrammeCode" ColumnName="ProgrammeCode" />
             </EndProperty>
+            <EndProperty Name="zModule">
+              <ScalarProperty Name="ModCode" ColumnName="ModCode" />
+            </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="zRoomInDepartment" TypeName="DatabaseModel.zRoomInDepartment" StoreEntitySet="zRoomInDepartment">
+            <EndProperty Name="zRoom">
+              <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+            </EndProperty>
             <EndProperty Name="zDepartment">
               <ScalarProperty Name="DeptCode" ColumnName="DeptCode" />
             </EndProperty>
-            <EndProperty Name="zRoom">
-              <ScalarProperty Name="RoomCode" ColumnName="RoomCode" />
-            </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="zRoomInRequest" TypeName="DatabaseModel.zRoomInRequest" StoreEntitySet="zRoomInRequest">
+            <EndProperty Name="zRoom">
+              <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+            </EndProperty>
             <EndProperty Name="zRequest">
               <ScalarProperty Name="RequestId" ColumnName="RequestId" />
-            </EndProperty>
-            <EndProperty Name="zRoom">
-              <ScalarProperty Name="RoomCode" ColumnName="RoomCode" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>
@@ -1278,7 +1281,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="true" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />

@@ -15,12 +15,12 @@ namespace TeamProject.Models
 
         public IQueryable<zFacility> All
         {
-            get { return context.zFacilities; }
+            get { return context.zFacility; }
         }
 
         public IQueryable<zFacility> AllIncluding(params Expression<Func<zFacility, object>>[] includeProperties)
         {
-            IQueryable<zFacility> query = context.zFacilities;
+            IQueryable<zFacility> query = context.zFacility;
             foreach (var includeProperty in includeProperties) {
                 query = query.Include(includeProperty);
             }
@@ -29,14 +29,14 @@ namespace TeamProject.Models
 
         public zFacility Find(short id)
         {
-            return context.zFacilities.Find(id);
+            return context.zFacility.Find(id);
         }
 
         public void InsertOrUpdate(zFacility zfacility)
         {
             if (zfacility.FacilityId == default(short)) {
                 // New entity
-                context.zFacilities.Add(zfacility);
+                context.zFacility.Add(zfacility);
             } else {
                 // Existing entity
                 context.Entry(zfacility).State = System.Data.Entity.EntityState.Modified;
@@ -45,8 +45,8 @@ namespace TeamProject.Models
 
         public void Delete(short id)
         {
-            var zfacility = context.zFacilities.Find(id);
-            context.zFacilities.Remove(zfacility);
+            var zfacility = context.zFacility.Find(id);
+            context.zFacility.Remove(zfacility);
         }
 
         public void Save()
