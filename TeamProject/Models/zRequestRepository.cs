@@ -38,7 +38,8 @@ namespace TeamProject.Models
             foreach (var facility in zrequest.zFacility)
             {
                 context.zFacility.Attach(facility);
-            }
+            } //all stuff being added that already exists in the database needs to be attached 
+            //otherwise a new entry for it will be added in the db which is baaad
             List<zPark> parkList = new List<zPark>();
             List<zBuilding> buildingList = new List<zBuilding>();
             List<zRoom> roomList = new List<zRoom>();
@@ -46,10 +47,10 @@ namespace TeamProject.Models
             {
                 switch (booking.Type)
                 {
-                    case 0:
+                    case 0: //any room not saved in db
                         break;
 
-                    case 1:
+                    case 1: //any room in a park
                         var newPark = true;
                         foreach (var item in parkList)
                         {
@@ -65,7 +66,7 @@ namespace TeamProject.Models
                         }
                         break;
 
-                    case 2:
+                    case 2: //any room in a building
                         var newBuilding = false;
                         foreach (var item in buildingList)
                         {
@@ -81,7 +82,7 @@ namespace TeamProject.Models
                         }
                         break;
 
-                    case 3:
+                    case 3: //specific room
                         var newRoom = false;
                         foreach (var item in roomList)
                         {
@@ -96,42 +97,22 @@ namespace TeamProject.Models
                             context.zRoom.Attach(booking.zRoom);
                         }
                         break;
+
+                        /*
+                         * the code in this section (checked if a booking is unique or not) 
+                         * is a attempt to allow for multiple "Any room in a park/building" 
+                         * in a single request but it didn't really work.
+                         * if such a request is created, the second park/building will be 
+                         * added to the db as a new park/building.
+                         * need to find a way to fix this, attaching multiple times doesn't work
+                         */
                 }
             }
             context.zRequest.Add(zrequest);
         }
-                /* this stuff probably isn't needed anymore, delete soon.
-                foreach (var park in zrequest.zPark)
-                {
-                    context.zPark.Attach(park);
-                }
-
-                List<zBuilding> buildingList = new List<zBuilding>();
-                foreach (var item in zrequest.zBuilding)
-                {
-                    bool newItem = true;
-                    foreach (var building in buildingList)
-                    {
-                        if (building.BuildingCode == item.BuildingCode)
-                        {
-                            newItem = false;
-                        }
-                    }
-                    if (newItem)
-                    {
-                        context.zBuilding.Attach(item);
-                        buildingList.Add(item);
-                    }
-                }
-
-                foreach (var room in zrequest.zRoom)
-                {
-                    context.zRoom.Attach(room);
-                }
-                */
 
         public void Update(zRequest zrequest)
-        {
+        {//this is called when editing a request
             // Existing entity
             var updateRequest = context.zRequest.Find(zrequest.RequestId);
 
@@ -148,27 +129,24 @@ namespace TeamProject.Models
             updateRequest.UserId = zrequest.UserId;
             updateRequest.RoomCount = zrequest.RoomCount;
 
-            updateRequest.zWeek = zrequest.zWeek;
+            //update all the simple stuff by simple assignment
 
-            var facList = updateRequest.zFacility.ToList();
+            updateRequest.zWeek = zrequest.zWeek;
+            //surprisingly, this works 
+
+            var oldFacList = updateRequest.zFacility.ToList();
+            foreach (var oldFacility in oldFacList)
+            {
+                updateRequest.zFacility.Remove(oldFacility);
+            }
+
             foreach (var item in zrequest.zFacility)
             {
-                bool newItem = true;
-                foreach (var fac in facList)
-                {
-                    if (fac.FacilityId == item.FacilityId)
-                    {
-                        newItem = false;
-                    }
-                }
-                if (newItem)
-                {
-                    context.zFacility.Attach(item);
-                    updateRequest.zFacility.Add(item);
-                }
-            }//this method doesn't take into account facilities that have been removed
-            //consider using same horrible method as rooms...
-
+                context.zFacility.Attach(item);
+                updateRequest.zFacility.Add(item);
+            }
+            //horrible way of doing this, remove all facilities then add them all as new ones
+            //same principle for room bookings
             List<int> bookingList = new List<int>();
             foreach (var booking in updateRequest.zRoomBooking)
             {
@@ -185,20 +163,17 @@ namespace TeamProject.Models
             {
                 switch (item.Type)
                 {
-                    case 0:
-                        break;
-
-                    case 1:
+                    case 1: //any room in a park
                         context.zPark.Attach(item.zPark);
                         updateRequest.zRoomBooking.Add(item);
                         break;
 
-                    case 2:
+                    case 2: //any room in a building
                         context.zBuilding.Attach(item.zBuilding);
                         updateRequest.zRoomBooking.Add(item);
                         break;
 
-                    case 3:
+                    case 3: //specific room
                         context.zRoom.Attach(item.zRoom);
                         updateRequest.zRoomBooking.Add(item);
                         break;
@@ -206,7 +181,8 @@ namespace TeamProject.Models
             }
         }
 
-                /* this probably isn't needed yet, delete soon.
+                /* 
+                 * this probably isn't needed anymore, delete soon.
                 var parkList = updateRequest.zPark.ToList();
                 foreach (var item in zrequest.zPark)
                 {
@@ -223,47 +199,8 @@ namespace TeamProject.Models
                         context.zPark.Attach(item);
                         updateRequest.zPark.Add(item);
                     }
-                    
                 }
-
-                var buildingList = updateRequest.zBuilding.ToList();
-                foreach (var item in zrequest.zBuilding)
-                {
-                    bool newItem = true;
-                    foreach (var building in buildingList)
-                    {
-                        if (building.BuildingCode== item.BuildingCode)
-                        {
-                            newItem = false;
-                        }
-                    }
-                    if (newItem)
-                    {
-                        context.zBuilding.Attach(item);
-                        updateRequest.zBuilding.Add(item);
-                    }
-                    
-                }
-
-                var roomList = updateRequest.zRoom.ToList();
-                updateRequest.zRoom.Clear();
-                foreach (var item in zrequest.zRoom)
-                {
-                    bool newItem = true;
-                    foreach (var room in roomList)
-                    {
-                        if (room.RoomId == item.RoomId)
-                        {
-                            newItem = false;
-                        }
-                    }
-                    if (newItem)
-                    {
-                        context.zRoom.Attach(item);
-                        updateRequest.zRoom.Add(item);
-                    }
-                }*/
-            
+                */
 
         public void Delete(int id)
         {

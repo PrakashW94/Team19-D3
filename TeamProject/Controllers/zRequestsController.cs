@@ -26,16 +26,16 @@ namespace TeamProject.Controllers
         // GET: /zRequests/
 
         public ViewResult Index()
-        {
+        {//this code shows the user only their own requests, filtered by UserID
             var db = new DatabaseContext();
             var userQry = from user in db.zUser where user.DeptCode == User.Identity.Name select user.UserId;
             var userID = userQry.FirstOrDefault();
-            if(userID == 1)
+            if(userID == 1) //if the user is the central admin, show all requests
             {
                 var reqQry = from request in db.zRequest select request;
                 return View(reqQry);
             }
-            else
+            else //else show requests associated with the user's account
             {
                 var reqQry = from request in db.zRequest where request.UserId == userID select request;
                 return View(reqQry);
@@ -55,7 +55,7 @@ namespace TeamProject.Controllers
         // GET: /zRequests/Create
 
         public List<string> populateDeptList()
-        {
+        { //function to return a list of departments and return it as a list of strings
             var db = new DatabaseContext();
             var deptList = new List<string>();
             var deptQry = from Department in db.zDepartment select Department.DeptCode;
@@ -63,11 +63,11 @@ namespace TeamProject.Controllers
         }
 
         public List<string> populateModuleList()
-        {
+        {//function to return a list of modules and return it as a list of strings
             var db = new DatabaseContext();
             var moduleList = new List<string>();
             if (User.Identity.Name == "CA")
-            {
+            {// if the user is the central admin list all modules
                 var moduleQry = db.zModule.Select(module => new{module.ModCode, module.ModTitle}).ToList();
                 foreach (var module in moduleQry)
                 {
@@ -76,7 +76,7 @@ namespace TeamProject.Controllers
                 }
             }
             else
-            {
+            {//otherwise list modules associated with that department
                 var moduleQry = db.zModule
                     .Where(module => module.DeptCode == User.Identity.Name)
                     .Select(module => new { module.ModCode, module.ModTitle }).ToList();
@@ -90,7 +90,7 @@ namespace TeamProject.Controllers
         }
 
         public List<string> populateDayList()
-        {
+        {//function to return a list of days and return it as a list of strings
             var db = new DatabaseContext();
             var dayQry = from Day in db.zDay orderby Day.DayId select Day.DayValue;
             return dayQry.ToList();
@@ -98,7 +98,7 @@ namespace TeamProject.Controllers
         }
 
         public List<string> populatePeriodList()
-        {
+        {//function to return a list of periods and return it as a list of strings
             var db = new DatabaseContext();
             var periodList = new List<string>();
             var periodQry = from Period in db.zPeriod select Period.PeriodValue;
@@ -112,7 +112,7 @@ namespace TeamProject.Controllers
         }
 
         public List<string> populateSeshLengthList()
-        {
+        {//function to return a list of session length and return it as a list of strings
             var seshLengthList = new List<string>();
             seshLengthList.Add("1 Hour");
             for (int i = 2; i < 10; i++)
@@ -123,14 +123,14 @@ namespace TeamProject.Controllers
         }
 
         public List<string> populateFacilityList()
-        {
+        {//function to return a list of facilities and return it as a list of strings
             var db = new DatabaseContext();
             var facilityQry = from Facility in db.zFacility select Facility.FacilityName;
             return facilityQry.ToList();
         }
 
         public List<string> populateParkList()
-        {
+        {//function to return a list of parks and return it as a list of strings
             var db = new DatabaseContext();
             var parkQry = from Park in db.zPark select Park.ParkName;
             var parkList = new List<string>();
@@ -140,7 +140,7 @@ namespace TeamProject.Controllers
         }
 
         public List<string> populateBuildingList()
-        {
+        {//function to return a list of buildings and return it as a list of strings
             var db = new DatabaseContext();
             var buildingQry = from Building in db.zBuilding select Building;
             var buildingList = new List<string>();
@@ -153,7 +153,7 @@ namespace TeamProject.Controllers
         }
 
         public List<string> populateRoomList()
-        {
+        {//function to return a list of rooms and return it as a list of strings
             var db = new DatabaseContext();
             var roomQry = from Room in db.zRoom select Room.RoomCode;
             var roomList = new List<string>();
@@ -163,7 +163,7 @@ namespace TeamProject.Controllers
         }
 
         public ActionResult Create()
-        {
+        {//function to load page to create request
             if (User.Identity.Name == "CA")
             {
                 ViewBag.deptList = populateDeptList();
@@ -177,14 +177,15 @@ namespace TeamProject.Controllers
             ViewBag.buildingList = populateBuildingList();
             ViewBag.roomList = populateRoomList();
             ViewBag.Weeks = "1,2,3,4,5,6,7,8,9,10,11,12";
+            //this is where you set the default weeks you want shown
             return View();
-        } 
+        }//essentially adds everything that needs to be displayed to the ViewBag 
 
         public JsonResult Building(string park)
-        {
+        {//this function is called from the room selector, returns the buildings from the selected park
             var db = new DatabaseContext();
             if (park != "Any")
-            {
+            {//if a specific park is selected, return buildings in that park
                 var parkId = (from Park in db.zPark where Park.ParkName == park select Park.ParkId).ToList().FirstOrDefault();
                 var buildingQry = (from Building in db.zBuilding where Building.ParkId == parkId select Building);
                 var buildingList = new List<string>();
@@ -195,22 +196,22 @@ namespace TeamProject.Controllers
                 return Json(buildingList);
             }
             else
-            {
+            {//otherwise return a list of all buildings
                 return Json(populateBuildingList());
             }
         }
 
         public JsonResult Room(string buildingCode)
-        {
+        {//this function is called from the room selector, returns the rooms from the selected building
             if (buildingCode != "Any")
-            {
+            {//if a specific park is selected, return rooms in that building
                 var db = new DatabaseContext();
                 var building = (from Building in db.zBuilding where Building.BuildingCode == buildingCode select Building.BuildingId).ToList().FirstOrDefault();
                 var roomList = (from Room in db.zRoom where Room.BuildingId == building select Room.RoomCode).ToList();
                 return Json(roomList);
             }
             else
-            {
+            {//else return all buildings
                 return Json(populateRoomList());
             }
         }
@@ -220,18 +221,18 @@ namespace TeamProject.Controllers
 
         [HttpPost]
         public ActionResult Create
-        (
-            string DeptCode,
+        (//this works by naming inputs by these variable names using razor
+            string DeptCode, //only used if user is CA
             string ModCode,
             string Day,
             string Period,
             string SeshLength,
             string Weeks,
-            string[] Facilities,
+            string[] Facilities, //list of combo boxes
             string Rooms,
             zRequest zrequest
         )
-        {
+        {//function when the create button is clicked
             var db = new DatabaseContext();
 
             if (User.Identity.Name == "CA")
@@ -243,25 +244,33 @@ namespace TeamProject.Controllers
             {
                 var userQry = from user in db.zUser where user.DeptCode == User.Identity.Name select user.UserId;
                 zrequest.UserId = userQry.FirstOrDefault();
-            }
-            zrequest.ModCode = ModCode.Substring(0, 6);
+            }//load UserId
+            zrequest.ModCode = ModCode.Substring(0, 6); 
+            //load ModCode
             var dayQry = from day in db.zDay where day.DayValue == Day select day.DayId;
             zrequest.DayId = dayQry.FirstOrDefault();
+            //load DayId
             zrequest.PeriodId = short.Parse(Period.Substring(0, 1));
+            //load PeriodId
             zrequest.SessionLength = short.Parse(SeshLength.Substring(0, 1));
+            //load SessionLength
 
             int[] weeksIntArray = Array.ConvertAll(Weeks.Split(','), int.Parse);
-
+            //Weeks is a string of all selected weeks(numerical) seperated by a z
             foreach (var number in weeksIntArray)
             {
                 zrequest.zWeek.GetType().GetProperty("Week" + number).SetValue(zrequest.zWeek, true, null);
             }
+            //load weeks
 
             if (Facilities != null)
             {
                 foreach (var facility in Facilities)
                 {
                     var facName = facility.Replace(".", " ");
+                    //this is to fix a bug where spaces caused a bug so i replaced the spaces with .'s
+                    //and converted back when i need to use them
+                    //initial replacement is in the razor
                     var facQry = from fac in db.zFacility where fac.FacilityName == facName select fac;
                     var test = facQry.ToList();
                     var item = new zFacility();
@@ -270,6 +279,7 @@ namespace TeamProject.Controllers
                     zrequest.zFacility.Add(item);
                 }
             }
+            //load facilities
             
             var roomsList = new List<string>();
             if(Rooms == "")
@@ -286,10 +296,10 @@ namespace TeamProject.Controllers
                 var type = int.Parse(place.Substring(0, 1));
                 switch (type)
                 {
-                    case 0: 
+                    case 0: //any room
                         break;
 
-                    case 1:
+                    case 1: //any room in a park
                         var parkName = place.Substring(1);
                         var parkDB = (from Park in db.zPark where Park.ParkName == parkName select Park).FirstOrDefault();
                         var park = new zRoomBooking();
@@ -301,7 +311,7 @@ namespace TeamProject.Controllers
                         zrequest.zRoomBooking.Add(park);
                         break;
 
-                    case 2:
+                    case 2: //any room in a building
                         var buildingCode = place.Substring(1);
                         var buildingDB = (from Building in db.zBuilding where Building.BuildingCode == buildingCode select Building).FirstOrDefault();
                         var building = new zRoomBooking();
@@ -315,7 +325,7 @@ namespace TeamProject.Controllers
                         zrequest.zRoomBooking.Add(building);
                         break;
 
-                    case 3:
+                    case 3: //specific room
                         var roomCode = place.Substring(1);
                         var roomDB = (from Room in db.zRoom where Room.RoomCode == roomCode select Room).FirstOrDefault();
                         var room = new zRoomBooking();
@@ -332,30 +342,28 @@ namespace TeamProject.Controllers
                         break;
                 } 
             }
+            //load rooms that need to be stored in database
+            //store of the number of rooms on the request
             zrequest.RoomCount = (short)roomsList.Count();
-            
+            //"Any Room"s are not stored so if the room count is more that whats on the database
+            //the difference is "Any Room"s
+
+            //these need to be coded still
             zrequest.RoundNo = 1;
             zrequest.Semester = 1;
+
             zrequest.StatusId = 3;
-            
+            //set status to pending
             zrequestRepository.Insert(zrequest);
             zrequestRepository.Save();
-
             return RedirectToAction("Index");
-            /*if (ModelState.IsValid) {
-                zrequestRepository.InsertOrUpdate(zrequest);
-                zrequestRepository.Save();
-                return RedirectToAction("Index");
-            } else {
-				return View();
-			}*/
         }
         
         //
         // GET: /zRequests/Edit/5
  
         public ActionResult Edit(int id)
-        {
+        {//function to initialise the edit screen given the id of the request
             var db = new DatabaseContext();
             var zrequest = (zrequestRepository.Find(id));
 
@@ -371,6 +379,7 @@ namespace TeamProject.Controllers
 
             var selectedModule = zrequest.zModule.ModCode + " - " + zrequest.zModule.ModTitle;
             ViewBag.ModCode = new SelectList (populateModuleList(), selectedModule);
+            //using the second parameter of a select list to set the default value
 
             List<string> weeksList = new List<string>();
             for (var number = 1; number < 17; number++ )
@@ -380,7 +389,7 @@ namespace TeamProject.Controllers
                 {
                     weeksList.Add(number.ToString());
                 }
-            }
+            }//convert the boolean values for week1-16 to a list
             ViewBag.Weeks = String.Join(",", weeksList.ToArray());
 
             ViewBag.Day = new SelectList(populateDayList(), zrequest.zDay.DayValue);
@@ -398,6 +407,7 @@ namespace TeamProject.Controllers
                 selectedSeshLength = zrequest.SessionLength + " Hours";
             }
             ViewBag.SeshLength = new SelectList (populateSeshLengthList(), selectedSeshLength);
+            //this bit needs to be fixed, depending on the selectePeriod, the session length list should change accordingly
 
             ViewBag.facilityList = populateFacilityList();
             List<string> selectedFacilities = new List<string>();
@@ -411,31 +421,34 @@ namespace TeamProject.Controllers
             ViewBag.buildingList = populateBuildingList();
             ViewBag.roomList = populateRoomList();
 
-            List<string> selectedRoomsDisp = new List<string>();
-            List<string> selectedRooms = new List<string>();
-            var dbRooms = zrequest.zRoomBooking.Count();
+            //two lists are initialised, one for what will be shown to the user
+            //the other is a kind of code to feed what the user has selected back to the controller
+            List<string> selectedRooms = new List<string>(); //this is the "code" the controller can understand
+            List<string> selectedRoomsDisp = new List<string>(); //this is what is shown to the user
+            
+            var dbRooms = zrequest.zRoomBooking.Count(); //number of rooms in the db
             var diff = zrequest.RoomCount - dbRooms;
             for (var i = 0; i < diff; i++)
-            {
+            { //diff is the number of any rooms
                 selectedRooms.Add("0");
-                selectedRoomsDisp.Add("Any");
+                selectedRoomsDisp.Add("Any Room");
 
             }
             foreach (var booking in zrequest.zRoomBooking)
             {
                 switch (booking.Type)
-                {
-                    case 1:
+                {//case for 0 isn't needed as 0 rooms are not stored in the database
+                    case 1: //any room in a park
                         selectedRooms.Add("1" + booking.zPark.ParkName);
                         selectedRoomsDisp.Add("Any room in the " + booking.zPark.ParkName + " Park");
                         break;
 
-                    case 2: 
+                    case 2: //any room in a building
                         selectedRooms.Add("2" + booking.zBuilding.BuildingCode);
                         selectedRoomsDisp.Add("Any room in " + booking.zBuilding.BuildingCode + " - " + booking.zBuilding.BuildingName);
                         break;
 
-                    case 3:
+                    case 3: //specific room
                         selectedRooms.Add("3" + booking.zRoom.RoomCode);
                         selectedRoomsDisp.Add(booking.zRoom.RoomCode);
                         break;
@@ -444,36 +457,6 @@ namespace TeamProject.Controllers
             ViewBag.RoomDropDown = selectedRoomsDisp;
             ViewBag.Rooms = String.Join(",", selectedRooms.ToArray());
             return View(zrequestRepository.Find(id));
-            /*
-            List<string> selectedRoomsDisp = new List<string>();
-            List<string> selectedRooms = new List<string>();
-            var dbRooms = zrequest.zPark.Count + zrequest.zBuilding.Count + zrequest.zRoom.Count;
-            var diff = zrequest.RoomCount - dbRooms;
-            for (var i = 0; i < diff; i++)
-            {
-                selectedRooms.Add("0");
-                selectedRoomsDisp.Add("Any");
-                
-            }
-            foreach (var park in zrequest.zPark)
-            {
-                selectedRooms.Add("1" + park.ParkName);
-                selectedRoomsDisp.Add("Any room in the " + park.ParkName + " Park");
-            }
-            foreach (var building in zrequest.zBuilding)
-            {
-                selectedRooms.Add("2" + building.BuildingCode);
-                selectedRoomsDisp.Add("Any room in " + building.BuildingCode + " - " + building.BuildingName);
-            }
-            foreach (var room in zrequest.zRoom)
-            {
-                selectedRooms.Add("3" + room.RoomCode);
-                selectedRoomsDisp.Add(room.RoomCode);
-                
-            }
-            ViewBag.RoomDropDown = selectedRoomsDisp;
-            ViewBag.Rooms = String.Join(",", selectedRooms.ToArray()); //" "; var test = 
-            return View(zrequestRepository.Find(id));*/
         }
 
         //
@@ -481,7 +464,7 @@ namespace TeamProject.Controllers
 
         [HttpPost]
         public ActionResult Edit
-        (
+        (//function when the edit button is clicked
             string DeptCode,
             string ModCode,
             string Day,
@@ -492,7 +475,9 @@ namespace TeamProject.Controllers
             string Rooms,
             zRequest zrequest
         )
-        {
+        {//function is very similar to create
+            //lift all results from the string values and stick them in a request
+            //then add that request to the db
             var db = new DatabaseContext();
 
             if (User.Identity.Name == "CA")
@@ -517,28 +502,28 @@ namespace TeamProject.Controllers
                 zrequest.zWeek.GetType().GetProperty("Week" + number).SetValue(zrequest.zWeek, true, null);
             }
             
-            if (Facilities != null)
+            if (Facilities != null) //this check fixes an error if no facilities are selected
             {
                 foreach (var facility in Facilities)
                 {
                     var facName = facility.Replace(".", " ");
                     var facQry = from fac in db.zFacility where fac.FacilityName == facName select fac;
-                    var test = facQry.ToList();
+                    var facList = facQry.ToList();
                     var item = new zFacility();
-                    item.FacilityId = test.FirstOrDefault().FacilityId;
-                    item.FacilityName = test.FirstOrDefault().FacilityName;
+                    item.FacilityId = facList.FirstOrDefault().FacilityId;
+                    item.FacilityName = facList.FirstOrDefault().FacilityName;
                     zrequest.zFacility.Add(item);
                 }
             }
             var roomsList = new List<string>();
             if(Rooms == "")
-            {
+            {//if no rooms are selected, assume they're happy with a single "any room"
                 roomsList.Add("0");
             }
             else
             {
                 roomsList = Rooms.Split(',').ToList();
-            }
+            }//otherwise process the rooms
             foreach (var place in roomsList)
             {
                 var cap = 0;
@@ -593,24 +578,16 @@ namespace TeamProject.Controllers
             }
             zrequest.RoomCount = (short)roomsList.Count();
             
+            //these two need to be coded
             zrequest.RoundNo = 1;
             zrequest.Semester = 1;
-            zrequest.StatusId = 3;
+
+            zrequest.StatusId = 3; //status is pending
             
             zrequestRepository.Update(zrequest);
             zrequestRepository.Save();
 
-            return RedirectToAction("Index");
-            /*
-            if (ModelState.IsValid) {
-                zrequestRepository.InsertOrUpdate(zrequest);
-                zrequestRepository.Save();
-                return RedirectToAction("Index");
-            } else {
-				return View();
-			}
-            */ 
-            
+            return RedirectToAction("Index");            
         }
 
         //
@@ -640,8 +617,6 @@ namespace TeamProject.Controllers
             }
             base.Dispose(disposing);
         }
-
-        public zFacility tempFac { get; set; }
     }
 }
 
