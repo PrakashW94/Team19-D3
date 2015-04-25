@@ -1,0 +1,76 @@
+@model TeamProject.zRequest
+
+@* This partial view defines form fields that will appear when creating and editing entities *@
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.ModCode)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.ModCode)
+    @Html.ValidationMessageFor(model => model.ModCode)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.StatusId)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.StatusId)
+    @Html.ValidationMessageFor(model => model.StatusId)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.WeekId)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.WeekId)
+    @Html.ValidationMessageFor(model => model.WeekId)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.DayId)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.DayId)
+    @Html.ValidationMessageFor(model => model.DayId)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.PeriodId)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.PeriodId)
+    @Html.ValidationMessageFor(model => model.PeriodId)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.SessionLength)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.SessionLength)
+    @Html.ValidationMessageFor(model => model.SessionLength)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Semester)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.Semester)
+    @Html.ValidationMessageFor(model => model.Semester)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.RoundNo)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.RoundNo)
+    @Html.ValidationMessageFor(model => model.RoundNo)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.SpecialRequirement)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.SpecialRequirement)
+    @Html.ValidationMessageFor(model => model.SpecialRequirement)
+</div>
+

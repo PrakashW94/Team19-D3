@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="acdf9dc25b5547ddbfaa48ff41b3204d" Name="Diagram1">
+        <EntityTypeShape EntityType="DatabaseModel.zBuilding" Width="1.5" PointX="6" PointY="25.5" />
+        <EntityTypeShape EntityType="DatabaseModel.zDay" Width="1.5" PointX="3" PointY="17.625" />
+        <EntityTypeShape EntityType="DatabaseModel.zDepartment" Width="1.5" PointX="0.75" PointY="5.25" />
+        <EntityTypeShape EntityType="DatabaseModel.zFacility" Width="1.5" PointX="3" PointY="11.75" />
+        <EntityTypeShape EntityType="DatabaseModel.zLecturer" Width="1.5" PointX="0.75" PointY="2.625" />
+        <EntityTypeShape EntityType="DatabaseModel.zModule" Width="1.5" PointX="3" PointY="5.25" />
+        <EntityTypeShape EntityType="DatabaseModel.zPark" Width="1.5" PointX="3" PointY="27.75" />
+        <EntityTypeShape EntityType="DatabaseModel.zPeriod" Width="1.5" PointX="3" PointY="25.25" />
+        <EntityTypeShape EntityType="DatabaseModel.zPreference" Width="1.5" PointX="5.25" PointY="14.125" />
+        <EntityTypeShape EntityType="DatabaseModel.zProgramme" Width="1.5" PointX="5.25" PointY="4.375" />
+        <EntityTypeShape EntityType="DatabaseModel.zRequest" Width="1.5" PointX="5.25" PointY="7.125" />
+        <EntityTypeShape EntityType="DatabaseModel.zRoom" Width="1.5" PointX="7.5" PointY="7.125" />
+        <EntityTypeShape EntityType="DatabaseModel.zRound" Width="1.5" PointX="3" PointY="1.25" />
+        <EntityTypeShape EntityType="DatabaseModel.zStatus" Width="1.5" PointX="3" PointY="15.25" />
+        <EntityTypeShape EntityType="DatabaseModel.zUser" Width="1.5" PointX="3" PointY="8.375" />
+        <EntityTypeShape EntityType="DatabaseModel.zWeek" Width="1.5" PointX="3" PointY="20" />
+        <AssociationConnector Association="DatabaseModel.FK_zBuilding_zPark" />
+        <AssociationConnector Association="DatabaseModel.FK_zRoom_zBuilding" />
+        <AssociationConnector Association="DatabaseModel.FK_zRequest_zDay" />
+        <AssociationConnector Association="DatabaseModel.FK_zModule1_zDepartment1" />
+        <AssociationConnector Association="DatabaseModel.FK_zProgramme_zDepartment" />
+        <AssociationConnector Association="DatabaseModel.FK_zUser_zDepartment" />
+        <AssociationConnector Association="DatabaseModel.FK_zRequest_zPeriod" />
+        <AssociationConnector Association="DatabaseModel.FK_zPreference_zUser" />
+        <AssociationConnector Association="DatabaseModel.FK_zRequest_zRound" />
+        <AssociationConnector Association="DatabaseModel.FK_zRequest_zStatus" />
+        <AssociationConnector Association="DatabaseModel.FK_zRequest_zUser" />
+        <AssociationConnector Association="DatabaseModel.FK_zRequest_zWeek" />
+        <AssociationConnector Association="DatabaseModel.zFacilityInRequest" />
+        <AssociationConnector Association="DatabaseModel.zFacilityInRoom" />
+        <AssociationConnector Association="DatabaseModel.zLecturerInModule" />
+        <AssociationConnector Association="DatabaseModel.zModuleInProgramme" />
+        <AssociationConnector Association="DatabaseModel.zRoomInDepartment" />
+        <AssociationConnector Association="DatabaseModel.zRoomInRequest" />
+        <AssociationConnector Association="DatabaseModel.zBuildingInRequest" />
+        <AssociationConnector Association="DatabaseModel.zParkInRequest" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

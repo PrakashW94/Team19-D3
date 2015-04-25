@@ -17,13 +17,16 @@ namespace TeamProject
         public zBuilding()
         {
             this.zRoom = new HashSet<zRoom>();
+            this.zRoomBooking = new HashSet<zRoomBooking>();
         }
     
+        public int BuildingId { get; set; }
         public string BuildingCode { get; set; }
         public string BuildingName { get; set; }
-        public short ParkId { get; set; }
+        public int ParkId { get; set; }
     
         public virtual zPark zPark { get; set; }
         public virtual ICollection<zRoom> zRoom { get; set; }
+        public virtual ICollection<zRoomBooking> zRoomBooking { get; set; }
     }
 }

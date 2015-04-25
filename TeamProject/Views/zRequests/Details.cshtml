@@ -9,53 +9,94 @@
 <fieldset>
     <legend>zRequest</legend>
 
-    <div class="display-label">ModCode</div>
+    <div class="display-label">Module Code</div>
     <div class="display-field">@Model.ModCode</div>
 
-    <div class="display-label">StatusId</div>
-    <div class="display-field">@Model.StatusId</div>
+    <div class="display-label">Status</div>
+    <div class="display-field">@Model.zStatus.StatusValue</div>
 
-    <div class="display-label">WeekId</div>
-    <div class="display-field">@Model.WeekId</div>
+    <div class="display-label">Weeks</div>
+    <div class="display-field">@Model.WeekId I NEED CODING </div>
 
-    <div class="display-label">DayId</div>
-    <div class="display-field">@Model.DayId</div>
+    <div class="display-label">Day</div>
+    <div class="display-field">@Model.zDay.DayValue</div>
 
-    <div class="display-label">PeriodId</div>
-    <div class="display-field">@Model.PeriodId</div>
+    <div class="display-label">Start Period</div>
+    <div class="display-field">@Model.zPeriod.PeriodValue</div>
 
-    <div class="display-label">SessionLength</div>
+    <div class="display-label">Session Length</div>
     <div class="display-field">@Model.SessionLength</div>
 
     <div class="display-label">Semester</div>
     <div class="display-field">@Model.Semester</div>
 
-    <div class="display-label">RoundNo</div>
+    <div class="display-label">Round</div>
     <div class="display-field">@Model.RoundNo</div>
 
-    <div class="display-label">SpecialRequirement</div>
-    <div class="display-field">@Model.SpecialRequirement</div>
+    <div class="display-label">Special Requirements</div>
+    <div class="display-field">
+        @if (Model.SpecialRequirement == "")
+        {
+            <text>N/A</text>
+        }
+        else
+        {
+            <text>@Model.SpecialRequirement</text>
+        }
+    </div>
 
-    <div class="display-label">zDay</div>
-    <div class="display-field">@Html.DisplayTextFor(_ => Model.zDay).ToString()</div>
-
-    <div class="display-label">zPeriod</div>
-    <div class="display-field">@Html.DisplayTextFor(_ => Model.zPeriod).ToString()</div>
-
-    <div class="display-label">zRound</div>
-    <div class="display-field">@Html.DisplayTextFor(_ => Model.zRound).ToString()</div>
-
-    <div class="display-label">zStatus</div>
-    <div class="display-field">@Html.DisplayTextFor(_ => Model.zStatus).ToString()</div>
-
-    <div class="display-label">zWeek</div>
-    <div class="display-field">@Html.DisplayTextFor(_ => Model.zWeek).ToString()</div>
-
-    <div class="display-label">zFacility</div>
-    <div class="display-field">@(Model.zFacility == null ? "None" : Model.zFacility.Count.ToString())</div>
+    <div class="display-label">Facilities</div>
+    <div class="display-field">
+        @if (Model.zFacility.Count == 0)
+        {
+            <text>None</text>
+        }
+        else
+        {
+            List<string> facName = new List<string>();
+            foreach (var facility in Model.zFacility)
+            {
+                facName.Add(facility.FacilityName);
+            }
+            <text>@string.Join(", ", facName)</text>
+        }
+    </div>
 
     <div class="display-label">zRoom</div>
-    <div class="display-field">@(Model.zRoom == null ? "None" : Model.zRoom.Count.ToString())</div>
+    <div class="display-field">
+        @{
+            List<String> roomDisp = new List<string>();
+            int dbRooms = Model.zRoomBooking.Count();
+            if (Model.RoomCount != dbRooms)
+            {
+                int diff = Model.RoomCount - dbRooms;
+                for (int i = 0; i < diff; i++)
+                {
+                    roomDisp.Add("Any Room");
+                }
+            }
+            
+            foreach (var item in Model.zRoomBooking)
+            {
+                switch (item.Type)
+                {
+                    case 1:
+                        roomDisp.Add("Any Room in the " + item.zPark.ParkName + " Park");
+                        break;
+                        
+                    case 2:
+                        roomDisp.Add("Any Room in " + item.zBuilding.BuildingCode + " - " + item.zBuilding.BuildingName);
+                        break;
+                        
+                    case 3:
+                        roomDisp.Add(item.zRoom.RoomCode);
+                        break;
+                }
+                    
+            }
+            <text>@string.Join(", ", roomDisp)</text>
+        }
+    </div>
 </fieldset>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id=Model.RequestId }) |

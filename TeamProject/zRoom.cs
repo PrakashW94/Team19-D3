@@ -16,21 +16,21 @@ namespace TeamProject
     {
         public zRoom()
         {
+            this.zRoomBooking = new HashSet<zRoomBooking>();
             this.zFacility = new HashSet<zFacility>();
             this.zDepartment = new HashSet<zDepartment>();
-            this.zRequest = new HashSet<zRequest>();
         }
     
         public int RoomId { get; set; }
         public string RoomCode { get; set; }
         public int Capacity { get; set; }
-        public string BuildingCode { get; set; }
         public string ImgLink { get; set; }
         public bool Private { get; set; }
+        public int BuildingId { get; set; }
     
         public virtual zBuilding zBuilding { get; set; }
+        public virtual ICollection<zRoomBooking> zRoomBooking { get; set; }
         public virtual ICollection<zFacility> zFacility { get; set; }
         public virtual ICollection<zDepartment> zDepartment { get; set; }
-        public virtual ICollection<zRequest> zRequest { get; set; }
     }
 }

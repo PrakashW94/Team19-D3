@@ -37,6 +37,7 @@ namespace TeamProject
         public DbSet<zProgramme> zProgramme { get; set; }
         public DbSet<zRequest> zRequest { get; set; }
         public DbSet<zRoom> zRoom { get; set; }
+        public DbSet<zRoomBooking> zRoomBooking { get; set; }
         public DbSet<zRound> zRound { get; set; }
         public DbSet<zStatus> zStatus { get; set; }
         public DbSet<zUser> zUser { get; set; }

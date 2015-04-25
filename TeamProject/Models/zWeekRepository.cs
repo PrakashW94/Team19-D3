@@ -34,16 +34,15 @@ namespace TeamProject.Models
 
         public void InsertOrUpdate(zWeek zweek)
         {
-            context.zWeek.Add(zweek);
-            /*
+            //context.zWeek.Add(zweek);
+            
             if (zweek.WeekId == default(int)) {
                 // New entity
-                context.zWeeks.Add(zweek);
+                context.zWeek.Add(zweek);
             } else {
                 // Existing entity
                 context.Entry(zweek).State = System.Data.Entity.EntityState.Modified;
             }
-            */
         }
 
         public void Delete(int id)

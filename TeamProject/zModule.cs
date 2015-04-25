@@ -16,6 +16,7 @@ namespace TeamProject
     {
         public zModule()
         {
+            this.zRequest = new HashSet<zRequest>();
             this.zLecturer = new HashSet<zLecturer>();
             this.zProgramme = new HashSet<zProgramme>();
         }
@@ -26,6 +27,7 @@ namespace TeamProject
         public string Part { get; set; }
     
         public virtual zDepartment zDepartment { get; set; }
+        public virtual ICollection<zRequest> zRequest { get; set; }
         public virtual ICollection<zLecturer> zLecturer { get; set; }
         public virtual ICollection<zProgramme> zProgramme { get; set; }
     }

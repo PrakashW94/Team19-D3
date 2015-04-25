@@ -7,6 +7,7 @@
           <ScalarProperty Name="ParkId" ColumnName="ParkId" />
           <ScalarProperty Name="BuildingName" ColumnName="BuildingName" />
           <ScalarProperty Name="BuildingCode" ColumnName="BuildingCode" />
+          <ScalarProperty Name="BuildingId" ColumnName="BuildingId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -88,6 +89,7 @@
     <EntitySetMapping Name="zRequest">
       <EntityTypeMapping TypeName="DatabaseModel.zRequest">
         <MappingFragment StoreEntitySet="zRequest">
+          <ScalarProperty Name="RoomCount" ColumnName="RoomCount" />
           <ScalarProperty Name="UserId" ColumnName="UserId" />
           <ScalarProperty Name="SpecialRequirement" ColumnName="SpecialRequirement" />
           <ScalarProperty Name="RoundNo" ColumnName="RoundNo" />
@@ -105,12 +107,24 @@
     <EntitySetMapping Name="zRoom">
       <EntityTypeMapping TypeName="DatabaseModel.zRoom">
         <MappingFragment StoreEntitySet="zRoom">
+          <ScalarProperty Name="BuildingId" ColumnName="BuildingId" />
           <ScalarProperty Name="Private" ColumnName="Private" />
           <ScalarProperty Name="ImgLink" ColumnName="ImgLink" />
-          <ScalarProperty Name="BuildingCode" ColumnName="BuildingCode" />
           <ScalarProperty Name="Capacity" ColumnName="Capacity" />
           <ScalarProperty Name="RoomCode" ColumnName="RoomCode" />
           <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="zRoomBooking">
+      <EntityTypeMapping TypeName="DatabaseModel.zRoomBooking">
+        <MappingFragment StoreEntitySet="zRoomBooking">
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+          <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+          <ScalarProperty Name="BuildingId" ColumnName="BuildingId" />
+          <ScalarProperty Name="ParkId" ColumnName="ParkId" />
+          <ScalarProperty Name="BookingId" ColumnName="BookingId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -204,8 +218,8 @@
       </EndProperty>
     </AssociationSetMapping>
     <AssociationSetMapping Name="zRoomInRequest" TypeName="DatabaseModel.zRoomInRequest" StoreEntitySet="zRoomInRequest">
-      <EndProperty Name="zRoom">
-        <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+      <EndProperty Name="zRoomBooking">
+        <ScalarProperty Name="BookingId" ColumnName="BookingId" />
       </EndProperty>
       <EndProperty Name="zRequest">
         <ScalarProperty Name="RequestId" ColumnName="RequestId" />

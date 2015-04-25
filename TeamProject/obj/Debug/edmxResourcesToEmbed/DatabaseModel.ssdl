@@ -2,11 +2,12 @@
 <Schema Namespace="DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
   <EntityType Name="zBuilding">
     <Key>
-      <PropertyRef Name="BuildingCode" />
+      <PropertyRef Name="BuildingId" />
     </Key>
+    <Property Name="BuildingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="BuildingCode" Type="nvarchar" MaxLength="10" Nullable="false" />
     <Property Name="BuildingName" Type="nvarchar" MaxLength="50" Nullable="false" />
-    <Property Name="ParkId" Type="smallint" Nullable="false" />
+    <Property Name="ParkId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="zDay">
     <Key>
@@ -81,7 +82,7 @@
     <Key>
       <PropertyRef Name="ParkId" />
     </Key>
-    <Property Name="ParkId" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ParkId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ParkName" Type="nvarchar" MaxLength="10" Nullable="false" />
   </EntityType>
   <EntityType Name="zPeriod">
@@ -111,7 +112,7 @@
       <PropertyRef Name="RequestId" />
     </Key>
     <Property Name="RequestId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="ModCode" Type="nvarchar" MaxLength="8" Nullable="false" />
+    <Property Name="ModCode" Type="varchar" MaxLength="8" Nullable="false" />
     <Property Name="StatusId" Type="smallint" Nullable="false" />
     <Property Name="WeekId" Type="int" Nullable="false" />
     <Property Name="DayId" Type="smallint" Nullable="false" />
@@ -121,6 +122,7 @@
     <Property Name="RoundNo" Type="smallint" Nullable="false" />
     <Property Name="SpecialRequirement" Type="varchar" MaxLength="50" />
     <Property Name="UserId" Type="smallint" Nullable="false" />
+    <Property Name="RoomCount" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="zRoom">
     <Key>
@@ -129,9 +131,20 @@
     <Property Name="RoomId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="RoomCode" Type="nvarchar" MaxLength="15" Nullable="false" />
     <Property Name="Capacity" Type="int" Nullable="false" />
-    <Property Name="BuildingCode" Type="nvarchar" MaxLength="10" Nullable="false" />
     <Property Name="ImgLink" Type="nvarchar" MaxLength="100" Nullable="false" />
     <Property Name="Private" Type="bit" Nullable="false" />
+    <Property Name="BuildingId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="zRoomBooking">
+    <Key>
+      <PropertyRef Name="BookingId" />
+    </Key>
+    <Property Name="BookingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ParkId" Type="int" />
+    <Property Name="BuildingId" Type="int" />
+    <Property Name="RoomId" Type="int" />
+    <Property Name="Capacity" Type="int" Nullable="false" />
+    <Property Name="Type" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="zRoomInDepartment">
     <Key>
@@ -144,10 +157,10 @@
   <EntityType Name="zRoomInRequest">
     <Key>
       <PropertyRef Name="RequestId" />
-      <PropertyRef Name="RoomId" />
+      <PropertyRef Name="BookingId" />
     </Key>
     <Property Name="RequestId" Type="int" Nullable="false" />
-    <Property Name="RoomId" Type="int" Nullable="false" />
+    <Property Name="BookingId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="zRound">
     <Key>
@@ -219,7 +232,9 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_zFacilityInRequest_zRequest">
-    <End Role="zRequest" Type="Self.zRequest" Multiplicity="1" />
+    <End Role="zRequest" Type="Self.zRequest" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="zFacilityInRequest" Type="Self.zFacilityInRequest" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="zRequest">
@@ -350,6 +365,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_zRequest_zModule">
+    <End Role="zModule" Type="Self.zModule" Multiplicity="1" />
+    <End Role="zRequest" Type="Self.zRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zModule">
+        <PropertyRef Name="ModCode" />
+      </Principal>
+      <Dependent Role="zRequest">
+        <PropertyRef Name="ModCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_zRequest_zPeriod">
     <End Role="zPeriod" Type="Self.zPeriod" Multiplicity="1" />
     <End Role="zRequest" Type="Self.zRequest" Multiplicity="*" />
@@ -399,7 +426,9 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_zRequest_zWeek">
-    <End Role="zWeek" Type="Self.zWeek" Multiplicity="1" />
+    <End Role="zWeek" Type="Self.zWeek" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="zRequest" Type="Self.zRequest" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="zWeek">
@@ -410,15 +439,51 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_zRoom_zBuilding">
+  <Association Name="FK_zRoom_zBuilding1">
     <End Role="zBuilding" Type="Self.zBuilding" Multiplicity="1" />
     <End Role="zRoom" Type="Self.zRoom" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="zBuilding">
-        <PropertyRef Name="BuildingCode" />
+        <PropertyRef Name="BuildingId" />
       </Principal>
       <Dependent Role="zRoom">
-        <PropertyRef Name="BuildingCode" />
+        <PropertyRef Name="BuildingId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zRoomBooking_zBuilding1">
+    <End Role="zBuilding" Type="Self.zBuilding" Multiplicity="0..1" />
+    <End Role="zRoomBooking" Type="Self.zRoomBooking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zBuilding">
+        <PropertyRef Name="BuildingId" />
+      </Principal>
+      <Dependent Role="zRoomBooking">
+        <PropertyRef Name="BuildingId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zRoomBooking_zPark1">
+    <End Role="zPark" Type="Self.zPark" Multiplicity="0..1" />
+    <End Role="zRoomBooking" Type="Self.zRoomBooking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zPark">
+        <PropertyRef Name="ParkId" />
+      </Principal>
+      <Dependent Role="zRoomBooking">
+        <PropertyRef Name="ParkId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zRoomBooking_zRoom1">
+    <End Role="zRoom" Type="Self.zRoom" Multiplicity="0..1" />
+    <End Role="zRoomBooking" Type="Self.zRoomBooking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zRoom">
+        <PropertyRef Name="RoomId" />
+      </Principal>
+      <Dependent Role="zRoomBooking">
+        <PropertyRef Name="RoomId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -447,7 +512,9 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_zRoomInRequest_zRequest">
-    <End Role="zRequest" Type="Self.zRequest" Multiplicity="1" />
+    <End Role="zRequest" Type="Self.zRequest" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="zRoomInRequest" Type="Self.zRoomInRequest" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="zRequest">
@@ -458,15 +525,17 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_zRoomInRequest_zRoom">
-    <End Role="zRoom" Type="Self.zRoom" Multiplicity="1" />
+  <Association Name="FK_zRoomInRequest_zRoomBooking">
+    <End Role="zRoomBooking" Type="Self.zRoomBooking" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="zRoomInRequest" Type="Self.zRoomInRequest" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="zRoom">
-        <PropertyRef Name="RoomId" />
+      <Principal Role="zRoomBooking">
+        <PropertyRef Name="BookingId" />
       </Principal>
       <Dependent Role="zRoomInRequest">
-        <PropertyRef Name="RoomId" />
+        <PropertyRef Name="BookingId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -499,6 +568,7 @@
     <EntitySet Name="zProgramme" EntityType="Self.zProgramme" Schema="team19" store:Type="Tables" />
     <EntitySet Name="zRequest" EntityType="Self.zRequest" Schema="team19" store:Type="Tables" />
     <EntitySet Name="zRoom" EntityType="Self.zRoom" Schema="team19" store:Type="Tables" />
+    <EntitySet Name="zRoomBooking" EntityType="Self.zRoomBooking" Schema="team19" store:Type="Tables" />
     <EntitySet Name="zRoomInDepartment" EntityType="Self.zRoomInDepartment" Schema="team19" store:Type="Tables" />
     <EntitySet Name="zRoomInRequest" EntityType="Self.zRoomInRequest" Schema="team19" store:Type="Tables" />
     <EntitySet Name="zRound" EntityType="Self.zRound" Schema="team19" store:Type="Tables" />
@@ -557,6 +627,10 @@
       <End Role="zDay" EntitySet="zDay" />
       <End Role="zRequest" EntitySet="zRequest" />
     </AssociationSet>
+    <AssociationSet Name="FK_zRequest_zModule" Association="Self.FK_zRequest_zModule">
+      <End Role="zModule" EntitySet="zModule" />
+      <End Role="zRequest" EntitySet="zRequest" />
+    </AssociationSet>
     <AssociationSet Name="FK_zRequest_zPeriod" Association="Self.FK_zRequest_zPeriod">
       <End Role="zPeriod" EntitySet="zPeriod" />
       <End Role="zRequest" EntitySet="zRequest" />
@@ -577,9 +651,21 @@
       <End Role="zWeek" EntitySet="zWeek" />
       <End Role="zRequest" EntitySet="zRequest" />
     </AssociationSet>
-    <AssociationSet Name="FK_zRoom_zBuilding" Association="Self.FK_zRoom_zBuilding">
+    <AssociationSet Name="FK_zRoom_zBuilding1" Association="Self.FK_zRoom_zBuilding1">
       <End Role="zBuilding" EntitySet="zBuilding" />
       <End Role="zRoom" EntitySet="zRoom" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zRoomBooking_zBuilding1" Association="Self.FK_zRoomBooking_zBuilding1">
+      <End Role="zBuilding" EntitySet="zBuilding" />
+      <End Role="zRoomBooking" EntitySet="zRoomBooking" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zRoomBooking_zPark1" Association="Self.FK_zRoomBooking_zPark1">
+      <End Role="zPark" EntitySet="zPark" />
+      <End Role="zRoomBooking" EntitySet="zRoomBooking" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zRoomBooking_zRoom1" Association="Self.FK_zRoomBooking_zRoom1">
+      <End Role="zRoom" EntitySet="zRoom" />
+      <End Role="zRoomBooking" EntitySet="zRoomBooking" />
     </AssociationSet>
     <AssociationSet Name="FK_zRoomInDepartment_zDepartment" Association="Self.FK_zRoomInDepartment_zDepartment">
       <End Role="zDepartment" EntitySet="zDepartment" />
@@ -593,8 +679,8 @@
       <End Role="zRequest" EntitySet="zRequest" />
       <End Role="zRoomInRequest" EntitySet="zRoomInRequest" />
     </AssociationSet>
-    <AssociationSet Name="FK_zRoomInRequest_zRoom" Association="Self.FK_zRoomInRequest_zRoom">
-      <End Role="zRoom" EntitySet="zRoom" />
+    <AssociationSet Name="FK_zRoomInRequest_zRoomBooking" Association="Self.FK_zRoomInRequest_zRoomBooking">
+      <End Role="zRoomBooking" EntitySet="zRoomBooking" />
       <End Role="zRoomInRequest" EntitySet="zRoomInRequest" />
     </AssociationSet>
     <AssociationSet Name="FK_zUser_zDepartment" Association="Self.FK_zUser_zDepartment">

@@ -5,21 +5,24 @@
 }
 
 <script src="~/Scripts/weekselector.js"></script>
+<script src="~/Scripts/roomselector.js"></script>
 <link rel="stylesheet" type="text/css" href="~/Content/weekselector.css" />
 
 <h2>Create</h2>
-@* code to display ViewBag
+@* code to display ViewBag *@
 <ul>
     @foreach (var pair in ViewData)
     {
         <li>@pair.Key : @pair.Value</li>
     }
 </ul>
-*@
+
 @using (Html.BeginForm("Create", "zRequests")) 
 {
     <fieldset>
         <legend>zRequest</legend>
+
+
 
         <div class="editor-label">
             @Html.Label("Department Code")
@@ -31,7 +34,7 @@
             }
             else
             {
-                @User.Identity.Name;
+                <p id="DeptCode"> @User.Identity.Name</p>;
             }
         </div>
 
@@ -47,18 +50,18 @@
         </div>
         <div class="editor-field">
             <ol id="weekSelector">
-                <li class="ui-state-default ui-selected">1</li>
-                <li class="ui-state-default ui-selected">2</li>
-                <li class="ui-state-default ui-selected">3</li>
-                <li class="ui-state-default ui-selected">4</li>
-                <li class="ui-state-default ui-selected">5</li>
-                <li class="ui-state-default ui-selected">6</li>
-                <li class="ui-state-default ui-selected">7</li>
-                <li class="ui-state-default ui-selected">8</li>
-                <li class="ui-state-default ui-selected">9</li>
-                <li class="ui-state-default ui-selected">10</li>
-                <li class="ui-state-default ui-selected">11</li>
-                <li class="ui-state-default ui-selected">12</li>
+                <li class="ui-state-default">1</li>
+                <li class="ui-state-default">2</li>
+                <li class="ui-state-default">3</li>
+                <li class="ui-state-default">4</li>
+                <li class="ui-state-default">5</li>
+                <li class="ui-state-default">6</li>
+                <li class="ui-state-default">7</li>
+                <li class="ui-state-default">8</li>
+                <li class="ui-state-default">9</li>
+                <li class="ui-state-default">10</li>
+                <li class="ui-state-default">11</li>
+                <li class="ui-state-default">12</li>
                 <li class="ui-state-default">13</li>
                 <li class="ui-state-default">14</li>
                 <li class="ui-state-default">15</li>
@@ -84,20 +87,20 @@
         </div>
 
         <script type="text/javascript">
-            $(document).ready(function () {
-                $("#Period").change(function () {
-                    var pID = parseInt($(this).val());
-                    var select = $("#SeshLength");
-                    select.empty();
-                    select.append("<option value = 1> 1 Hour </option>");
-                    var hour = 2;
-                    for (var i = pID; i <= 8; i++)
-                    {
-                        select.append("<option value = " + hour + ">" + hour + " Hours </option>");
-                        hour++;
-                    }
-                });
+        $(document).ready(function () {
+            $("#Period").change(function () {
+                var pID = parseInt($(this).val());
+                var select = $("#SeshLength");
+                select.empty();
+                select.append("<option value = 1> 1 Hour </option>");
+                var hour = 2;
+                for (var i = pID; i <= 8; i++)
+                {
+                    select.append("<option value = " + hour + ">" + hour + " Hours </option>");
+                    hour++;
+                }
             });
+        });
         </script>
 
         <div class="editor-label">
@@ -124,13 +127,40 @@
             }
         </div>
 
-        @*
-        @Html.Partial("_CreateOrEdit", Model)
-        *@
-        <p>
-            <input type="submit" value="Create" />
-        </p>
-</fieldset>
+        <div class="editor-label">
+            @Html.Label("Room - Park")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Park", new SelectList(ViewBag.parkList))
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Room - Building")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Building", new SelectList(ViewBag.buildingList))
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Room - Room")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Room", new SelectList(ViewBag.roomList))
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Selected Rooms")
+        </div>
+        <div class="editor-field">
+            <select id="RoomDisp" name="RoomDisp" size="5"></select>
+            @Html.Hidden("Rooms")
+        </div>
+
+        <input type="button" id="AddRoom" value="Add Room" />
+        <input type="button" id="RemoveRoom" value="Remove Room" />
+
+        <p><input type="submit" value="Create" /></p>
+    </fieldset>
 }
 
 <div>

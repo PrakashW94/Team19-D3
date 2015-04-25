@@ -1,0 +1,21 @@
+@model TeamProject.zFacility
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>zFacility</legend>
+
+    <div class="display-label">FacilityName</div>
+    <div class="display-field">@Model.FacilityName</div>
+
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.FacilityId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+

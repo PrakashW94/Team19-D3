@@ -1,0 +1,172 @@
+@model TeamProject.zRequest
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<script src="~/Scripts/weekselector.js"></script>
+<script src="~/Scripts/roomselector.js"></script>
+<link rel="stylesheet" type="text/css" href="~/Content/weekselector.css" />
+
+<h2>Create</h2>
+@* code to display ViewBag *@
+<ul>
+    @foreach (var pair in ViewData)
+    {
+        <li>@pair.Key : @pair.Value</li>
+    }
+</ul>
+
+@using (Html.BeginForm("Create", "zRequests")) 
+{
+    <fieldset>
+        <legend>zRequest</legend>
+
+        <div class="editor-label">
+            @Html.Label("Department Code")
+        </div>
+        <div class="editor-field">
+            @if (User.Identity.Name == "CA")
+            {
+                @Html.DropDownList("DeptCode", new SelectList(ViewBag.deptList))
+            }
+            else
+            {
+                @User.Identity.Name;
+            }
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Module")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("ModCode", new SelectList(ViewBag.moduleList))
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Weeks")
+        </div>
+        <div class="editor-field">
+            <ol id="weekSelector">
+                <li class="ui-state-default ui-selected">1</li>
+                <li class="ui-state-default ui-selected">2</li>
+                <li class="ui-state-default ui-selected">3</li>
+                <li class="ui-state-default ui-selected">4</li>
+                <li class="ui-state-default ui-selected">5</li>
+                <li class="ui-state-default ui-selected">6</li>
+                <li class="ui-state-default ui-selected">7</li>
+                <li class="ui-state-default ui-selected">8</li>
+                <li class="ui-state-default ui-selected">9</li>
+                <li class="ui-state-default ui-selected">10</li>
+                <li class="ui-state-default ui-selected">11</li>
+                <li class="ui-state-default ui-selected">12</li>
+                <li class="ui-state-default">13</li>
+                <li class="ui-state-default">14</li>
+                <li class="ui-state-default">15</li>
+            </ol>
+            <br /><br />
+        </div>
+
+        @Html.Hidden("Weeks")
+        @Html.HiddenFor(model => model.zWeek.Week1)
+
+        <div class="editor-label">
+            @Html.Label("Day")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Day", new SelectList(ViewBag.dayList))
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Period")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Period", new SelectList(ViewBag.periodList))
+        </div>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#Period").change(function () {
+                    var pID = parseInt($(this).val());
+                    var select = $("#SeshLength");
+                    select.empty();
+                    select.append("<option value = 1> 1 Hour </option>");
+                    var hour = 2;
+                    for (var i = pID; i <= 8; i++)
+                    {
+                        select.append("<option value = " + hour + ">" + hour + " Hours </option>");
+                        hour++;
+                    }
+                });
+            });
+        </script>
+
+        <div class="editor-label">
+            @Html.Label("Session Length")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("SeshLength", new SelectList(ViewBag.seshLengthList))
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Special Requirements")
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.SpecialRequirement)
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Facilities")
+        </div>
+        <div class="editor-field">
+            @foreach (var item in ViewBag.facilityList)
+            {
+                <input type="checkbox" name="Facilities" id="Facilities" value=@item.Replace(" ", ".") /> @item <br />
+            }
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Room - Park")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Park", new SelectList(ViewBag.parkList))
+        </div>
+        
+        <div class="editor-label">
+            @Html.Label("Room - Building")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Building", new SelectList(ViewBag.buildingList))
+        </div>
+        
+        <div class="editor-label">
+            @Html.Label("Room - Room")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Room", new SelectList(ViewBag.roomList))
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Selected Rooms")
+        </div>
+        <div class="editor-field">
+            @Html.ListBox("RoomDisp", new SelectList(new[] { "" }))
+            @Html.Hidden("Rooms")
+        </div>
+        
+        <input type="button" id="AddRoom" value="Add Room" />
+        
+        @*
+        @Html.Partial("_CreateOrEdit", Model)
+        *@
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+</fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+

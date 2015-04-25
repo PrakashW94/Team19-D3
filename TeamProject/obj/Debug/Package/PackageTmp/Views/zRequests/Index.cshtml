@@ -1,0 +1,100 @@
+@model IEnumerable<TeamProject.zRequest>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th></th>
+        <th>
+            ModCode
+        </th>
+        <th>
+            StatusId
+        </th>
+        <th>
+            WeekId
+        </th>
+        <th>
+            DayId
+        </th>
+        <th>
+            PeriodId
+        </th>
+        <th>
+            SessionLength
+        </th>
+        <th>
+            Semester
+        </th>
+        <th>
+            RoundNo
+        </th>
+        <th>
+            SpecialRequirement
+        </th>
+        <th>
+            Facilities
+        </th>
+        <th>
+            Rooms
+        </th>
+    </tr>
+
+@foreach (var item in Model) 
+{
+    <tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.RequestId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.RequestId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.RequestId })
+        </td>
+        <td>
+			@item.ModCode
+        </td>
+        <td>
+			@item.zStatus.StatusValue
+        </td>
+        <td>
+			@item.WeekId
+        </td>
+        <td>
+			@item.zDay.DayId
+        </td>
+        <td>
+			@item.PeriodId
+        </td>
+        <td>
+			@item.SessionLength
+        </td>
+        <td>
+			@item.Semester
+        </td>
+        <td>
+			@item.RoundNo
+        </td>
+        <td>
+			@item.SpecialRequirement
+        </td>
+        <td>
+			@(item.zFacility == null ? "None" : item.zFacility.Count.ToString())
+        </td>
+        <td>
+			@(item.zRoom == null ? "None" : item.zRoom.Count.ToString())
+        </td>
+    </tr>
+}
+
+</table>
+
+
+
+
+
+

@@ -1,11 +1,12 @@
-var selectedItems = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+var selectedItems = [];
 	$(document).ready(function ()		// Execute all of this on load 
 	{	
-		// Add week selector		
+	    // Add week selector	
+	    
 		var numSelecting = 0;		// Keep count of how many elements we have selected during selecting event
 		var selectAll = false;
 		var removeAll = false;
-		$("#Weeks").val(selectedItems.toString());
+		setSelectedWeeks($("#Weeks").val());
 
 		$("#weekSelector").bind("mousedown", function(e) {				
 			e.metaKey = true;		// Simulates holding down control to select non-adjacent elements
@@ -133,4 +134,19 @@ function updateSelectedWeeks(selectedItems)
 	}
 	output.pop(); // remove trailing comma
 	return output.join("");
+}
+function setSelectedWeeks(weeks)
+{
+    selectedItems = weeks.split(",");
+    $("#weekSelector").children().each(function () {
+        for (var k = 0; k < selectedItems.length; k++) {
+            if (this.innerHTML == selectedItems[k]) {
+                $(this).addClass('ui-selected');
+                break;				// Exit current loop cycle once match is found
+            }
+            else {
+                $(this).removeClass('ui-selected');
+            }
+        }
+    });
 }
