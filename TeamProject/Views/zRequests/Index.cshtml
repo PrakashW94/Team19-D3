@@ -9,19 +9,26 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+@using (Html.BeginForm()){ 
+    <p>
+        Filter Requests: @Html.TextBox("filter")
+        <input type="submit" value="Filter" />
+        @Html.ActionLink("Reset Request View", "Index") @*Returns view to default easily*@
+    </p>
+}
 <table>
     <tr>
         <th>Actions</th>
         <th>Request Id</th>
-        <th>Module Code</th>
-        <th>Number of Rooms</th>
-        <th>Number of Facilities</th>
+        <th>@Html.ActionLink("Module Code", "Index", new { sortOrder = ViewBag.ModSortParm })</th>
+        <th>@Html.ActionLink("Number of Rooms", "Index", new { sortOrder = ViewBag.NumRoomSortParm })</th>
+        <th>@Html.ActionLink("Number of Facilities", "Index", new { sortOrder = ViewBag.NumFacSortParm })</th>
         <th>Weeks</th>
-        <th>Day</th>
+        <th>@Html.ActionLink("Day", "Index", new { sortOrder = ViewBag.DaySortParm })</th>
         <th>Start Time</th>
         <th>Session Length</th>
         <th>Notes</th>
-        <th>Status</th>
+        <th>@Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.StatSortParm })</th>
     </tr>
 
 @foreach (var item in Model) 
