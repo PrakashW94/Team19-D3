@@ -13,25 +13,31 @@
     <div class="display-field">@Model.Capacity</div>
 
     <div class="display-label">BuildingCode</div>
-    <div class="display-field">@Model.BuildingCode</div>
-
-    <div class="display-label">ImgLink</div>
-    <div class="display-field">@Model.ImgLink</div>
+    <div class="display-field">@Model.zBuilding.BuildingCode</div>
 
     <div class="display-label">Private</div>
     <div class="display-field">@Model.Private</div>
 
-    <div class="display-label">zBuilding</div>
-    <div class="display-field">@Html.DisplayTextFor(_ => Model.zBuilding).ToString()</div>
-
     <div class="display-label">zFacility</div>
-    <div class="display-field">@(Model.zFacility == null ? "None" : Model.zFacility.Count.ToString())</div>
+    <div class="display-field">
+        @if (Model.zFacility.Count == 0)
+        {
+            <text>None</text>
+        }
+        else
+        {
+            List<string> facName = new List<string>();
+            foreach (var facility in Model.zFacility)
+            {
+                facName.Add(facility.FacilityName);
+            }
+            <text>@string.Join(", ", facName)</text>
+        }
+    </div>
+    
+    <div class="display-label">Image</div>
+    <div class="display-field"><img src="@Model.ImgLink"</div>
 
-    <div class="display-label">zDepartment</div>
-    <div class="display-field">@(Model.zDepartment == null ? "None" : Model.zDepartment.Count.ToString())</div>
-
-    <div class="display-label">zRequest</div>
-    <div class="display-field">@(Model.zRequest == null ? "None" : Model.zRequest.Count.ToString())</div>
 </fieldset>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id=Model.RoomCode }) |

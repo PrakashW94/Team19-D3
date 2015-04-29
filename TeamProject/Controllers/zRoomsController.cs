@@ -26,6 +26,25 @@ namespace TeamProject.Controllers
         //
         // GET: /zRooms/
 
+        public List<string> populateBuildingList()
+        {//function to return a list of buildings and return it as a list of strings
+            var db = new DatabaseContext();
+            var buildingQry = from Building in db.zBuilding select Building;
+            var buildingList = new List<string>();
+            foreach (var building in buildingQry)
+            {
+                buildingList.Add(building.BuildingCode + " - " + building.BuildingName);
+            }
+            return buildingList;
+        }
+
+        public List<string> populateFacilityList()
+        {//function to return a list of facilities and return it as a list of strings
+            var db = new DatabaseContext();
+            var facilityQry = from Facility in db.zFacility select Facility.FacilityName;
+            return facilityQry.ToList();
+        }
+
         public ViewResult Index()
         {
             return View(zroomRepository.AllIncluding(zroom => zroom.zFacility));
@@ -48,6 +67,8 @@ namespace TeamProject.Controllers
             string accName = User.Identity.Name;
             if (accName == "CA")
             {
+                ViewBag.BuildingList = populateBuildingList();
+                ViewBag.facilityList = populateFacilityList();
                 return View();
             }
             else
@@ -60,15 +81,43 @@ namespace TeamProject.Controllers
         // POST: /zRooms/Create
 
         [HttpPost]
-        public ActionResult Create(zRoom zroom)
+        public ActionResult Create(string Building, string[] Facilities, zRoom zroom)
         {
-            if (ModelState.IsValid) {
+            var db = new DatabaseContext();
+
+            zroom.Private = false;
+            zroom.ImgLink = "";
+
+            var buildingCode = Building.Split(' ').FirstOrDefault();
+            zroom.BuildingId = (from buildings in db.zBuilding where buildings.BuildingCode == buildingCode select buildings.BuildingId).FirstOrDefault();
+
+            if (Facilities != null)
+            {
+                foreach (var facility in Facilities)
+                {
+                    var facName = facility.Replace(".", " ");
+                    //this is to fix a bug where spaces caused a bug so i replaced the spaces with .'s
+                    //and converted back when i need to use them
+                    //initial replacement is in the razor
+                    var facDB = (from fac in db.zFacility where fac.FacilityName == facName select fac).FirstOrDefault();
+                    var item = new zFacility();
+                    item.FacilityId = facDB.FacilityId;
+                    item.FacilityName = facDB.FacilityName;
+                    zroom.zFacility.Add(item);
+                }
+            }
+            //load facilities
+
+            zroomRepository.InsertOrUpdate(zroom);
+            zroomRepository.Save();
+            return RedirectToAction("Index");
+            /*if (ModelState.IsValid) {
                 zroomRepository.InsertOrUpdate(zroom);
                 zroomRepository.Save();
                 return RedirectToAction("Index");
             } else {
 				return View();
-			}
+			}*/
         }
         
         //
@@ -79,6 +128,18 @@ namespace TeamProject.Controllers
             string accName = User.Identity.Name;
             if (accName == "CA")
             {
+                var zroom = zroomRepository.Find(id);
+                var building = zroom.zBuilding.BuildingCode + " - " + zroom.zBuilding.BuildingName;
+                ViewBag.Building = new SelectList(populateBuildingList(), building);
+
+                ViewBag.facilityList = populateFacilityList();
+                List<string> selectedFacilities = new List<string>();
+                foreach (var facility in zroom.zFacility)
+                {
+                    selectedFacilities.Add(facility.FacilityName);
+                }
+                ViewBag.selectedFacilities = selectedFacilities;
+
                 return View(zroomRepository.Find(id));
             }
             else
@@ -91,15 +152,39 @@ namespace TeamProject.Controllers
         // POST: /zRooms/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(zRoom zroom)
+        public ActionResult Edit(string Building, string[] Facilities, zRoom zroom)
         {
-            if (ModelState.IsValid) {
+            var db = new DatabaseContext();
+
+            var buildingCode = Building.Split(' ').FirstOrDefault();
+            zroom.BuildingId = (from buildings in db.zBuilding where buildings.BuildingCode == buildingCode select buildings.BuildingId).FirstOrDefault();
+
+            if (Facilities != null)
+            {
+                foreach (var facility in Facilities)
+                {
+                    var facName = facility.Replace(".", " ");
+                    //this is to fix a bug where spaces caused a bug so i replaced the spaces with .'s
+                    //and converted back when i need to use them
+                    //initial replacement is in the razor
+                    var facDB = (from fac in db.zFacility where fac.FacilityName == facName select fac).FirstOrDefault();
+                    var item = new zFacility();
+                    item.FacilityId = facDB.FacilityId;
+                    item.FacilityName = facDB.FacilityName;
+                    zroom.zFacility.Add(item);
+                }
+            }
+
+            zroomRepository.InsertOrUpdate(zroom);
+            zroomRepository.Save();
+            return RedirectToAction("Index");
+            /*if (ModelState.IsValid) {
                 zroomRepository.InsertOrUpdate(zroom);
                 zroomRepository.Save();
                 return RedirectToAction("Index");
             } else {
 				return View();
-			}
+			}*/
         }
 
         //

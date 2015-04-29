@@ -145,6 +145,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\zFacilitiesController.cs" />
+    <Compile Include="Controllers\zLecturersController.cs" />
+    <Compile Include="Controllers\zProgrammesController.cs" />
     <Compile Include="Controllers\zRequestsController.cs" />
     <Compile Include="Controllers\zRoomsController.cs" />
     <Compile Include="Controllers\zRoundsController.cs" />
@@ -170,6 +172,8 @@
     <Compile Include="Models\DepartmentModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\zFacilityRepository.cs" />
+    <Compile Include="Models\zLecturerRepository.cs" />
+    <Compile Include="Models\zProgrammeRepository.cs" />
     <Compile Include="Models\zRequestRepository.cs" />
     <Compile Include="Models\zRoomRepository.cs" />
     <Compile Include="Models\zRoundRepository.cs" />
@@ -305,6 +309,7 @@
     </Content>
     <None Include="Properties\PublishProfiles\Local.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
+    <Content Include="Scripts\moduleselector.js" />
     <Content Include="Scripts\roomselector.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
@@ -369,6 +374,18 @@
     <Content Include="Views\zWeeks\Details.cshtml" />
     <Content Include="Views\zWeeks\Index.cshtml" />
     <Content Include="Views\zWeeks\_CreateOrEdit.cshtml" />
+    <Content Include="Views\zLecturers\Create.cshtml" />
+    <Content Include="Views\zLecturers\Edit.cshtml" />
+    <Content Include="Views\zLecturers\Delete.cshtml" />
+    <Content Include="Views\zLecturers\Details.cshtml" />
+    <Content Include="Views\zLecturers\Index.cshtml" />
+    <Content Include="Views\zLecturers\_CreateOrEdit.cshtml" />
+    <Content Include="Views\zProgrammes\Create.cshtml" />
+    <Content Include="Views\zProgrammes\Edit.cshtml" />
+    <Content Include="Views\zProgrammes\Delete.cshtml" />
+    <Content Include="Views\zProgrammes\Details.cshtml" />
+    <Content Include="Views\zProgrammes\Index.cshtml" />
+    <Content Include="Views\zProgrammes\_CreateOrEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

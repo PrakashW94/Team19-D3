@@ -45,8 +45,9 @@
 			@item.zFacility.Count
         </td>
         <td>
-			this needs to be coded as a range extraction
-            @item.WeekId 
+            @Html.Hidden("RequestIdList")
+            @Html.Hidden(@item.RequestId + "")
+            <div id="WeekDisp-@item.RequestId"></div>
         </td>
         <td>
 			@item.zDay.DayValue
@@ -74,6 +75,53 @@
     </tr>
 }
 
+<script type="text/javascript">
+    $(document).ready(function ()
+    {
+        setSelectedWeeks();
+    })
+
+    function setSelectedWeeks() 
+    {
+        var IdList = $("#RequestIdList").val().split(',');
+
+        for (var c = 0; c < IdList.length; c++)
+        {
+            var selectedItems = document.getElementsByName(IdList[c])[0].value.split(',');
+            var length = selectedItems.length;
+            var output = [];
+            var i, j;
+
+            for (i = 0; i < length; i = j + 1) {
+                // Beginning of range or single
+                output.push(selectedItems[i]);
+
+                // Find end of range
+                for (var j = i + 1; j < length && parseInt(selectedItems[j]) == parseInt(selectedItems[j - 1]) + 1; j++);
+                j--;
+
+                if (i == j) {
+                    // single number
+                    output.push(", ");
+                }
+                else {
+                    if (i == j) {
+                        // two numbers
+                        output.push(", ", selectedItems[j], ", ");
+                    }
+                    else {
+                        // range
+                        output.push(" - ", selectedItems[j], ", ");
+                    }
+                }
+            }
+
+            output.pop(); // remove trailing comma
+            $("#WeekDisp-" + IdList[c]).append(output.join(""));
+        }
+                    
+    }
+</script>
 </table>
 
 

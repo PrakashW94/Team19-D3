@@ -16,7 +16,48 @@
     <div class="display-field">@Model.zStatus.StatusValue</div>
 
     <div class="display-label">Weeks</div>
-    <div class="display-field">@Model.WeekId I NEED CODING </div>
+    <div class="display-field" id="WeekDisp"></div>
+    @Html.Hidden("Weeks")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setSelectedWeeks();
+        })
+
+        function setSelectedWeeks()
+        {
+            var selectedItems = $("#Weeks").val().split(',');
+            var length = selectedItems.length;
+            var output = [];
+            var i, j;
+
+            for (i = 0; i < length; i = j + 1) {
+                // Beginning of range or single
+                output.push(selectedItems[i]);
+
+                // Find end of range
+                for (var j = i + 1; j < length && parseInt(selectedItems[j]) == parseInt(selectedItems[j - 1]) + 1; j++);
+                j--;
+
+                if (i == j) {
+                    // single number
+                    output.push(",");
+                }
+                else {
+                    if (i == j) {
+                        // two numbers
+                        output.push(",", selectedItems[j], ",");
+                    }
+                    else {
+                        // range
+                        output.push("-", selectedItems[j], ",");
+                    }
+                }
+            }
+
+            output.pop(); // remove trailing comma
+            $("#WeekDisp").append(output.join(""));
+        }
+    </script>
 
     <div class="display-label">Day</div>
     <div class="display-field">@Model.zDay.DayValue</div>

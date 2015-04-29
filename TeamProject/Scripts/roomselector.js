@@ -126,7 +126,7 @@ $(document).ready(function ()
         park = $("#Park").val();
         building = $("#Building").val();
         room = $("#Room").val();
-        roomDisp = $("#RoomDisp")
+        roomDisp = $("#RoomDisp");
         if (park == "Any")
         {
             if (building == "Any")

@@ -1,0 +1,26 @@
+@model TeamProject.zLecturer
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>zLecturer</legend>
+
+    <div class="display-label">LecturerName</div>
+    <div class="display-field">@Model.LecturerName</div>
+
+    <div class="display-label">zModule</div>
+    <div class="display-field">@(Model.zModule == null ? "None" : Model.zModule.Count.ToString())</div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}
+
+

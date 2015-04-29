@@ -1,0 +1,53 @@
+@model IEnumerable<TeamProject.zProgramme>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th></th>
+        <th>
+            ProgrammeTitle
+        </th>
+        <th>
+            DeptCode
+        </th>
+        <th>
+            zDepartment
+        </th>
+        <th>
+            zModule
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ProgrammeCode }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ProgrammeCode }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ProgrammeCode })
+        </td>
+        <td>
+			@item.ProgrammeTitle
+        </td>
+        <td>
+			@item.DeptCode
+        </td>
+        <td>
+			@Html.DisplayTextFor(_ => item.zDepartment).ToString()
+        </td>
+        <td>
+			@(item.zModule == null ? "None" : item.zModule.Count.ToString())
+        </td>
+    </tr>
+}
+
+</table>
+
+

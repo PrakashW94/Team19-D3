@@ -11,6 +11,7 @@ namespace TeamProject
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class zLecturer
     {
@@ -18,7 +19,7 @@ namespace TeamProject
         {
             this.zModule = new HashSet<zModule>();
         }
-    
+        [Key]
         public int LecturerId { get; set; }
         public string LecturerName { get; set; }
     

@@ -42,5 +42,9 @@ namespace TeamProject
         public DbSet<zStatus> zStatus { get; set; }
         public DbSet<zUser> zUser { get; set; }
         public DbSet<zWeek> zWeek { get; set; }
+
+        public DbSet<TeamProject.zLecturer> zLecturers { get; set; }
+
+        public DbSet<TeamProject.zProgramme> zProgrammes { get; set; }
     }
 }

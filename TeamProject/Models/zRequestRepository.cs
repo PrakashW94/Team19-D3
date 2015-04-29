@@ -132,21 +132,25 @@ namespace TeamProject.Models
             //update all the simple stuff by simple assignment
 
             updateRequest.zWeek = zrequest.zWeek;
-            //surprisingly, this works 
 
-            var oldFacList = updateRequest.zFacility.ToList();
-            foreach (var oldFacility in oldFacList)
+            var removedFacs1 = updateRequest.zFacility.ToList();
+            var newFacs1 = zrequest.zFacility.ToList();
+            removedFacs1.RemoveAll(x => newFacs1.Any(y => y.FacilityId == x.FacilityId));
+            foreach (var facility in removedFacs1)
             {
-                updateRequest.zFacility.Remove(oldFacility);
+                updateRequest.zFacility.Remove(facility);
             }
 
-            foreach (var item in zrequest.zFacility)
+            var removedFacs2 = updateRequest.zFacility.ToList();
+            var newFacs2 = zrequest.zFacility.ToList();
+            newFacs2.RemoveAll(x => removedFacs2.Any(y => y.FacilityId == x.FacilityId));
+            foreach (var item in newFacs2)
             {
                 context.zFacility.Attach(item);
                 updateRequest.zFacility.Add(item);
             }
-            //horrible way of doing this, remove all facilities then add them all as new ones
-            //same principle for room bookings
+
+            //this way of doing it is probably the best its gonna get...
             List<int> bookingList = new List<int>();
             foreach (var booking in updateRequest.zRoomBooking)
             {

@@ -34,12 +34,30 @@ namespace TeamProject.Models
 
         public void InsertOrUpdate(zRoom zroom)
         {
-            if (zroom.RoomCode == default(string)) {
+            if (zroom.RoomId == default(int)) {
                 // New entity
                 context.zRoom.Add(zroom);
-            } else {
+            } 
+            else {
                 // Existing entity
-                context.Entry(zroom).State = System.Data.Entity.EntityState.Modified;
+                var updateRoom = context.zRoom.Find(zroom.RoomId);
+
+                var removedFacs1 = updateRoom.zFacility.ToList();
+                var newFacs1 = zroom.zFacility.ToList();
+                removedFacs1.RemoveAll(x => newFacs1.Any(y => y.FacilityId == x.FacilityId));
+                foreach (var facility in removedFacs1)
+                {
+                    updateRoom.zFacility.Remove(facility);
+                }
+
+                var removedFacs2 = updateRoom.zFacility.ToList();
+                var newFacs2 = zroom.zFacility.ToList();
+                newFacs2.RemoveAll(x => removedFacs2.Any(y => y.FacilityId == x.FacilityId));
+                foreach (var item in newFacs2)
+                {
+                    context.zFacility.Attach(item);
+                    updateRoom.zFacility.Add(item);
+                }
             }
         }
 

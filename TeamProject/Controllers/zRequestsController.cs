@@ -11,7 +11,7 @@ namespace TeamProject.Controllers
     public class zRequestsController : Controller
     {
 		private readonly IzRequestRepository zrequestRepository;
-
+        //Scaffold Controller VehicleMake  -force -repository -DbContextType "CommerceEntities"
 		// If you are using Dependency Injection, you can delete the following constructor
         public zRequestsController() : this(new zRequestRepository())
         {
@@ -33,11 +33,44 @@ namespace TeamProject.Controllers
             if(userID == 1) //if the user is the central admin, show all requests
             {
                 var reqQry = from request in db.zRequest select request;
+                foreach (var zrequest in reqQry)
+                {
+                    List<string> weeksList = new List<string>();
+                    for (var number = 1; number < 17; number++)
+                    {
+                        var value = zrequest.zWeek.GetType().GetProperty("Week" + number).GetValue(zrequest.zWeek);
+                        if (value.ToString() == "True")
+                        {
+                            weeksList.Add(number.ToString());
+                        }
+                    }//convert the boolean values for week1-16 to a list
+                    var reqId = zrequest.RequestId;
+                    ViewData.Add(""+zrequest.RequestId, String.Join(",", weeksList.ToArray()));
+                    //ViewBag.reqId = String.Join(",", weeksList.ToArray());
+                }
                 return View(reqQry);
             }
             else //else show requests associated with the user's account
             {
                 var reqQry = from request in db.zRequest where request.UserId == userID select request;
+                List<string> ReqIdList = new List<string>();
+                foreach (var zrequest in reqQry)
+                {
+                    List<string> weeksList = new List<string>();
+                    ReqIdList.Add(""+zrequest.RequestId);
+                    for (var number = 1; number < 17; number++)
+                    {
+                        var value = zrequest.zWeek.GetType().GetProperty("Week" + number).GetValue(zrequest.zWeek);
+                        if (value.ToString() == "True")
+                        {
+                            weeksList.Add(number.ToString());
+                        }
+                    }//convert the boolean values for week1-16 to a list
+                    var reqId = zrequest.RequestId;
+                    ViewData.Add("" + zrequest.RequestId, String.Join(",", weeksList.ToArray()));
+                    //ViewBag.reqId = String.Join(",", weeksList.ToArray());
+                }
+                ViewBag.RequestIdList = String.Join(",", ReqIdList.ToArray());
                 return View(reqQry);
             }
             //zrequestRepository.AllIncluding(zrequest => zrequest.zFacility, zrequest => zrequest.zRoom)
@@ -48,6 +81,17 @@ namespace TeamProject.Controllers
 
         public ViewResult Details(int id)
         {
+            var zrequest = zrequestRepository.Find(id);
+            List<string> weeksList = new List<string>();
+            for (var number = 1; number < 17; number++)
+            {
+                var value = zrequest.zWeek.GetType().GetProperty("Week" + number).GetValue(zrequest.zWeek);
+                if (value.ToString() == "True")
+                {
+                    weeksList.Add(number.ToString());
+                }
+            }//convert the boolean values for week1-16 to a list
+            ViewBag.Weeks = String.Join(",", weeksList.ToArray());
             return View(zrequestRepository.Find(id));
         }
 
