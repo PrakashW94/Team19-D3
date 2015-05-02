@@ -12,14 +12,54 @@
         @Html.ActionLink("Create New", "Create")
     }
 </p>
+<form action="/zRooms?roomCap=@ViewBag.RoomCap" id="form" method="post">
+    <p>
+        <input type=range id=capacity value="@ViewBag.RoomCap" min=1 max=400 oninput="outputUpdate(value)"/> <!--<output for=capacity id=capOutput>@ViewBag.RoomCap</output>-->
+        <input type="number"  id="capOutput" value="@ViewBag.RoomCap" min=1 max=400 oninput="rangeUpdate(value)" />
+        <input type="submit" value="Search Capacity" /> <!--Changed <output> to <input number> to let timetabler type if they want (figured that's something Dawson/Batmaz would complain about)-->
+        @Html.ActionLink("Reset Room View", "Index") @*Returns view to default easily*@
+    </p>
+</form>
+<script>
+    var chosenSort = "";
+    $(document).ready(function () {
+        chosenSort = '@ViewBag.ChosenSort';
+        if (chosenSort == "") {
+            document.getElementById('form').action = "/zRooms?roomCap=" + cap;
+        }
+        else {
+            document.getElementById('form').action = "/zRooms?sortOrder=" + chosenSort + "&roomCap=" + cap;
+        }
+    });
+
+    function outputUpdate(cap)
+    {
+        document.querySelector('#capOutput').value = cap;
+        if(chosenSort==""){
+            document.getElementById('form').action = "/zRooms?roomCap=" + cap;
+        }
+        else{
+            document.getElementById('form').action = "/zRooms?sortOrder=" + chosenSort + "&roomCap=" + cap;
+        }
+    }
+    function rangeUpdate(cap) {
+        document.querySelector('#capacity').value = cap;
+        if (chosenSort == "") {
+            document.getElementById('form').action = "/zRooms?roomCap=" + cap;
+        }
+        else {
+            document.getElementById('form').action = "/zRooms?sortOrder=" + chosenSort + "&roomCap=" + cap;
+        }
+    }
+</script>
 <table>
     <tr>
         <th></th>
         <th>
-            Room
+            @Html.ActionLink("Room", "Index", new { sortOrder = ViewBag.RoomSortParm, roomCap = ViewBag.RoomCap })
         </th>
         <th>
-            Capacity
+            @Html.ActionLink("Capacity", "Index", new { sortOrder = ViewBag.CapSortParm, roomCap = ViewBag.RoomCap })
         </th>
         <th>
             Building

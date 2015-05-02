@@ -29,6 +29,7 @@ namespace TeamProject2.Controllers
         {//this code shows the user only their own requests, filtered by UserID
 
             //Allows sorting in descending order too
+            ViewBag.ReqSortParm = sortOrder == "ReqID" ? "ReqID_desc" : "ReqID";
             ViewBag.ModSortParm = String.IsNullOrEmpty(sortOrder) ? "ModCode_desc" : "";
             ViewBag.NumRoomSortParm = sortOrder == "NumRoom" ? "NumRoom_desc" : "NumRoom";
             ViewBag.NumFacSortParm = sortOrder == "NumFac" ? "NumFac_desc" : "NumFac";
@@ -46,7 +47,8 @@ namespace TeamProject2.Controllers
                     //Could also search based on module name, etc. if included in view
                     reqQry = reqQry.Where(r => r.ModCode.Contains(filter.ToUpper())
                                                 || r.SpecialRequirement.ToUpper().Contains(filter.ToUpper())
-                                                || r.zDay.DayValue.ToUpper().Contains(filter.ToUpper()));
+                                                || r.zDay.DayValue.ToUpper().Contains(filter.ToUpper())
+                                                || r.zStatus.StatusValue.ToUpper().Contains(filter.ToUpper()));
                 }
 
                 List<string> ReqIdList = new List<string>();
@@ -78,7 +80,8 @@ namespace TeamProject2.Controllers
                     //Could also search based on module name, etc. if included in view
                     reqQry = reqQry.Where(r => r.ModCode.Contains(filter.ToUpper())
                                                 || r.SpecialRequirement.ToUpper().Contains(filter.ToUpper())
-                                                || r.zDay.DayValue.ToUpper().Contains(filter.ToUpper()));
+                                                || r.zDay.DayValue.ToUpper().Contains(filter.ToUpper())
+                                                || r.zStatus.StatusValue.ToUpper().Contains(filter.ToUpper()));
                 }
                 List<string> ReqIdList = new List<string>();
                 foreach (var zrequest in reqQry)
@@ -108,6 +111,8 @@ namespace TeamProject2.Controllers
         {//check what user wants to sort by and orders it
             switch (sortOrder)
             {
+                case "ReqID":
+                    requests = requests.OrderBy(r => r.RequestId); break;
                 case "Status":
                     requests = requests.OrderBy(r => r.StatusId); break;
                 case "Day":

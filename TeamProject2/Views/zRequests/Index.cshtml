@@ -22,7 +22,7 @@
 <table>
     <tr>
         <th>Actions</th>
-        <th>Request Id</th>
+        <th>@Html.ActionLink("Request ID", "Index", new { sortOrder = ViewBag.ReqSortParm })</th>
         <th>@Html.ActionLink("Module Code", "Index", new { sortOrder = ViewBag.ModSortParm })</th>
         <th>@Html.ActionLink("Number of Rooms", "Index", new { sortOrder = ViewBag.NumRoomSortParm })</th>
         <th>@Html.ActionLink("Number of Facilities", "Index", new { sortOrder = ViewBag.NumFacSortParm })</th>

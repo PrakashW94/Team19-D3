@@ -45,9 +45,40 @@ namespace TeamProject2.Controllers
             return facilityQry.ToList();
         }
 
-        public ViewResult Index()
+        public ViewResult Index(int? roomCap, string sortOrder)
         {
-            return View(zroomRepository.AllIncluding(zroom => zroom.zFacility));
+            ViewBag.RoomSortParm = String.IsNullOrEmpty(sortOrder) ? "roomCode_desc" : "";
+            ViewBag.CapSortParm = sortOrder == "roomCap" ? "roomCap_desc" : "roomCap";
+            ViewBag.ChosenSort = sortOrder;
+
+            var roomQry = zroomRepository.AllIncluding(zroom => zroom.zFacility);
+            if (roomCap.HasValue)
+            {
+                ViewBag.RoomCap = roomCap;
+                roomQry = zroomRepository.AllIncluding(zroom => zroom.zFacility).Where(r => r.Capacity >= roomCap);
+            }
+            else
+            {
+                ViewBag.RoomCap = 100;
+            }
+            roomQry = SortRooms(roomQry, sortOrder);
+            return View(roomQry);
+        }
+
+        public IQueryable<zRoom> SortRooms(IQueryable<zRoom> rooms, string sortOrder)
+        {
+            switch (sortOrder)
+            {
+                case "roomCap":
+                    rooms = rooms.OrderBy(r => r.Capacity); break;
+                case "roomCap_desc":
+                    rooms = rooms.OrderByDescending(r => r.Capacity); break;
+                case "roomCode_desc":
+                    rooms = rooms.OrderByDescending(r => r.RoomCode); break;
+                default:
+                    rooms = rooms.OrderBy(r => r.RoomCode); break;
+            }
+            return (rooms);
         }
 
         //
