@@ -1,0 +1,697 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DatabaseModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="DatabaseModelStoreContainer">
+    <EntitySet Name="zBuilding" EntityType="DatabaseModel.Store.zBuilding" store:Type="Tables" Schema="team19" />
+    <EntitySet Name="zDay" EntityType="DatabaseModel.Store.zDay" store:Type="Tables" Schema="team19" />
+    <EntitySet Name="zDepartment" EntityType="DatabaseModel.Store.zDepartment" store:Type="Tables" Schema="team19" />
+    <EntitySet Name="zFacility" EntityType="DatabaseModel.Store.zFacility" store:Type="Tables" Schema="team19" />
+    <EntitySet Name="zFacilityInRequest" EntityType="DatabaseModel.Store.zFacilityInRequest" store:Type="Tables" Schema="team19" />
+    <EntitySet Name="zFacilityInRoom" EntityType="DatabaseModel.Store.zFacilityInRoom" store:Type="Tables" Schema="team19" />
+    <EntitySet Name="zLecturer" EntityType="DatabaseModel.Store.zLecturer" store:Type="Tables" Schema="team19" />
+    <EntitySet Name="zLecturerInModule" EntityType="DatabaseModel.Store.zLecturerInModule" store:Type="Tables" Schema="team19" />
+    <EntitySet Name="zModule" EntityType="DatabaseModel.Store.zModule" store:Type="Tables" Schema="team19" />
+    <EntitySet Name="zModuleInProgramme" EntityType="DatabaseModel.Store.zModuleInProgramme" store:Type="Tables" Schema="team19" />
+    <EntitySet Name="zPark" EntityType="DatabaseModel.Store.zPark" store:Type="Tables" Schema="team19" />
+    <EntitySet Name="zPeriod" EntityType="DatabaseModel.Store.zPeriod" store:Type="Tables" Schema="team19" />
+    <EntitySet Name="zPreference" EntityType="DatabaseModel.Store.zPreference" store:Type="Tables" Schema="team19" />
+    <EntitySet Name="zProgramme" EntityType="DatabaseModel.Store.zProgramme" store:Type="Tables" Schema="team19" />
+    <EntitySet Name="zRequest" EntityType="DatabaseModel.Store.zRequest" store:Type="Tables" Schema="team19" />
+    <EntitySet Name="zRoom" EntityType="DatabaseModel.Store.zRoom" store:Type="Tables" Schema="team19" />
+    <EntitySet Name="zRoomBooking" EntityType="DatabaseModel.Store.zRoomBooking" store:Type="Tables" Schema="team19" />
+    <EntitySet Name="zRoomInDepartment" EntityType="DatabaseModel.Store.zRoomInDepartment" store:Type="Tables" Schema="team19" />
+    <EntitySet Name="zRoomInRequest" EntityType="DatabaseModel.Store.zRoomInRequest" store:Type="Tables" Schema="team19" />
+    <EntitySet Name="zRound" EntityType="DatabaseModel.Store.zRound" store:Type="Tables" Schema="team19" />
+    <EntitySet Name="zStatus" EntityType="DatabaseModel.Store.zStatus" store:Type="Tables" Schema="team19" />
+    <EntitySet Name="zUser" EntityType="DatabaseModel.Store.zUser" store:Type="Tables" Schema="team19" />
+    <EntitySet Name="zWeek" EntityType="DatabaseModel.Store.zWeek" store:Type="Tables" Schema="team19" />
+    <AssociationSet Name="FK_zBuilding_zPark" Association="DatabaseModel.Store.FK_zBuilding_zPark">
+      <End Role="zPark" EntitySet="zPark" />
+      <End Role="zBuilding" EntitySet="zBuilding" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zFacilityInRequest_zFacility" Association="DatabaseModel.Store.FK_zFacilityInRequest_zFacility">
+      <End Role="zFacility" EntitySet="zFacility" />
+      <End Role="zFacilityInRequest" EntitySet="zFacilityInRequest" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zFacilityInRequest_zRequest" Association="DatabaseModel.Store.FK_zFacilityInRequest_zRequest">
+      <End Role="zRequest" EntitySet="zRequest" />
+      <End Role="zFacilityInRequest" EntitySet="zFacilityInRequest" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zFacilityInRoom_zFacility" Association="DatabaseModel.Store.FK_zFacilityInRoom_zFacility">
+      <End Role="zFacility" EntitySet="zFacility" />
+      <End Role="zFacilityInRoom" EntitySet="zFacilityInRoom" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zFacilityInRoom_zRoom" Association="DatabaseModel.Store.FK_zFacilityInRoom_zRoom">
+      <End Role="zRoom" EntitySet="zRoom" />
+      <End Role="zFacilityInRoom" EntitySet="zFacilityInRoom" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zLecturerInModule_zLecturer" Association="DatabaseModel.Store.FK_zLecturerInModule_zLecturer">
+      <End Role="zLecturer" EntitySet="zLecturer" />
+      <End Role="zLecturerInModule" EntitySet="zLecturerInModule" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zLecturerInModule_zModule" Association="DatabaseModel.Store.FK_zLecturerInModule_zModule">
+      <End Role="zModule" EntitySet="zModule" />
+      <End Role="zLecturerInModule" EntitySet="zLecturerInModule" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zModule1_zDepartment1" Association="DatabaseModel.Store.FK_zModule1_zDepartment1">
+      <End Role="zDepartment" EntitySet="zDepartment" />
+      <End Role="zModule" EntitySet="zModule" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zModuleInProgramme_zModule" Association="DatabaseModel.Store.FK_zModuleInProgramme_zModule">
+      <End Role="zModule" EntitySet="zModule" />
+      <End Role="zModuleInProgramme" EntitySet="zModuleInProgramme" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zModuleInProgramme_zProgramme" Association="DatabaseModel.Store.FK_zModuleInProgramme_zProgramme">
+      <End Role="zProgramme" EntitySet="zProgramme" />
+      <End Role="zModuleInProgramme" EntitySet="zModuleInProgramme" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zPreference_zUser" Association="DatabaseModel.Store.FK_zPreference_zUser">
+      <End Role="zUser" EntitySet="zUser" />
+      <End Role="zPreference" EntitySet="zPreference" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zProgramme_zDepartment" Association="DatabaseModel.Store.FK_zProgramme_zDepartment">
+      <End Role="zDepartment" EntitySet="zDepartment" />
+      <End Role="zProgramme" EntitySet="zProgramme" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zRequest_zDay" Association="DatabaseModel.Store.FK_zRequest_zDay">
+      <End Role="zDay" EntitySet="zDay" />
+      <End Role="zRequest" EntitySet="zRequest" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zRequest_zModule" Association="DatabaseModel.Store.FK_zRequest_zModule">
+      <End Role="zModule" EntitySet="zModule" />
+      <End Role="zRequest" EntitySet="zRequest" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zRequest_zPeriod" Association="DatabaseModel.Store.FK_zRequest_zPeriod">
+      <End Role="zPeriod" EntitySet="zPeriod" />
+      <End Role="zRequest" EntitySet="zRequest" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zRequest_zRound" Association="DatabaseModel.Store.FK_zRequest_zRound">
+      <End Role="zRound" EntitySet="zRound" />
+      <End Role="zRequest" EntitySet="zRequest" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zRequest_zStatus" Association="DatabaseModel.Store.FK_zRequest_zStatus">
+      <End Role="zStatus" EntitySet="zStatus" />
+      <End Role="zRequest" EntitySet="zRequest" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zRequest_zUser" Association="DatabaseModel.Store.FK_zRequest_zUser">
+      <End Role="zUser" EntitySet="zUser" />
+      <End Role="zRequest" EntitySet="zRequest" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zRequest_zWeek" Association="DatabaseModel.Store.FK_zRequest_zWeek">
+      <End Role="zWeek" EntitySet="zWeek" />
+      <End Role="zRequest" EntitySet="zRequest" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zRoom_zBuilding1" Association="DatabaseModel.Store.FK_zRoom_zBuilding1">
+      <End Role="zBuilding" EntitySet="zBuilding" />
+      <End Role="zRoom" EntitySet="zRoom" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zRoomBooking_zBuilding1" Association="DatabaseModel.Store.FK_zRoomBooking_zBuilding1">
+      <End Role="zBuilding" EntitySet="zBuilding" />
+      <End Role="zRoomBooking" EntitySet="zRoomBooking" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zRoomBooking_zPark1" Association="DatabaseModel.Store.FK_zRoomBooking_zPark1">
+      <End Role="zPark" EntitySet="zPark" />
+      <End Role="zRoomBooking" EntitySet="zRoomBooking" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zRoomBooking_zRoom1" Association="DatabaseModel.Store.FK_zRoomBooking_zRoom1">
+      <End Role="zRoom" EntitySet="zRoom" />
+      <End Role="zRoomBooking" EntitySet="zRoomBooking" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zRoomInDepartment_zDepartment" Association="DatabaseModel.Store.FK_zRoomInDepartment_zDepartment">
+      <End Role="zDepartment" EntitySet="zDepartment" />
+      <End Role="zRoomInDepartment" EntitySet="zRoomInDepartment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zRoomInDepartment_zRoom" Association="DatabaseModel.Store.FK_zRoomInDepartment_zRoom">
+      <End Role="zRoom" EntitySet="zRoom" />
+      <End Role="zRoomInDepartment" EntitySet="zRoomInDepartment" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zRoomInRequest_zRequest" Association="DatabaseModel.Store.FK_zRoomInRequest_zRequest">
+      <End Role="zRequest" EntitySet="zRequest" />
+      <End Role="zRoomInRequest" EntitySet="zRoomInRequest" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zRoomInRequest_zRoomBooking" Association="DatabaseModel.Store.FK_zRoomInRequest_zRoomBooking">
+      <End Role="zRoomBooking" EntitySet="zRoomBooking" />
+      <End Role="zRoomInRequest" EntitySet="zRoomInRequest" />
+    </AssociationSet>
+    <AssociationSet Name="FK_zUser_zDepartment" Association="DatabaseModel.Store.FK_zUser_zDepartment">
+      <End Role="zDepartment" EntitySet="zDepartment" />
+      <End Role="zUser" EntitySet="zUser" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="zBuilding">
+    <Key>
+      <PropertyRef Name="BuildingId" />
+    </Key>
+    <Property Name="BuildingId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="BuildingCode" Type="nvarchar" Nullable="false" MaxLength="10" />
+    <Property Name="BuildingName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="ParkId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="zDay">
+    <Key>
+      <PropertyRef Name="DayId" />
+    </Key>
+    <Property Name="DayId" Type="smallint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="DayValue" Type="nvarchar" Nullable="false" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="zDepartment">
+    <Key>
+      <PropertyRef Name="DeptCode" />
+    </Key>
+    <Property Name="DeptCode" Type="varchar" Nullable="false" MaxLength="5" />
+    <Property Name="DeptName" Type="varchar" Nullable="false" MaxLength="100" />
+  </EntityType>
+  <EntityType Name="zFacility">
+    <Key>
+      <PropertyRef Name="FacilityId" />
+    </Key>
+    <Property Name="FacilityId" Type="smallint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="FacilityName" Type="varchar" Nullable="false" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="zFacilityInRequest">
+    <Key>
+      <PropertyRef Name="RequestId" />
+      <PropertyRef Name="FacilityId" />
+    </Key>
+    <Property Name="RequestId" Type="int" Nullable="false" />
+    <Property Name="FacilityId" Type="smallint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="zFacilityInRoom">
+    <Key>
+      <PropertyRef Name="FacilityId" />
+      <PropertyRef Name="RoomId" />
+    </Key>
+    <Property Name="FacilityId" Type="smallint" Nullable="false" />
+    <Property Name="RoomId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="zLecturer">
+    <Key>
+      <PropertyRef Name="LecturerId" />
+    </Key>
+    <Property Name="LecturerId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="LecturerName" Type="varchar" Nullable="false" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="zLecturerInModule">
+    <Key>
+      <PropertyRef Name="ModCode" />
+      <PropertyRef Name="LecturerId" />
+    </Key>
+    <Property Name="ModCode" Type="varchar" Nullable="false" MaxLength="8" />
+    <Property Name="LecturerId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="zModule">
+    <Key>
+      <PropertyRef Name="ModCode" />
+    </Key>
+    <Property Name="ModCode" Type="varchar" Nullable="false" MaxLength="8" />
+    <Property Name="ModTitle" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="DeptCode" Type="varchar" Nullable="false" MaxLength="5" />
+    <Property Name="Part" Type="char" Nullable="false" MaxLength="1" />
+  </EntityType>
+  <EntityType Name="zModuleInProgramme">
+    <Key>
+      <PropertyRef Name="ModCode" />
+      <PropertyRef Name="ProgrammeCode" />
+    </Key>
+    <Property Name="ModCode" Type="varchar" Nullable="false" MaxLength="8" />
+    <Property Name="ProgrammeCode" Type="varchar" Nullable="false" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="zPark">
+    <Key>
+      <PropertyRef Name="ParkId" />
+    </Key>
+    <Property Name="ParkId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="ParkName" Type="nvarchar" Nullable="false" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="zPeriod">
+    <Key>
+      <PropertyRef Name="PeriodId" />
+    </Key>
+    <Property Name="PeriodId" Type="smallint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="PeriodValue" Type="varchar" Nullable="false" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="zPreference">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="smallint" Nullable="false" />
+    <Property Name="PlaceHolder" Type="smallint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="zProgramme">
+    <Key>
+      <PropertyRef Name="ProgrammeCode" />
+    </Key>
+    <Property Name="ProgrammeCode" Type="varchar" Nullable="false" MaxLength="10" />
+    <Property Name="ProgrammeTitle" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="DeptCode" Type="varchar" Nullable="false" MaxLength="5" />
+  </EntityType>
+  <EntityType Name="zRequest">
+    <Key>
+      <PropertyRef Name="RequestId" />
+    </Key>
+    <Property Name="RequestId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="ModCode" Type="varchar" Nullable="false" MaxLength="8" />
+    <Property Name="StatusId" Type="smallint" Nullable="false" />
+    <Property Name="WeekId" Type="int" Nullable="false" />
+    <Property Name="DayId" Type="smallint" Nullable="false" />
+    <Property Name="PeriodId" Type="smallint" Nullable="false" />
+    <Property Name="SessionLength" Type="smallint" Nullable="false" />
+    <Property Name="Semester" Type="smallint" Nullable="false" />
+    <Property Name="RoundNo" Type="smallint" Nullable="false" />
+    <Property Name="SpecialRequirement" Type="varchar" MaxLength="50" />
+    <Property Name="UserId" Type="smallint" Nullable="false" />
+    <Property Name="RoomCount" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="zRoom">
+    <Key>
+      <PropertyRef Name="RoomId" />
+    </Key>
+    <Property Name="RoomId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RoomCode" Type="nvarchar" Nullable="false" MaxLength="15" />
+    <Property Name="Capacity" Type="int" Nullable="false" />
+    <Property Name="ImgLink" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="Private" Type="bit" Nullable="false" />
+    <Property Name="BuildingId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="zRoomBooking">
+    <Key>
+      <PropertyRef Name="BookingId" />
+    </Key>
+    <Property Name="BookingId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="ParkId" Type="int" />
+    <Property Name="BuildingId" Type="int" />
+    <Property Name="RoomId" Type="int" />
+    <Property Name="Capacity" Type="int" Nullable="false" />
+    <Property Name="Type" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="zRoomInDepartment">
+    <Key>
+      <PropertyRef Name="DeptCode" />
+      <PropertyRef Name="RoomId" />
+    </Key>
+    <Property Name="DeptCode" Type="varchar" Nullable="false" MaxLength="5" />
+    <Property Name="RoomId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="zRoomInRequest">
+    <Key>
+      <PropertyRef Name="RequestId" />
+      <PropertyRef Name="BookingId" />
+    </Key>
+    <Property Name="RequestId" Type="int" Nullable="false" />
+    <Property Name="BookingId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="zRound">
+    <Key>
+      <PropertyRef Name="RoundNo" />
+    </Key>
+    <Property Name="RoundNo" Type="smallint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="StartDate" Type="date" Nullable="false" />
+    <Property Name="EndDate" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="zStatus">
+    <Key>
+      <PropertyRef Name="StatusId" />
+    </Key>
+    <Property Name="StatusId" Type="smallint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="StatusValue" Type="varchar" Nullable="false" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="zUser">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="smallint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Password" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="DeptCode" Type="varchar" Nullable="false" MaxLength="5" />
+  </EntityType>
+  <EntityType Name="zWeek">
+    <Key>
+      <PropertyRef Name="WeekId" />
+    </Key>
+    <Property Name="WeekId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Week1" Type="bit" Nullable="false" />
+    <Property Name="Week2" Type="bit" Nullable="false" />
+    <Property Name="Week3" Type="bit" Nullable="false" />
+    <Property Name="Week4" Type="bit" Nullable="false" />
+    <Property Name="Week5" Type="bit" Nullable="false" />
+    <Property Name="Week6" Type="bit" Nullable="false" />
+    <Property Name="Week7" Type="bit" Nullable="false" />
+    <Property Name="Week8" Type="bit" Nullable="false" />
+    <Property Name="Week9" Type="bit" Nullable="false" />
+    <Property Name="Week10" Type="bit" Nullable="false" />
+    <Property Name="Week11" Type="bit" Nullable="false" />
+    <Property Name="Week12" Type="bit" Nullable="false" />
+    <Property Name="Week13" Type="bit" Nullable="false" />
+    <Property Name="Week14" Type="bit" Nullable="false" />
+    <Property Name="Week15" Type="bit" Nullable="false" />
+    <Property Name="Week16" Type="bit" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_zBuilding_zPark">
+    <End Role="zPark" Type="DatabaseModel.Store.zPark" Multiplicity="1" />
+    <End Role="zBuilding" Type="DatabaseModel.Store.zBuilding" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zPark">
+        <PropertyRef Name="ParkId" />
+      </Principal>
+      <Dependent Role="zBuilding">
+        <PropertyRef Name="ParkId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zFacilityInRequest_zFacility">
+    <End Role="zFacility" Type="DatabaseModel.Store.zFacility" Multiplicity="1" />
+    <End Role="zFacilityInRequest" Type="DatabaseModel.Store.zFacilityInRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zFacility">
+        <PropertyRef Name="FacilityId" />
+      </Principal>
+      <Dependent Role="zFacilityInRequest">
+        <PropertyRef Name="FacilityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zFacilityInRequest_zRequest">
+    <End Role="zRequest" Type="DatabaseModel.Store.zRequest" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="zFacilityInRequest" Type="DatabaseModel.Store.zFacilityInRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zRequest">
+        <PropertyRef Name="RequestId" />
+      </Principal>
+      <Dependent Role="zFacilityInRequest">
+        <PropertyRef Name="RequestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zFacilityInRoom_zFacility">
+    <End Role="zFacility" Type="DatabaseModel.Store.zFacility" Multiplicity="1" />
+    <End Role="zFacilityInRoom" Type="DatabaseModel.Store.zFacilityInRoom" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zFacility">
+        <PropertyRef Name="FacilityId" />
+      </Principal>
+      <Dependent Role="zFacilityInRoom">
+        <PropertyRef Name="FacilityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zFacilityInRoom_zRoom">
+    <End Role="zRoom" Type="DatabaseModel.Store.zRoom" Multiplicity="1" />
+    <End Role="zFacilityInRoom" Type="DatabaseModel.Store.zFacilityInRoom" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zRoom">
+        <PropertyRef Name="RoomId" />
+      </Principal>
+      <Dependent Role="zFacilityInRoom">
+        <PropertyRef Name="RoomId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zLecturerInModule_zLecturer">
+    <End Role="zLecturer" Type="DatabaseModel.Store.zLecturer" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="zLecturerInModule" Type="DatabaseModel.Store.zLecturerInModule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zLecturer">
+        <PropertyRef Name="LecturerId" />
+      </Principal>
+      <Dependent Role="zLecturerInModule">
+        <PropertyRef Name="LecturerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zLecturerInModule_zModule">
+    <End Role="zModule" Type="DatabaseModel.Store.zModule" Multiplicity="1" />
+    <End Role="zLecturerInModule" Type="DatabaseModel.Store.zLecturerInModule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zModule">
+        <PropertyRef Name="ModCode" />
+      </Principal>
+      <Dependent Role="zLecturerInModule">
+        <PropertyRef Name="ModCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zModule1_zDepartment1">
+    <End Role="zDepartment" Type="DatabaseModel.Store.zDepartment" Multiplicity="1" />
+    <End Role="zModule" Type="DatabaseModel.Store.zModule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zDepartment">
+        <PropertyRef Name="DeptCode" />
+      </Principal>
+      <Dependent Role="zModule">
+        <PropertyRef Name="DeptCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zModuleInProgramme_zModule">
+    <End Role="zModule" Type="DatabaseModel.Store.zModule" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="zModuleInProgramme" Type="DatabaseModel.Store.zModuleInProgramme" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zModule">
+        <PropertyRef Name="ModCode" />
+      </Principal>
+      <Dependent Role="zModuleInProgramme">
+        <PropertyRef Name="ModCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zModuleInProgramme_zProgramme">
+    <End Role="zProgramme" Type="DatabaseModel.Store.zProgramme" Multiplicity="1" />
+    <End Role="zModuleInProgramme" Type="DatabaseModel.Store.zModuleInProgramme" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zProgramme">
+        <PropertyRef Name="ProgrammeCode" />
+      </Principal>
+      <Dependent Role="zModuleInProgramme">
+        <PropertyRef Name="ProgrammeCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zPreference_zUser">
+    <End Role="zUser" Type="DatabaseModel.Store.zUser" Multiplicity="1" />
+    <End Role="zPreference" Type="DatabaseModel.Store.zPreference" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="zUser">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="zPreference">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zProgramme_zDepartment">
+    <End Role="zDepartment" Type="DatabaseModel.Store.zDepartment" Multiplicity="1" />
+    <End Role="zProgramme" Type="DatabaseModel.Store.zProgramme" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zDepartment">
+        <PropertyRef Name="DeptCode" />
+      </Principal>
+      <Dependent Role="zProgramme">
+        <PropertyRef Name="DeptCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zRequest_zDay">
+    <End Role="zDay" Type="DatabaseModel.Store.zDay" Multiplicity="1" />
+    <End Role="zRequest" Type="DatabaseModel.Store.zRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zDay">
+        <PropertyRef Name="DayId" />
+      </Principal>
+      <Dependent Role="zRequest">
+        <PropertyRef Name="DayId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zRequest_zModule">
+    <End Role="zModule" Type="DatabaseModel.Store.zModule" Multiplicity="1" />
+    <End Role="zRequest" Type="DatabaseModel.Store.zRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zModule">
+        <PropertyRef Name="ModCode" />
+      </Principal>
+      <Dependent Role="zRequest">
+        <PropertyRef Name="ModCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zRequest_zPeriod">
+    <End Role="zPeriod" Type="DatabaseModel.Store.zPeriod" Multiplicity="1" />
+    <End Role="zRequest" Type="DatabaseModel.Store.zRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zPeriod">
+        <PropertyRef Name="PeriodId" />
+      </Principal>
+      <Dependent Role="zRequest">
+        <PropertyRef Name="PeriodId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zRequest_zRound">
+    <End Role="zRound" Type="DatabaseModel.Store.zRound" Multiplicity="1" />
+    <End Role="zRequest" Type="DatabaseModel.Store.zRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zRound">
+        <PropertyRef Name="RoundNo" />
+      </Principal>
+      <Dependent Role="zRequest">
+        <PropertyRef Name="RoundNo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zRequest_zStatus">
+    <End Role="zStatus" Type="DatabaseModel.Store.zStatus" Multiplicity="1" />
+    <End Role="zRequest" Type="DatabaseModel.Store.zRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zStatus">
+        <PropertyRef Name="StatusId" />
+      </Principal>
+      <Dependent Role="zRequest">
+        <PropertyRef Name="StatusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zRequest_zUser">
+    <End Role="zUser" Type="DatabaseModel.Store.zUser" Multiplicity="1" />
+    <End Role="zRequest" Type="DatabaseModel.Store.zRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zUser">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="zRequest">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zRequest_zWeek">
+    <End Role="zWeek" Type="DatabaseModel.Store.zWeek" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="zRequest" Type="DatabaseModel.Store.zRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zWeek">
+        <PropertyRef Name="WeekId" />
+      </Principal>
+      <Dependent Role="zRequest">
+        <PropertyRef Name="WeekId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zRoom_zBuilding1">
+    <End Role="zBuilding" Type="DatabaseModel.Store.zBuilding" Multiplicity="1" />
+    <End Role="zRoom" Type="DatabaseModel.Store.zRoom" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zBuilding">
+        <PropertyRef Name="BuildingId" />
+      </Principal>
+      <Dependent Role="zRoom">
+        <PropertyRef Name="BuildingId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zRoomBooking_zBuilding1">
+    <End Role="zBuilding" Type="DatabaseModel.Store.zBuilding" Multiplicity="0..1" />
+    <End Role="zRoomBooking" Type="DatabaseModel.Store.zRoomBooking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zBuilding">
+        <PropertyRef Name="BuildingId" />
+      </Principal>
+      <Dependent Role="zRoomBooking">
+        <PropertyRef Name="BuildingId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zRoomBooking_zPark1">
+    <End Role="zPark" Type="DatabaseModel.Store.zPark" Multiplicity="0..1" />
+    <End Role="zRoomBooking" Type="DatabaseModel.Store.zRoomBooking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zPark">
+        <PropertyRef Name="ParkId" />
+      </Principal>
+      <Dependent Role="zRoomBooking">
+        <PropertyRef Name="ParkId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zRoomBooking_zRoom1">
+    <End Role="zRoom" Type="DatabaseModel.Store.zRoom" Multiplicity="0..1" />
+    <End Role="zRoomBooking" Type="DatabaseModel.Store.zRoomBooking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zRoom">
+        <PropertyRef Name="RoomId" />
+      </Principal>
+      <Dependent Role="zRoomBooking">
+        <PropertyRef Name="RoomId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zRoomInDepartment_zDepartment">
+    <End Role="zDepartment" Type="DatabaseModel.Store.zDepartment" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="zRoomInDepartment" Type="DatabaseModel.Store.zRoomInDepartment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zDepartment">
+        <PropertyRef Name="DeptCode" />
+      </Principal>
+      <Dependent Role="zRoomInDepartment">
+        <PropertyRef Name="DeptCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zRoomInDepartment_zRoom">
+    <End Role="zRoom" Type="DatabaseModel.Store.zRoom" Multiplicity="1" />
+    <End Role="zRoomInDepartment" Type="DatabaseModel.Store.zRoomInDepartment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zRoom">
+        <PropertyRef Name="RoomId" />
+      </Principal>
+      <Dependent Role="zRoomInDepartment">
+        <PropertyRef Name="RoomId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zRoomInRequest_zRequest">
+    <End Role="zRequest" Type="DatabaseModel.Store.zRequest" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="zRoomInRequest" Type="DatabaseModel.Store.zRoomInRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zRequest">
+        <PropertyRef Name="RequestId" />
+      </Principal>
+      <Dependent Role="zRoomInRequest">
+        <PropertyRef Name="RequestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zRoomInRequest_zRoomBooking">
+    <End Role="zRoomBooking" Type="DatabaseModel.Store.zRoomBooking" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="zRoomInRequest" Type="DatabaseModel.Store.zRoomInRequest" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zRoomBooking">
+        <PropertyRef Name="BookingId" />
+      </Principal>
+      <Dependent Role="zRoomInRequest">
+        <PropertyRef Name="BookingId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_zUser_zDepartment">
+    <End Role="zDepartment" Type="DatabaseModel.Store.zDepartment" Multiplicity="1" />
+    <End Role="zUser" Type="DatabaseModel.Store.zUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zDepartment">
+        <PropertyRef Name="DeptCode" />
+      </Principal>
+      <Dependent Role="zUser">
+        <PropertyRef Name="DeptCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

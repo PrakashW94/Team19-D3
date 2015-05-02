@@ -1,0 +1,147 @@
+@model TeamProject2.zRequest
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>zRequest</legend>
+
+    <div class="display-label">Module Code</div>
+    <div class="display-field">@Model.ModCode</div>
+
+    <div class="display-label">Status</div>
+    <div class="display-field">@Model.zStatus.StatusValue</div>
+
+    <div class="display-label">Weeks</div>
+    <div class="display-field" id="WeekDisp"></div>
+    @Html.Hidden("Weeks")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setSelectedWeeks();
+        })
+
+        function setSelectedWeeks()
+        {
+            var selectedItems = $("#Weeks").val().split(',');
+            var length = selectedItems.length;
+            var output = [];
+            var i, j;
+
+            for (i = 0; i < length; i = j + 1) {
+                // Beginning of range or single
+                output.push(selectedItems[i]);
+
+                // Find end of range
+                for (var j = i + 1; j < length && parseInt(selectedItems[j]) == parseInt(selectedItems[j - 1]) + 1; j++);
+                j--;
+
+                if (i == j) {
+                    // single number
+                    output.push(",");
+                }
+                else {
+                    if (i == j) {
+                        // two numbers
+                        output.push(",", selectedItems[j], ",");
+                    }
+                    else {
+                        // range
+                        output.push("-", selectedItems[j], ",");
+                    }
+                }
+            }
+
+            output.pop(); // remove trailing comma
+            $("#WeekDisp").append(output.join(""));
+        }
+    </script>
+
+    <div class="display-label">Day</div>
+    <div class="display-field">@Model.zDay.DayValue</div>
+
+    <div class="display-label">Start Period</div>
+    <div class="display-field">@Model.zPeriod.PeriodValue</div>
+
+    <div class="display-label">Session Length</div>
+    <div class="display-field">@Model.SessionLength</div>
+
+    <div class="display-label">Semester</div>
+    <div class="display-field">@Model.Semester</div>
+
+    <div class="display-label">Round</div>
+    <div class="display-field">@Model.RoundNo</div>
+
+    <div class="display-label">Special Requirements</div>
+    <div class="display-field">
+        @if (Model.SpecialRequirement == "")
+        {
+            <text>N/A</text>
+        }
+        else
+        {
+            <text>@Model.SpecialRequirement</text>
+        }
+    </div>
+
+    <div class="display-label">Facilities</div>
+    <div class="display-field">
+        @if (Model.zFacility.Count == 0)
+        {
+            <text>None</text>
+        }
+        else
+        {
+            List<string> facName = new List<string>();
+            foreach (var facility in Model.zFacility)
+            {
+                facName.Add(facility.FacilityName);
+            }
+            <text>@string.Join(", ", facName)</text>
+        }
+    </div>
+
+    <div class="display-label">zRoom</div>
+    <div class="display-field">
+        @{
+            List<String> roomDisp = new List<string>();
+            int dbRooms = Model.zRoomBooking.Count();
+            if (Model.RoomCount != dbRooms)
+            {
+                int diff = Model.RoomCount - dbRooms;
+                for (int i = 0; i < diff; i++)
+                {
+                    roomDisp.Add("Any Room");
+                }
+            }
+            
+            foreach (var item in Model.zRoomBooking)
+            {
+                switch (item.Type)
+                {
+                    case 1:
+                        roomDisp.Add("Any Room in the " + item.zPark.ParkName + " Park");
+                        break;
+                        
+                    case 2:
+                        roomDisp.Add("Any Room in " + item.zBuilding.BuildingCode + " - " + item.zBuilding.BuildingName);
+                        break;
+                        
+                    case 3:
+                        roomDisp.Add(item.zRoom.RoomCode);
+                        break;
+                }
+                    
+            }
+            <text>@string.Join(", ", roomDisp)</text>
+        }
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.RequestId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+
