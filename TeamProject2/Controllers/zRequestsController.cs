@@ -169,7 +169,7 @@ namespace TeamProject2.Controllers
         {
             var zrequest = zrequestRepository.Find(id);
             zrequest.StatusId = 1;
-            zrequestRepository.Update(zrequest);
+            zrequestRepository.Modify(zrequest);
             zrequestRepository.Save();
             return RedirectToAction("Allocate");
         }
@@ -309,16 +309,7 @@ namespace TeamProject2.Controllers
             var facilityQry = from Facility in db.zFacility select Facility.FacilityName;
             return facilityQry.ToList();
         }
-        /*
-        public List<string> populateStatusList()
-        {//function to return a list of facilities and return it as a list of strings
-            var db = new DatabaseContext();
-            var statusList = new List<string>();
-            statusList.Add("Successful");
-            statusList.Add("Unsuccessful");
-            return statusList;
-        }
-        */
+
         public List<string> populateParkList()
         {//function to return a list of parks and return it as a list of strings
             var db = new DatabaseContext();
@@ -434,6 +425,7 @@ namespace TeamProject2.Controllers
             string Weeks,
             string[] Facilities, //list of combo boxes
             string Rooms,
+            string Capacities,
             zRequest zrequest
         )
         {//function when the create button is clicked
@@ -486,6 +478,7 @@ namespace TeamProject2.Controllers
             //load facilities
             
             var roomsList = new List<string>();
+            var capsList = Capacities.Split(',');
             if(Rooms == "")
             {
                 roomsList.Add("0");
@@ -496,11 +489,15 @@ namespace TeamProject2.Controllers
             }
             foreach (var place in roomsList)
             {
-                var cap = 0;
+                var cap = int.Parse(capsList.ElementAt(roomsList.IndexOf(place)));
                 var type = int.Parse(place.Substring(0, 1));
                 switch (type)
                 {
                     case 0: //any room
+                        var emptyBooking = new zRoomBooking();
+                        emptyBooking.Type = type;
+                        emptyBooking.Capacity = cap;
+                        zrequest.zRoomBooking.Add(emptyBooking);
                         break;
 
                     case 1: //any room in a park
@@ -549,8 +546,6 @@ namespace TeamProject2.Controllers
             //load rooms that need to be stored in database
             //store of the number of rooms on the request
             zrequest.RoomCount = (short)roomsList.Count();
-            //"Any Room"s are not stored so if the room count is more that whats on the database
-            //the difference is "Any Room"s
 
             //these need to be coded still
             zrequest.RoundNo = 1;
@@ -629,7 +624,9 @@ namespace TeamProject2.Controllers
             //the other is a kind of code to feed what the user has selected back to the controller
             List<string> selectedRooms = new List<string>(); //this is the "code" the controller can understand
             List<string> selectedRoomsDisp = new List<string>(); //this is what is shown to the user
+            List<int> roomCaps = new List<int>();
             
+            /*
             var dbRooms = zrequest.zRoomBooking.Count(); //number of rooms in the db
             var diff = zrequest.RoomCount - dbRooms;
             for (var i = 0; i < diff; i++)
@@ -638,28 +635,41 @@ namespace TeamProject2.Controllers
                 selectedRoomsDisp.Add("Any Room");
 
             }
+             * */
+
             foreach (var booking in zrequest.zRoomBooking)
             {
                 switch (booking.Type)
-                {//case for 0 isn't needed as 0 rooms are not stored in the database
+                {
+                    case 0: //any room
+                        selectedRooms.Add("0");
+                        selectedRoomsDisp.Add(booking.Capacity + " in any room");
+                        roomCaps.Add(booking.Capacity);
+                        break;
+
                     case 1: //any room in a park
                         selectedRooms.Add("1" + booking.zPark.ParkName);
-                        selectedRoomsDisp.Add("Any room in the " + booking.zPark.ParkName + " Park");
+                        selectedRoomsDisp.Add(booking.Capacity + " in any room in the " + booking.zPark.ParkName + " Park");
+                        roomCaps.Add(booking.Capacity);
                         break;
 
                     case 2: //any room in a building
                         selectedRooms.Add("2" + booking.zBuilding.BuildingCode);
-                        selectedRoomsDisp.Add("Any room in " + booking.zBuilding.BuildingCode + " - " + booking.zBuilding.BuildingName);
+                        selectedRoomsDisp.Add(booking.Capacity + " in any room in " + booking.zBuilding.BuildingCode + " - " + booking.zBuilding.BuildingName);
+                        roomCaps.Add(booking.Capacity);
                         break;
 
                     case 3: //specific room
                         selectedRooms.Add("3" + booking.zRoom.RoomCode);
-                        selectedRoomsDisp.Add(booking.zRoom.RoomCode);
+                        selectedRoomsDisp.Add(booking.Capacity + " in " + booking.zRoom.RoomCode);
+                        
+                        roomCaps.Add(booking.Capacity);
                         break;
                 }
             }
             ViewBag.RoomDropDown = selectedRoomsDisp;
             ViewBag.Rooms = String.Join(",", selectedRooms.ToArray());
+            ViewBag.Capacities = String.Join(",", roomCaps.ToArray());
             return View(zrequestRepository.Find(id));
         }
 
@@ -677,6 +687,7 @@ namespace TeamProject2.Controllers
             string Weeks,
             string[] Facilities,
             string Rooms,
+            string Capacities,
             zRequest zrequest
         )
         {//function is very similar to create
@@ -720,6 +731,7 @@ namespace TeamProject2.Controllers
                 }
             }
             var roomsList = new List<string>();
+            var capsList = Capacities.Split(',');
             if(Rooms == "")
             {//if no rooms are selected, assume they're happy with a single "any room"
                 roomsList.Add("0");
@@ -730,11 +742,15 @@ namespace TeamProject2.Controllers
             }//otherwise process the rooms
             foreach (var place in roomsList)
             {
-                var cap = 0;
+                var cap = int.Parse(capsList.ElementAt(roomsList.IndexOf(place)));
                 var type = int.Parse(place.Substring(0, 1));
                 switch (type)
                 {
-                    case 0:
+                    case 0: //any room
+                        var emptyBooking = new zRoomBooking();
+                        emptyBooking.Type = type;
+                        emptyBooking.Capacity = cap;
+                        zrequest.zRoomBooking.Add(emptyBooking);
                         break;
 
                     case 1:
@@ -791,7 +807,7 @@ namespace TeamProject2.Controllers
             zrequestRepository.Update(zrequest);
             zrequestRepository.Save();
 
-            return RedirectToAction("Index");            
+            return RedirectToAction("Index");
         }
 
         //

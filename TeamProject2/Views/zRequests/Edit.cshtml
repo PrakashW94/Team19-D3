@@ -151,11 +151,25 @@
         </div>
 
         <div class="editor-label">
+            @Html.Label("Number of Students")
+        </div>
+        <div class="editor-field">
+            <input type=range id=capacity min=1 value=100 max=400 oninput="outputUpdate(value)"/> <output for=capacity id=capOutput>100</output>
+        </div>
+        
+        <script>
+            function outputUpdate(cap) {
+                document.querySelector('#capOutput').value = cap;
+            }
+        </script>
+
+        <div class="editor-label">
             @Html.Label("Selected Rooms")
         </div>
         <div class="editor-field">
             @Html.DropDownList("RoomDisp", new SelectList(ViewBag.RoomDropDown), new { size = 5 }) 
             @Html.Hidden("Rooms")
+            @Html.Hidden("Capacities")
         </div>
         
         <input type="button" id="AddRoom" value="Add Room" />

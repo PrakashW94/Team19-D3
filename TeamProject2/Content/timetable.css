@@ -1,0 +1,57 @@
+    /* timetable
+    ----------------------------------------------------------*/
+    
+.ttView{
+        width: 100%;
+    }
+    .dayCell{
+        font-size: 0.8em;
+        text-align: left;
+    }
+    .periodTitleCell{
+        font-size: 0.8em;
+        text-align: center;
+        padding: 0px;
+        margin: 0px;
+    }
+    .periodCell{
+        font-size: 0.8em;
+        text-align: center;
+        padding: 2px;
+        margin: 0px;
+        vertical-align: top;
+    }
+    .ttDisplay{
+        border: 1px solid #BABCBE;
+        border-bottom-left-radius: 5px;
+        border-top-right-radius: 5px;
+        font-size: 0.8em;
+        text-align: center;
+        width: 100%;
+        /*color: #FFFFFF;
+        background-color: #333;*/
+    }
+   /* .tthr{
+        border-top: 1px solid #BABCBE;
+        border-bottom: none;
+        border-left: none;
+        border-right: none;
+        padding: 1px;
+        margin: 0px;
+    } */
+
+    /* Gradient transparent - color - transparent */
+
+    .tthr {
+        border: 0;
+        height: 1px;
+        background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(186,188,190,0.75), rgba(0,0,0,0));
+        background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+        background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+        background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+    }
+    .ttViewtr {
+        border-bottom: 1px solid #BABCBE;
+        border-top: 1px solid #BABCBE;
+        border-collapse: collapse;
+    }

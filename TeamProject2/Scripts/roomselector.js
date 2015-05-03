@@ -138,7 +138,7 @@ $(document).ready(function ()
                 {
                     selectedRooms.push("0");
                     selectedRoomsCap.push(capacity);
-                    roomDisp.append("<option>" + capacity + " in Any Room </option>");
+                    roomDisp.append("<option>" + capacity + " in any Room </option>");
                     //alert("any room");
                 }
                 else
@@ -191,7 +191,7 @@ $(document).ready(function ()
                     var buildingCode = building.split(" ")[0];
                     selectedRooms.push("2" + buildingCode);
                     selectedRoomsCap.push(capacity);
-                    roomDisp.append("<option> " + capacity + " in Any room in " + building + " </option>");
+                    roomDisp.append("<option> " + capacity + " in any room in " + building + " </option>");
                     //alert("Any room in that building");
                 }
                 else
@@ -244,7 +244,7 @@ $(document).ready(function ()
             {
                 selectedRooms.push("1" + park)
                 selectedRoomsCap.push(capacity);
-                roomDisp.append("<option> " + capacity + " in Any room in the " + park + " Park" + " </option>");
+                roomDisp.append("<option> " + capacity + " in any room in the " + park + " Park" + " </option>");
                 //alert("any room in that park");
             }
             else
@@ -254,7 +254,7 @@ $(document).ready(function ()
                     buildingCode = building.split(" ")[0];
                     selectedRooms.push("2" + buildingCode);
                     selectedRoomsCap.push(capacity);
-                    roomDisp.append("<option> " + capacity + " in Any room in " + building + " </option>");
+                    roomDisp.append("<option> " + capacity + " in any room in " + building + " </option>");
                     //alert("any room in that building");
                 }
                 else
@@ -314,7 +314,8 @@ $(document).ready(function ()
         var room = document.getElementById("RoomDisp").selectedIndex;
         $("#RoomDisp option:eq(" + room +")").remove()
         selectedRooms.splice(room, 1);
-        $("#Rooms").val(selectedRooms.toString());
+        selectedRoomsCap.splice(room, 1);
+        updateOutputValues();
     })
 });
 

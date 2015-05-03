@@ -1,46 +1,44 @@
 ﻿@model IEnumerable<TeamProject2.zRequest>
 
 @{
-    ViewBag.Title = "Allocate";
+    ViewBag.Title = "Index";
+}
+<link rel="stylesheet" type="text/css" href="~/Content/timetable.css" />
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Allocate Requests", "Allocate")
+</p>
+
+@using (Html.BeginForm()){ 
+    <p>
+        Filter Requests: @Html.TextBox("filter")
+        <input type="submit" value="Filter" />
+        @Html.ActionLink("Reset Request View", "Index") @*Returns view to default easily*@
+    </p>
 }
 
-<h2>Allocate</h2>
 <table>
     <tr>
         <th>Actions</th>
         <th>Request Id</th>
-        <th>Module Code</th>
-        <th>Number of Rooms</th>
-        <th>Number of Facilities</th>
+        <th>@Html.ActionLink("Module Code", "Index", new { sortOrder = ViewBag.ModSortParm })</th>
+        <th>@Html.ActionLink("Number of Rooms", "Index", new { sortOrder = ViewBag.NumRoomSortParm })</th>
+        <th>@Html.ActionLink("Number of Facilities", "Index", new { sortOrder = ViewBag.NumFacSortParm })</th>
         <th>Weeks</th>
-        <th>Day</th>
+        <th>@Html.ActionLink("Day", "Index", new { sortOrder = ViewBag.DaySortParm })</th>
         <th>Start Time</th>
         <th>Session Length</th>
         <th>Notes</th>
-        <th>Status</th>
+        <th>@Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.StatSortParm })</th>
     </tr>
 
 @foreach (var item in Model) 
 {
     <tr>
         <td>
-            @{
-                var onlyRooms = 0;
-                foreach (var booking in item.zRoomBooking)
-                {
-                    if (booking.zRoom != null)
-                    {
-                        onlyRooms++;
-                    }
-                }
-                if (onlyRooms == item.RoomCount)
-                {
-                    @Html.ActionLink("Successful", "Successful", new { id=item.RequestId }) <br />
-                }
-            }
-            
-            @Html.ActionLink("Modify", "Modify", new { id=item.RequestId }) <br />
-            @Html.ActionLink("Unsuccessful", "Unsuccessful", new { id=item.RequestId }) <br />
+
         </td>
         <td>
 			@item.RequestId
@@ -51,16 +49,22 @@
         <td>
             @{
                 List<string> selectedRoomsDisp = new List<string>();
+                /*
                 var dbRooms = item.zRoomBooking.Count(); //number of rooms in the db
                 var diff = item.RoomCount - dbRooms;
                 for (var i = 0; i < diff; i++)
                 { //diff is the number of any rooms
                     selectedRoomsDisp.Add("Any Room");
                 }
+                */
                 foreach (var booking in item.zRoomBooking)
                 {
                     switch (booking.Type)
-                    {//case for 0 isn't needed as 0 rooms are not stored in the database
+                    {
+                        case 0:
+                            selectedRoomsDisp.Add("Any room");
+                            break;
+                            
                         case 1: //any room in a park
                             selectedRoomsDisp.Add("Any room in the " + booking.zPark.ParkName + " Park");
                             break;
@@ -120,14 +124,17 @@
 }
 
 <script type="text/javascript">
-    $(document).ready(function () {
+    $(document).ready(function ()
+    {
         setSelectedWeeks();
     })
 
-    function setSelectedWeeks() {
+    function setSelectedWeeks() 
+    {
         var IdList = $("#RequestIdList").val().split(',');
 
-        for (var c = 0; c < IdList.length; c++) {
+        for (var c = 0; c < IdList.length; c++)
+        {
             var selectedItems = document.getElementsByName(IdList[c])[0].value.split(',');
             var length = selectedItems.length;
             var output = [];
@@ -160,7 +167,83 @@
             output.pop(); // remove trailing comma
             $("#WeekDisp-" + IdList[c]).append(output.join(""));
         }
-
+                    
     }
 </script>
 </table>
+
+<h2>Timetable</h2>
+
+@{
+    string[] days = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
+}
+
+<table class="ttView">
+    @for (var i = 0; i <= 5; i++)
+    {
+        <tr class="ttViewtr">
+            @for (var j = 0; j <= 9; j++)
+            {
+                if (i > 0 && j == 0)
+                {
+                    <td id="@(i - 1)" class="dayCell">
+                        @days[i - 1]
+                    </td>
+                }
+                else if (i == 0 && j != 0)
+                {
+                    <td class="periodTitleCell">
+                        P@(j)
+                        <br />
+                        @(j + 8):00 - @(j + 9):00
+                    </td>
+                }
+                else if (i == 0 && j == 0)
+                {
+                    <td></td>
+                }
+                else
+                {
+                    <td id="@(i + ',' + j)" class="periodCell">
+                        @foreach (var item in Model)
+                        {
+                            // first period for session
+                            if (item.DayId == i && item.PeriodId == j)
+                            {
+                                <div class="ttDisplay">
+                                    @item.ModCode
+                                    <hr class="tthr" />
+                                    @item.RoomCount
+                                </div>
+                            }
+                            // last period for session
+                            else if (item.DayId == i && (item.PeriodId + (item.SessionLength - 1) == j))
+                            {
+                                <div class="ttDisplay">
+                                    @item.ModCode
+                                    <hr class="tthr" />
+                                    @item.RoomCount
+                                </div>
+                            }
+                            // periods inbetween
+                            else if (item.DayId == i && ((item.PeriodId + (item.SessionLength - 1) >= j) && item.PeriodId <= j))
+                            {
+                                <div class="ttDisplay">
+                                    @item.ModCode
+                                    <hr class="tthr" />
+                                    @item.RoomCount
+                                </div>
+                            }
+                        }
+                    </td>
+                }
+            }
+        </tr>
+    }
+</table>
+
+
+
+
+
+

@@ -51,16 +51,22 @@
         <td>
             @{
                 List<string> selectedRoomsDisp = new List<string>();
+                /*
                 var dbRooms = item.zRoomBooking.Count(); //number of rooms in the db
                 var diff = item.RoomCount - dbRooms;
                 for (var i = 0; i < diff; i++)
                 { //diff is the number of any rooms
                     selectedRoomsDisp.Add("Any Room");
                 }
+                */
                 foreach (var booking in item.zRoomBooking)
                 {
                     switch (booking.Type)
-                    {//case for 0 isn't needed as 0 rooms are not stored in the database
+                    {
+                        case 0:
+                            selectedRoomsDisp.Add("Any room");
+                            break;
+                            
                         case 1: //any room in a park
                             selectedRoomsDisp.Add("Any room in the " + booking.zPark.ParkName + " Park");
                             break;

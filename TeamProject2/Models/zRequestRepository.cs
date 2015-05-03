@@ -47,7 +47,7 @@ namespace TeamProject2.Models
             {
                 switch (booking.Type)
                 {
-                    case 0: //any room not saved in db
+                    case 0: //no attachment required for any room
                         break;
 
                     case 1: //any room in a park
