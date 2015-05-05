@@ -1,0 +1,63 @@
+@model IEnumerable<TeamProject2.zRound>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @if (@Html.Encode(User.Identity.Name) == "CA")
+    {
+        @Html.ActionLink("Create New", "Create")
+    }
+</p>
+<table>
+    <tr>
+        <th></th>
+        <th>
+            Round Number
+        </th>
+        <th>
+            Start Date
+        </th>
+        <th>
+            End Date
+        </th>
+        <th>
+            Number of Requests
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @if (@Html.Encode(User.Identity.Name) == "CA")
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = item.RoundNo })
+                @Html.ActionLink("Details", "Details", new { id = item.RoundNo })
+                @Html.ActionLink("Delete", "Delete", new { id = item.RoundNo })
+            }
+            else
+            {
+                @Html.ActionLink("Details", "Details", new { id = item.RoundNo })
+            }
+        </td>
+        <td>
+            @item.RoundNo.ToString()
+        </td>
+        <td>
+			@String.Format("{0:g}", item.StartDate)
+        </td>
+        <td>
+			@String.Format("{0:g}", item.EndDate)
+        </td>
+        <td>
+			@(item.zRequest == null ? "None" : item.zRequest.Count.ToString())
+        </td>
+    </tr>
+}
+
+</table>
+
+
