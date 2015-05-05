@@ -1,0 +1,53 @@
+@model TeamProject2.zLecturer
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>zLecturer</legend>
+
+        <script src="~/Scripts/moduleselector.js"></script>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.LecturerName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.LecturerName)
+            @Html.ValidationMessageFor(model => model.LecturerName)
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Modules")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("ModList")
+
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Associated Modules")
+        </div>
+        <div class="editor-field">
+            <select id="ModDisp" name="ModDisp" size="5"></select>
+            @Html.Hidden("Modules")
+        </div>
+
+        <input type="button" id="AddModule" value="Add Module" />
+        <input type="button" id="RemoveModule" value="Remove Module" />
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+

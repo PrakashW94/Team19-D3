@@ -1,0 +1,54 @@
+@model TeamProject2.zProgramme
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>zProgramme</legend>
+
+    <div class="display-label">Programme Code</div>
+    <div class="display-field">
+        @Model.DeptCode@{if(Model.GradType){<text>U</text>} else {<text>PT</text>}}@if (Model.ProgramType) {<text>B</text>} else {<text>M</text>}@if (@Model.ProgrammeCode < 10) {<text>0</text>}@Model.ProgrammeCode
+    </div>
+
+    <div class="display-label">Programme Title</div>
+    <div class="display-field">@Model.ProgrammeTitle</div>
+
+    <div class="display-label">DeptCode</div>
+    <div class="display-field">
+        <text title="@Model.zDepartment.DeptName">@Model.DeptCode</text>
+    </div>
+
+    <div class="display-label">Part</div>
+    <div class="display-field">@Model.Part</div>
+
+    <div class="display-label">Module (Hover to view title)</div>
+    <div class="display-field">
+        @if (Model.zModule == null)
+            {
+                <p>None</p>;
+            }
+            else
+            {
+                <ul>
+                @{
+                    List<string> modName = new List<string>();
+                    foreach (var module in Model.zModule)
+                    {
+                        <li title="@module.ModTitle">@module.ModCode</li>
+                    }
+                }
+                </ul>
+            }
+
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.ProgrammeCode }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+

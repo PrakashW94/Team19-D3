@@ -1,0 +1,131 @@
+@model IEnumerable<TeamProject2.zRequest>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>Actions</th>
+        <th>Request Id</th>
+        <th>Module Code</th>
+        <th>Number of Rooms</th>
+        <th>Number of Facilities</th>
+        <th>Weeks</th>
+        <th>Day</th>
+        <th>Start Time</th>
+        <th>Session Length</th>
+        <th>Notes</th>
+        <th>Status</th>
+    </tr>
+
+@foreach (var item in Model) 
+{
+    <tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.RequestId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.RequestId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.RequestId })
+        </td>
+        <td>
+			@item.RequestId
+        </td>
+        <td>
+			@item.ModCode
+        </td>
+        <td>
+			@item.RoomCount
+        </td>
+        <td>
+			@item.zFacility.Count
+        </td>
+        <td>
+            @Html.Hidden("RequestIdList")
+            @Html.Hidden(@item.RequestId + "")
+            <div id="WeekDisp-@item.RequestId"></div>
+        </td>
+        <td>
+			@item.zDay.DayValue
+        </td>
+        <td>
+            @item.zPeriod.PeriodId - @item.zPeriod.PeriodValue
+			
+        </td>
+        <td>
+			@item.SessionLength
+        </td>
+        <td>
+			@if (item.SpecialRequirement == null)
+            {
+                <p title="N/A">None</p>
+            }
+            else
+            {
+                <p title ="@item.SpecialRequirement">Hover to View</p>
+            }
+        </td>
+        <td>
+			@item.zStatus.StatusValue
+        </td>
+    </tr>
+}
+
+<script type="text/javascript">
+    $(document).ready(function ()
+    {
+        setSelectedWeeks();
+    })
+
+    function setSelectedWeeks() 
+    {
+        var IdList = $("#RequestIdList").val().split(',');
+
+        for (var c = 0; c < IdList.length; c++)
+        {
+            var selectedItems = document.getElementsByName(IdList[c])[0].value.split(',');
+            var length = selectedItems.length;
+            var output = [];
+            var i, j;
+
+            for (i = 0; i < length; i = j + 1) {
+                // Beginning of range or single
+                output.push(selectedItems[i]);
+
+                // Find end of range
+                for (var j = i + 1; j < length && parseInt(selectedItems[j]) == parseInt(selectedItems[j - 1]) + 1; j++);
+                j--;
+
+                if (i == j) {
+                    // single number
+                    output.push(", ");
+                }
+                else {
+                    if (i == j) {
+                        // two numbers
+                        output.push(", ", selectedItems[j], ", ");
+                    }
+                    else {
+                        // range
+                        output.push(" - ", selectedItems[j], ", ");
+                    }
+                }
+            }
+
+            output.pop(); // remove trailing comma
+            $("#WeekDisp-" + IdList[c]).append(output.join(""));
+        }
+                    
+    }
+</script>
+</table>
+
+
+
+
+
+

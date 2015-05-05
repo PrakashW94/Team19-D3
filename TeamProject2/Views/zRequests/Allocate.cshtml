@@ -1,0 +1,166 @@
+﻿@model IEnumerable<TeamProject2.zRequest>
+
+@{
+    ViewBag.Title = "Allocate";
+}
+
+<h2>Allocate</h2>
+<table>
+    <tr>
+        <th>Actions</th>
+        <th>Request Id</th>
+        <th>Module Code</th>
+        <th>Number of Rooms</th>
+        <th>Number of Facilities</th>
+        <th>Weeks</th>
+        <th>Day</th>
+        <th>Start Time</th>
+        <th>Session Length</th>
+        <th>Notes</th>
+        <th>Status</th>
+    </tr>
+
+@foreach (var item in Model) 
+{
+    <tr>
+        <td>
+            @{
+                var onlyRooms = 0;
+                foreach (var booking in item.zRoomBooking)
+                {
+                    if (booking.zRoom != null)
+                    {
+                        onlyRooms++;
+                    }
+                }
+                if (onlyRooms == item.RoomCount)
+                {
+                    @Html.ActionLink("Successful", "Successful", new { id=item.RequestId }) <br />
+                }
+            }
+            
+            @Html.ActionLink("Modify", "Modify", new { id=item.RequestId }) <br />
+            @Html.ActionLink("Unsuccessful", "Unsuccessful", new { id=item.RequestId }) <br />
+        </td>
+        <td>
+			@item.RequestId
+        </td>
+        <td>
+			@item.ModCode
+        </td>
+        <td>
+            @{
+                List<string> selectedRoomsDisp = new List<string>();
+                var dbRooms = item.zRoomBooking.Count(); //number of rooms in the db
+                var diff = item.RoomCount - dbRooms;
+                for (var i = 0; i < diff; i++)
+                { //diff is the number of any rooms
+                    selectedRoomsDisp.Add("Any Room");
+                }
+                foreach (var booking in item.zRoomBooking)
+                {
+                    switch (booking.Type)
+                    {//case for 0 isn't needed as 0 rooms are not stored in the database
+                        case 1: //any room in a park
+                            selectedRoomsDisp.Add("Any room in the " + booking.zPark.ParkName + " Park");
+                            break;
+
+                        case 2: //any room in a building
+
+                            selectedRoomsDisp.Add("Any room in " + booking.zBuilding.BuildingCode + " - " + booking.zBuilding.BuildingName);
+                            break;
+
+                        case 3: //specific room
+                            selectedRoomsDisp.Add(booking.zRoom.RoomCode);
+                            break;
+                    }
+                }
+                <p title="@string.Join(", ", selectedRoomsDisp)">@item.RoomCount</p>
+            }
+        </td>
+        <td>
+            @{
+                List<string> facName = new List<string>();
+                foreach (var facility in item.zFacility)
+                {
+                    facName.Add(facility.FacilityName);
+                }
+                <p title="@string.Join(", ", facName)">@item.zFacility.Count</p>
+            }
+        </td>
+        <td>
+            @Html.Hidden("RequestIdList")
+            @Html.Hidden(@item.RequestId + "")
+            <div id="WeekDisp-@item.RequestId"></div>
+        </td>
+        <td>
+			@item.zDay.DayValue
+        </td>
+        <td>
+            @item.zPeriod.PeriodId - @item.zPeriod.PeriodValue
+			
+        </td>
+        <td>
+			@item.SessionLength
+        </td>
+        <td>
+			@if (item.SpecialRequirement == null)
+            {
+                <p title="N/A">None</p>
+            }
+            else
+            {
+                <p title ="@item.SpecialRequirement">Hover to View</p>
+            }
+        </td>
+        <td>
+			@item.zStatus.StatusValue
+        </td>
+    </tr>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        setSelectedWeeks();
+    })
+
+    function setSelectedWeeks() {
+        var IdList = $("#RequestIdList").val().split(',');
+
+        for (var c = 0; c < IdList.length; c++) {
+            var selectedItems = document.getElementsByName(IdList[c])[0].value.split(',');
+            var length = selectedItems.length;
+            var output = [];
+            var i, j;
+
+            for (i = 0; i < length; i = j + 1) {
+                // Beginning of range or single
+                output.push(selectedItems[i]);
+
+                // Find end of range
+                for (var j = i + 1; j < length && parseInt(selectedItems[j]) == parseInt(selectedItems[j - 1]) + 1; j++);
+                j--;
+
+                if (i == j) {
+                    // single number
+                    output.push(", ");
+                }
+                else {
+                    if (i == j) {
+                        // two numbers
+                        output.push(", ", selectedItems[j], ", ");
+                    }
+                    else {
+                        // range
+                        output.push(" - ", selectedItems[j], ", ");
+                    }
+                }
+            }
+
+            output.pop(); // remove trailing comma
+            $("#WeekDisp-" + IdList[c]).append(output.join(""));
+        }
+
+    }
+</script>
+</table>

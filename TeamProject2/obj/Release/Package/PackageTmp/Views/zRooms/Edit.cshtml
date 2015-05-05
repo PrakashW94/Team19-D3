@@ -1,0 +1,64 @@
+@model TeamProject2.zRoom
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>zRoom</legend>
+
+        @Html.HiddenFor(model => model.RoomId)
+		
+        <div class="editor-label">
+            @Html.LabelFor(model => model.RoomCode)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.RoomCode)
+            @Html.ValidationMessageFor(model => model.RoomCode)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Capacity)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Capacity)
+            @Html.ValidationMessageFor(model => model.Capacity)
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Building")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Building")
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Facilities")
+        </div>
+        <div class="editor-field">
+            @foreach (var item in ViewBag.facilityList)
+            {
+                if (ViewBag.selectedFacilities.Contains(item))
+                {
+                    <input type="checkbox" name="Facilities" id="Facilities" value=@item.Replace(" ", ".") checked /> @item <br />
+                }
+                else
+                {
+                    <input type="checkbox" name="Facilities" id="Facilities" value=@item.Replace(" ", ".") /> @item <br />
+                }
+            }
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

@@ -1,0 +1,182 @@
+﻿@model IEnumerable<TeamProject2.zRequest>
+
+@{
+    ViewBag.Title = "Timetable";
+}
+
+<link rel="stylesheet" type="text/css" href="~/Content/timetable.css" />
+
+<h2>
+    Timetable
+</h2>
+
+@using (Html.BeginForm()){ 
+    <p>
+        Filter Requests: @Html.TextBox("filter")
+        <input type="submit" value="Filter" />
+        @Html.ActionLink("Reset Request View", "Index") @*Returns view to default easily*@
+    </p>
+}
+
+<tabel class="weekLink">
+    <tr>
+        <td class="weekLinkCell"><strong>Select Week:</strong></td>
+        <td class="weekLinkCell">@Html.ActionLink("All", "Index")</td>
+        @for (var i = 1; i <= 16; i++)
+        {
+            <td class="weekLinkCell">@Html.ActionLink(i.ToString(), "Index", new { sortWeek = i.ToString() })</td>
+        }
+    </tr>
+</tabel>
+<h3>
+    @{
+        String Week = Request.QueryString["sortWeek"];
+    }
+    Week
+    @if (Request.QueryString["sortWeek"] == null){
+        var all = "1-16";
+        @all
+    }
+    else
+    {
+       @Week
+    }
+</h3>
+
+@{
+    string[] days = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
+}
+
+<table class="ttView">
+    @for (var i = 0; i <= 5; i++)
+    {
+        <tr class="ttViewtr">
+            @for (var j = 0; j <= 9; j++)
+            {
+                if (i > 0 && j == 0)
+                {
+                    <td id="@(i - 1)" class="dayCell">
+                        @days[i - 1]
+                    </td>
+                }
+                else if (i == 0 && j != 0)
+                {
+                    <td class="periodTitleCell">
+                        P@(j)
+                        <br />
+                        @(j + 8):00 - @(j + 9):00
+                    </td>
+                }
+                else if (i == 0 && j == 0)
+                {
+                    <td></td>
+                }
+                else
+                {
+                    <td id="@(i + ',' + j)" class="periodCell">
+                        @foreach (var item in Model)
+                        {
+                            // first period for session
+                            if (item.DayId == i && item.PeriodId == j)
+                            {
+                                <div class="ttDisplay"
+                                     title="@item.zModule.ModTitle&#013;Session Length: @item.SessionLength&#013;No. Rooms: @item.RoomCount&#013;">
+                                    <strong>@item.ModCode</strong>
+                                    <hr class="tthr" />
+                                    @if (Request.QueryString["sortWeek"] == null)
+                                    {
+                                        @Html.Hidden("RequestIdList")
+                                        @Html.Hidden(@item.RequestId + "")
+                                        <div class="WeekDisp-@item.RequestId"></div>
+                                    }
+                                </div>
+                            }
+                            // last period for session
+                            else if (item.DayId == i && (item.PeriodId + (item.SessionLength - 1) == j))
+                            {
+                                <div class="ttDisplay"
+                                     title="@item.zModule.ModTitle&#013;Session Length: @item.SessionLength&#013;No. Rooms: @item.RoomCount&#013;">
+                                    <strong>@item.ModCode</strong>
+                                    <hr class="tthr" />
+                                    @if (Request.QueryString["sortWeek"] == null)
+                                    {
+                                        <br />
+                                    }
+                                </div>
+                            }
+                            // periods inbetween
+                            else if (item.DayId == i && ((item.PeriodId + (item.SessionLength - 1) >= j) && item.PeriodId <= j))
+                            {
+                                <div class="ttDisplay"
+                                     title="@item.zModule.ModTitle&#013;Session Length: @item.SessionLength&#013;No. Rooms: @item.RoomCount&#013;">
+                                    <strong>@item.ModCode</strong>
+                                    <hr class="tthr" />
+                                    @if (Request.QueryString["sortWeek"] == null)
+                                    {
+                                        <br />
+                                    }
+                                </div>
+                            }
+                        }
+                    </td>
+                }
+            }
+        </tr>
+    }
+</table>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        setSelectedWeeks();
+    })
+
+    function setSelectedWeeks() {
+        var IdList = $("#RequestIdList").val().split(',');
+
+        for (var c = 0; c < IdList.length; c++) {
+            var selectedItems = document.getElementsByName(IdList[c])[0].value.split(',');
+            var length = selectedItems.length;
+            var output = [];
+            var i, j;
+
+            for (i = 0; i < length; i = j + 1) {
+                // Beginning of range or single
+                output.push(selectedItems[i]);
+
+                // Find end of range
+                for (var j = i + 1; j < length && parseInt(selectedItems[j]) == parseInt(selectedItems[j - 1]) + 1; j++);
+                j--;
+
+                if (i == j) {
+                    // single number
+                    output.push(", ");
+                }
+                else {
+                    if (i == j) {
+                        // two numbers
+                        output.push(", ", selectedItems[j], ", ");
+                    }
+                    else {
+                        // range
+                        output.push(" - ", selectedItems[j], ", ");
+                    }
+                }
+            }
+
+            output.pop(); // remove trailing comma
+            $(".WeekDisp-" + IdList[c]).append(output.join(""));
+        }
+
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+

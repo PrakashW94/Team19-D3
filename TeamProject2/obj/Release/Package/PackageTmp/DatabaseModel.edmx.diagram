@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="72fe816a3a7c45ef9fbbf72fc1568565" Name="Diagram1">
+        <EntityTypeShape EntityType="DatabaseModel.zBuilding" Width="1.5" PointX="8.25" PointY="28.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.zDay" Width="1.5" PointX="6" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.zDepartment" Width="1.5" PointX="0.75" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.zFacility" Width="1.5" PointX="6" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.zLecturer" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.zModule" Width="1.5" PointX="3" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.zPark" Width="1.5" PointX="6" PointY="28.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.zPeriod" Width="1.5" PointX="6" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.zPreference" Width="1.5" PointX="5.25" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.zProgramme" Width="1.5" PointX="8.25" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.zRequest" Width="1.5" PointX="8.25" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.zRoom" Width="1.5" PointX="6" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.zRoomBooking" Width="1.5" PointX="10.5" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.zRound" Width="1.5" PointX="6" PointY="18.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.zStatus" Width="1.5" PointX="6" PointY="20.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.zUser" Width="1.5" PointX="3" PointY="14.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.zWeek" Width="1.5" PointX="6" PointY="23" IsExpanded="true" />
+        <AssociationConnector Association="DatabaseModel.FK_zBuilding_zPark" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_zRoom_zBuilding1" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_zRoomBooking_zBuilding1" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_zRequest_zDay" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_zModule1_zDepartment1" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_zProgramme_zDepartment" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_zUser_zDepartment" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_zRequest_zModule" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_zRoomBooking_zPark1" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_zRequest_zPeriod" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_zPreference_zUser" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_zRequest_zRound" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_zRequest_zStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_zRequest_zUser" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_zRequest_zWeek" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_zRoomBooking_zRoom1" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.zFacilityInRequest" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.zFacilityInRoom" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.zLecturerInModule" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.zModuleInProgramme" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.zRoomInDepartment" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.zRoomInRequest" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

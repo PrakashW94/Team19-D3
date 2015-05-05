@@ -76,6 +76,118 @@
 
 </table>
 
+<h2>Timetable</h2>
+
+@{
+    string[] days = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
+}
+
+<!--
+    create 2d array (ModCode, DayID, PeriodID, WeekIDList)
+-->
+@{/*
+
+    int ReqCount = 0;
+    string[][] ReqTemp2 = new string[1000][];
+}
+
+@foreach (var item in Model)
+{
+    string[] ReqTemp = new string[4];
+    ReqTemp[0] = item.ModCode;
+    ReqTemp[1] = item.DayId.ToString();
+    ReqTemp[2] = item.PeriodId.ToString();
+    ReqTemp[3] = item.WeekId.ToString();
+
+    ReqTemp2[ReqCount] = ReqTemp;
+    ReqCount++;
+}
+
+@{
+    int ReqNewCount = 0;
+    string[][] ReqTemp3 = new string[1000][];
+
+    for (var n = 0; n < ReqCount; n++)
+    {
+        if (n == 0)
+        {
+            ReqTemp3[n] = ReqTemp2[n];
+            ReqNewCount++;
+        }
+        else
+        {
+            for (var m = 0; m < ReqNewCount; m++)
+            {
+                if (ReqTemp2[n][0] == ReqTemp3[m][0])
+                {
+                    if (ReqTemp2[n][1] == ReqTemp3[m][1])
+                    {
+                        if (ReqTemp2[n][2] == ReqTemp3[m][2])
+                        {
+                            <p>Match</p>
+                        }
+                    }
+                }
+            }
+        }
+        <p>
+            @(ReqTemp2[n][0] + " | " + ReqTemp2[n][1] + " | " + ReqTemp2[n][2] + " | " + ReqTemp2[n][3])
+        </p>
+    }
+
+    for (var n = 0; n < ReqNewCount; n++)
+    {
+        <p>
+            @ReqTemp3[n][0]
+        </p>
+    }
+*/}
+
+<table>
+    @for (var i = 0; i <= 5; i++)
+    {
+        <tr>
+            @for (var j = 0; j <= 9; j++)
+            {
+                if (i > 0 && j == 0)
+                {
+                    <td id="@(i - 1)" class="dayCell">
+                        @days[i - 1]
+                    </td>
+                }
+                else if (i == 0 && j != 0)
+                {
+                    <td class="periodTitleCell">
+                        P@(j)
+                        <br />
+                        @(j + 8):00 - @(j + 9):00
+                    </td>
+                }
+                else if (i == 0 && j == 0)
+                {
+                    <td></td>
+                }
+                else
+                {
+                    <td id="@(i + ',' + j)" class="periodCell">
+                        @foreach (var item in Model)
+                        {
+                            if (item.DayId == i && item.PeriodId == j)
+                            {
+                                <div class="ttDisplay">@item.ModCode <hr class="tthr"/> @item.WeekId.ToString()</div>
+                            }
+                            else if (item.DayId == i && (item.PeriodId == (j - 1) && item.SessionLength == 2))
+                            {
+                                <div class="ttDisplay">@item.ModCode <hr class="tthr" /> @item.WeekId.ToString()</div>
+                            }
+                        }
+                    </td>
+                }
+            }
+        </tr>
+    }
+</table>
+
 
 
 
