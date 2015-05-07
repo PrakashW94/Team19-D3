@@ -1,11 +1,11 @@
 html {
-    background-color: #e2e2e2;
+    background-color: #333;
     margin: 0;
     padding: 0;
 }
 
 body {
-    background-color: #fff;
+    background-color: #FFFFFF;
     border-top: solid 10px #000;
     color: #333;
     font-size: .85em;
@@ -17,18 +17,18 @@ body {
 a {
     color: #333;
     outline: none;
-    padding-left: 3px;
-    padding-right: 3px;
+    padding-left: 0px;
+    padding-right: 0px;
     text-decoration: underline;
 }
 
     a:link, a:visited,
     a:active, a:hover {
-        color: #333;
+        color: #000000;
     }
 
     a:hover {
-        background-color: #c7d1d6;
+        background-color: #000000;
     }
 
 header, footer, hgroup,
@@ -60,13 +60,16 @@ mark {
 
 h1, h2, h3,
 h4, h5, h6 {
-    color: #000;
+    color: #cc0066;
     margin-bottom: 0;
     padding-bottom: 0;
 }
 
 h1 {
     font-size: 2em;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-align: left;
 }
 
 h2 {
@@ -94,24 +97,22 @@ h5, h6 {
 /* main layout
 ----------------------------------------------------------*/
 .content-wrapper {
-    margin: 0 auto;
+    margin: 15px auto;
     max-width: 960px;
 }
 
 #body {
-    background-color: #efeeef;
+    background-color: #FFFFFF;
     clear: both;
     padding-bottom: 35px;
 }
 
     .main-content {
-        background: url("../Images/accent.png") no-repeat;
         padding-left: 10px;
-        padding-top: 30px;
-    }
-
-    .featured + .main-content {
-        background: url("../Images/heroAccent.png") no-repeat;
+        padding-top: 3px;
+        border-style: solid;
+        border-color: #DDDDDD;
+        border-width: 1px;
     }
 
 header .content-wrapper {
@@ -120,7 +121,7 @@ header .content-wrapper {
 
 footer {
     clear: both;
-    background-color: #e2e2e2;
+    background-color: #371A4D;
     font-size: .8em;
     height: 100px;
 }
@@ -177,33 +178,64 @@ footer {
     }
 
 
-/* menu
+/* menu - navigation bar
 ----------------------------------------------------------*/
-ul#menu {
-    font-size: 1.3em;
-    font-weight: 600;
-    margin: 0 0 5px;
-    padding: 0;
-    text-align: right;
+ul#menu, ul#menu ul
+{
+    list-style: none;
+    border: 1px solid #F2F2F2;
+    background-color: #FAFAFA;
+    padding: 0 0 26px 0;
+    margin: 0;
+}
+ul#menu li
+{
+    float: left;
+    margin-right: 3px;
+    border: 1px solid #E7E7E7;
+    position: relative;
 }
 
-    ul#menu li {
-        display: inline;
-        list-style: none;
-        padding-left: 15px;
-    }
+ul#menu ul
+{
+    position: absolute;
+    top: 25px;
+    left: -1px;
+    width: 200px;
+    padding: 0;
+    display: none;
+}
 
-        ul#menu li a {
-            background: none;
-            color: #999;
-            text-decoration: none;
-        }
+ul#menu ul li
+{
+    float: none;
+    margin: 0;
+    padding: 0;
+    line-height: 15px;
+}
 
-        ul#menu li a:hover {
-            color: #333;
-            text-decoration: none;
-        }
+ul#menu a:link, ul#menu a:visited
+{
+    display: block;
+    font-family: Tahoma;
+    font-size: 0.75em;
+    font-weight: bold;
+    text-align: left;
+    text-decoration: none;
+    color: #D8D8D8;
+    padding: 5px;
+}
 
+ul#menu li:hover
+{
+    background-color: #D8D8D8;
+    border: 1px solid #D8D8D8;
+}
+
+ul#menu li:hover ul
+{
+    display: block;
+}
 
 /* page elements
 ----------------------------------------------------------*/
@@ -224,7 +256,7 @@ ul#menu {
     }
 
         .featured hgroup.title h1, .featured hgroup.title h2 {
-            color: #fff;
+            color: #ffffff;
         }
 
         .featured p {
@@ -236,7 +268,7 @@ hgroup.title {
     margin-bottom: 10px;
 }
 
-hgroup.title h1, hgroup.title h2 {
+hgroup.title h1, hgroup.title h2 {\
     display: inline;
 }
 
@@ -330,8 +362,7 @@ aside {
 
 /* login page */
 #loginForm {
-    border-right: solid 2px #c8c8c8;
-    float: left;
+     float: left;
     width: 55%;
 }
 
@@ -351,21 +382,47 @@ aside {
         margin: 0;
     }
 
-    #loginForm input{
+    #loginForm input {
         width: 250px;
     }
 
-    #loginForm select{
-        width: 280px;
-    }
-
+    #loginForm input[type="checkbox"],
     #loginForm input[type="submit"],
+    #loginForm input[type="button"],
     #loginForm button {
         width: auto;
     }
 
+#socialLoginForm {
+    margin-left: 40px;
+    float: left;
+    width: 40%;
+}
+
+    #socialLoginForm h2 {
+        margin-bottom:  5px;
+    }
+
+#socialLoginList button {
+    margin-bottom: 12px;
+}
+
 #logoutForm {
     display: inline;
+}
+
+/* contact */
+.contact h3 {
+    font-size: 1.2em;
+}
+
+.contact p {
+    margin: 5px 0 0 10px;
+}
+
+.contact iframe {
+    border: 1px solid #333;
+    margin: 5px 0 0 10px;
 }
 
 /* forms */
@@ -408,26 +465,6 @@ input, textarea {
     width: 300px;
 }
 
-input, select {
-    border: 1px solid #e2e2e2;
-    background: #fff;
-    color: #333;
-    font-size: 1.2em;
-    margin: 5px 0 6px 0;
-    padding: 5px;
-    width: 300px;
-}
-
-input[type=radio]{
-    border: 1px solid #e2e2e2;
-    background: #fff;
-    color: #333;
-    font-size: 1.2em;
-    margin: 5px 0 6px 0;
-    padding: 5px;
-    width: 50px;
-}
-
 textarea {
     font-family: inherit;
     width: 500px;
@@ -446,7 +483,7 @@ textarea {
     input[type="submit"],
     input[type="button"],
     button {
-        background-color: #d3dce0;
+        background-color: #FAFAFA;
         border: 1px solid #787878;
         cursor: pointer;
         font-size: 1.2em;
@@ -492,7 +529,7 @@ textarea {
 
 /* styles for validation helpers */
 .field-validation-error {
-    color: #e80c4d;
+    color: #ff0000;
     font-weight: bold;
 }
 
@@ -548,7 +585,7 @@ th {
     }
 
     th a:hover {
-        color: #000;
+        color: #371A4D;
     }
 
     th.asc a, th.desc a {
@@ -595,8 +632,10 @@ tr.pager td {
 
     /* logo */
     header .site-title {
-        margin: 10px;
-        text-align: center;
+       /* logo */
+        header .site-title {
+        margin: 0 5px;
+        text-align: left;
     }
 
     /* login */
@@ -627,7 +666,7 @@ tr.pager td {
         }
 
         #login a:hover {
-            color: #333;
+            color: #C06;
         }
 
     /* menu */
@@ -729,6 +768,13 @@ tr.pager td {
         float: none;
         width: auto;
     }
+
+
+#Identity {
+    font-size: 4px;
+    color: #cc0066;
+
+}
 
 
     /* footer

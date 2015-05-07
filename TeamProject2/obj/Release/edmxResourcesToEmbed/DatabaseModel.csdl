@@ -34,6 +34,10 @@
       <End Role="zDay" EntitySet="zDay" />
       <End Role="zRequest" EntitySet="zRequest" />
     </AssociationSet>
+    <AssociationSet Name="FK_zLecturer_zDepartment" Association="DatabaseModel.FK_zLecturer_zDepartment">
+      <End Role="zDepartment" EntitySet="zDepartment" />
+      <End Role="zLecturer" EntitySet="zLecturer" />
+    </AssociationSet>
     <AssociationSet Name="FK_zModule1_zDepartment1" Association="DatabaseModel.FK_zModule1_zDepartment1">
       <End Role="zDepartment" EntitySet="zDepartment" />
       <End Role="zModule" EntitySet="zModule" />
@@ -82,6 +86,10 @@
       <End Role="zRoom" EntitySet="zRoom" />
       <End Role="zRoomBooking" EntitySet="zRoomBooking" />
     </AssociationSet>
+    <AssociationSet Name="zBookedRoom" Association="DatabaseModel.zBookedRoom">
+      <End Role="zRequest" EntitySet="zRequest" />
+      <End Role="zRoom" EntitySet="zRoom" />
+    </AssociationSet>
     <AssociationSet Name="zFacilityInRequest" Association="DatabaseModel.zFacilityInRequest">
       <End Role="zFacility" EntitySet="zFacility" />
       <End Role="zRequest" EntitySet="zRequest" />
@@ -112,8 +120,8 @@
       <PropertyRef Name="BuildingId" />
     </Key>
     <Property Name="BuildingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="BuildingCode" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
-    <Property Name="BuildingName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="BuildingCode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="BuildingName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ParkId" Type="Int32" Nullable="false" />
     <NavigationProperty Name="zPark" Relationship="DatabaseModel.FK_zBuilding_zPark" FromRole="zBuilding" ToRole="zPark" />
     <NavigationProperty Name="zRoom" Relationship="DatabaseModel.FK_zRoom_zBuilding1" FromRole="zBuilding" ToRole="zRoom" />
@@ -124,15 +132,16 @@
       <PropertyRef Name="DayId" />
     </Key>
     <Property Name="DayId" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="DayValue" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
+    <Property Name="DayValue" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="zRequest" Relationship="DatabaseModel.FK_zRequest_zDay" FromRole="zDay" ToRole="zRequest" />
   </EntityType>
   <EntityType Name="zDepartment">
     <Key>
       <PropertyRef Name="DeptCode" />
     </Key>
-    <Property Name="DeptCode" Type="String" Nullable="false" MaxLength="5" Unicode="false" FixedLength="false" />
-    <Property Name="DeptName" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="DeptCode" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="DeptName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="zLecturer" Relationship="DatabaseModel.FK_zLecturer_zDepartment" FromRole="zDepartment" ToRole="zLecturer" />
     <NavigationProperty Name="zModule" Relationship="DatabaseModel.FK_zModule1_zDepartment1" FromRole="zDepartment" ToRole="zModule" />
     <NavigationProperty Name="zProgramme" Relationship="DatabaseModel.FK_zProgramme_zDepartment" FromRole="zDepartment" ToRole="zProgramme" />
     <NavigationProperty Name="zUser" Relationship="DatabaseModel.FK_zUser_zDepartment" FromRole="zDepartment" ToRole="zUser" />
@@ -143,7 +152,7 @@
       <PropertyRef Name="FacilityId" />
     </Key>
     <Property Name="FacilityId" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="FacilityName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="FacilityName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="zRequest" Relationship="DatabaseModel.zFacilityInRequest" FromRole="zFacility" ToRole="zRequest" />
     <NavigationProperty Name="zRoom" Relationship="DatabaseModel.zFacilityInRoom" FromRole="zFacility" ToRole="zRoom" />
   </EntityType>
@@ -152,17 +161,19 @@
       <PropertyRef Name="LecturerId" />
     </Key>
     <Property Name="LecturerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="LecturerName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="LecturerName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DeptCode" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="zDepartment" Relationship="DatabaseModel.FK_zLecturer_zDepartment" FromRole="zLecturer" ToRole="zDepartment" />
     <NavigationProperty Name="zModule" Relationship="DatabaseModel.zLecturerInModule" FromRole="zLecturer" ToRole="zModule" />
   </EntityType>
   <EntityType Name="zModule">
     <Key>
       <PropertyRef Name="ModCode" />
     </Key>
-    <Property Name="ModCode" Type="String" Nullable="false" MaxLength="8" Unicode="false" FixedLength="false" />
-    <Property Name="ModTitle" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
-    <Property Name="DeptCode" Type="String" Nullable="false" MaxLength="5" Unicode="false" FixedLength="false" />
-    <Property Name="Part" Type="String" Nullable="false" MaxLength="1" Unicode="false" FixedLength="true" />
+    <Property Name="ModCode" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+    <Property Name="ModTitle" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="DeptCode" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="Part" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
     <NavigationProperty Name="zDepartment" Relationship="DatabaseModel.FK_zModule1_zDepartment1" FromRole="zModule" ToRole="zDepartment" />
     <NavigationProperty Name="zRequest" Relationship="DatabaseModel.FK_zRequest_zModule" FromRole="zModule" ToRole="zRequest" />
     <NavigationProperty Name="zLecturer" Relationship="DatabaseModel.zLecturerInModule" FromRole="zModule" ToRole="zLecturer" />
@@ -173,7 +184,7 @@
       <PropertyRef Name="ParkId" />
     </Key>
     <Property Name="ParkId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="ParkName" Type="String" Nullable="false" MaxLength="10" Unicode="true" FixedLength="false" />
+    <Property Name="ParkName" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="zBuilding" Relationship="DatabaseModel.FK_zBuilding_zPark" FromRole="zPark" ToRole="zBuilding" />
     <NavigationProperty Name="zRoomBooking" Relationship="DatabaseModel.FK_zRoomBooking_zPark1" FromRole="zPark" ToRole="zRoomBooking" />
   </EntityType>
@@ -182,7 +193,7 @@
       <PropertyRef Name="PeriodId" />
     </Key>
     <Property Name="PeriodId" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="PeriodValue" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+    <Property Name="PeriodValue" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="zRequest" Relationship="DatabaseModel.FK_zRequest_zPeriod" FromRole="zPeriod" ToRole="zRequest" />
   </EntityType>
   <EntityType Name="zPreference">
@@ -197,9 +208,12 @@
     <Key>
       <PropertyRef Name="ProgrammeCode" />
     </Key>
-    <Property Name="ProgrammeCode" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
-    <Property Name="ProgrammeTitle" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
-    <Property Name="DeptCode" Type="String" Nullable="false" MaxLength="5" Unicode="false" FixedLength="false" />
+    <Property Name="ProgrammeCode" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProgrammeTitle" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DeptCode" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+    <Property Name="Part" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="GradType" Type="Boolean" Nullable="false" />
+    <Property Name="ProgramType" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="zDepartment" Relationship="DatabaseModel.FK_zProgramme_zDepartment" FromRole="zProgramme" ToRole="zDepartment" />
     <NavigationProperty Name="zModule" Relationship="DatabaseModel.zModuleInProgramme" FromRole="zProgramme" ToRole="zModule" />
   </EntityType>
@@ -208,15 +222,15 @@
       <PropertyRef Name="RequestId" />
     </Key>
     <Property Name="RequestId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="ModCode" Type="String" Nullable="false" MaxLength="8" Unicode="false" FixedLength="false" />
+    <Property Name="ModCode" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
     <Property Name="StatusId" Type="Int16" Nullable="false" />
     <Property Name="WeekId" Type="Int32" Nullable="false" />
     <Property Name="DayId" Type="Int16" Nullable="false" />
     <Property Name="PeriodId" Type="Int16" Nullable="false" />
     <Property Name="SessionLength" Type="Int16" Nullable="false" />
     <Property Name="Semester" Type="Int16" Nullable="false" />
-    <Property Name="RoundNo" Type="Int16" Nullable="false" />
-    <Property Name="SpecialRequirement" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="RoundNo" Type="Int32" Nullable="false" />
+    <Property Name="SpecialRequirement" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="UserId" Type="Int16" Nullable="false" />
     <Property Name="RoomCount" Type="Int32" Nullable="false" />
     <NavigationProperty Name="zDay" Relationship="DatabaseModel.FK_zRequest_zDay" FromRole="zRequest" ToRole="zDay" />
@@ -226,6 +240,7 @@
     <NavigationProperty Name="zStatus" Relationship="DatabaseModel.FK_zRequest_zStatus" FromRole="zRequest" ToRole="zStatus" />
     <NavigationProperty Name="zUser" Relationship="DatabaseModel.FK_zRequest_zUser" FromRole="zRequest" ToRole="zUser" />
     <NavigationProperty Name="zWeek" Relationship="DatabaseModel.FK_zRequest_zWeek" FromRole="zRequest" ToRole="zWeek" />
+    <NavigationProperty Name="zRoom" Relationship="DatabaseModel.zBookedRoom" FromRole="zRequest" ToRole="zRoom" />
     <NavigationProperty Name="zFacility" Relationship="DatabaseModel.zFacilityInRequest" FromRole="zRequest" ToRole="zFacility" />
     <NavigationProperty Name="zRoomBooking" Relationship="DatabaseModel.zRoomInRequest" FromRole="zRequest" ToRole="zRoomBooking" />
   </EntityType>
@@ -234,13 +249,14 @@
       <PropertyRef Name="RoomId" />
     </Key>
     <Property Name="RoomId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="RoomCode" Type="String" Nullable="false" MaxLength="15" Unicode="true" FixedLength="false" />
+    <Property Name="RoomCode" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
     <Property Name="Capacity" Type="Int32" Nullable="false" />
-    <Property Name="ImgLink" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="ImgLink" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="Private" Type="Boolean" Nullable="false" />
     <Property Name="BuildingId" Type="Int32" Nullable="false" />
     <NavigationProperty Name="zBuilding" Relationship="DatabaseModel.FK_zRoom_zBuilding1" FromRole="zRoom" ToRole="zBuilding" />
     <NavigationProperty Name="zRoomBooking" Relationship="DatabaseModel.FK_zRoomBooking_zRoom1" FromRole="zRoom" ToRole="zRoomBooking" />
+    <NavigationProperty Name="zRequest" Relationship="DatabaseModel.zBookedRoom" FromRole="zRoom" ToRole="zRequest" />
     <NavigationProperty Name="zFacility" Relationship="DatabaseModel.zFacilityInRoom" FromRole="zRoom" ToRole="zFacility" />
     <NavigationProperty Name="zDepartment" Relationship="DatabaseModel.zRoomInDepartment" FromRole="zRoom" ToRole="zDepartment" />
   </EntityType>
@@ -263,9 +279,10 @@
     <Key>
       <PropertyRef Name="RoundNo" />
     </Key>
-    <Property Name="RoundNo" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RoundNo" Type="Int32" Nullable="false" />
     <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
     <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Viewable" Type="Boolean" Nullable="false" />
     <NavigationProperty Name="zRequest" Relationship="DatabaseModel.FK_zRequest_zRound" FromRole="zRound" ToRole="zRequest" />
   </EntityType>
   <EntityType Name="zStatus">
@@ -273,7 +290,7 @@
       <PropertyRef Name="StatusId" />
     </Key>
     <Property Name="StatusId" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="StatusValue" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="StatusValue" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="zRequest" Relationship="DatabaseModel.FK_zRequest_zStatus" FromRole="zStatus" ToRole="zRequest" />
   </EntityType>
   <EntityType Name="zUser">
@@ -281,8 +298,8 @@
       <PropertyRef Name="UserId" />
     </Key>
     <Property Name="UserId" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Password" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
-    <Property Name="DeptCode" Type="String" Nullable="false" MaxLength="5" Unicode="false" FixedLength="false" />
+    <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DeptCode" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="zDepartment" Relationship="DatabaseModel.FK_zUser_zDepartment" FromRole="zUser" ToRole="zDepartment" />
     <NavigationProperty Name="zPreference" Relationship="DatabaseModel.FK_zPreference_zUser" FromRole="zUser" ToRole="zPreference" />
     <NavigationProperty Name="zRequest" Relationship="DatabaseModel.FK_zRequest_zUser" FromRole="zUser" ToRole="zRequest" />
@@ -311,8 +328,8 @@
     <NavigationProperty Name="zRequest" Relationship="DatabaseModel.FK_zRequest_zWeek" FromRole="zWeek" ToRole="zRequest" />
   </EntityType>
   <Association Name="FK_zBuilding_zPark">
-    <End Role="zPark" Type="DatabaseModel.zPark" Multiplicity="1" />
-    <End Role="zBuilding" Type="DatabaseModel.zBuilding" Multiplicity="*" />
+    <End Type="DatabaseModel.zPark" Role="zPark" Multiplicity="1" />
+    <End Type="DatabaseModel.zBuilding" Role="zBuilding" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="zPark">
         <PropertyRef Name="ParkId" />
@@ -323,8 +340,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_zRoom_zBuilding1">
-    <End Role="zBuilding" Type="DatabaseModel.zBuilding" Multiplicity="1" />
-    <End Role="zRoom" Type="DatabaseModel.zRoom" Multiplicity="*" />
+    <End Type="DatabaseModel.zBuilding" Role="zBuilding" Multiplicity="1" />
+    <End Type="DatabaseModel.zRoom" Role="zRoom" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="zBuilding">
         <PropertyRef Name="BuildingId" />
@@ -335,8 +352,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_zRoomBooking_zBuilding1">
-    <End Role="zBuilding" Type="DatabaseModel.zBuilding" Multiplicity="0..1" />
-    <End Role="zRoomBooking" Type="DatabaseModel.zRoomBooking" Multiplicity="*" />
+    <End Type="DatabaseModel.zBuilding" Role="zBuilding" Multiplicity="0..1" />
+    <End Type="DatabaseModel.zRoomBooking" Role="zRoomBooking" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="zBuilding">
         <PropertyRef Name="BuildingId" />
@@ -347,8 +364,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_zRequest_zDay">
-    <End Role="zDay" Type="DatabaseModel.zDay" Multiplicity="1" />
-    <End Role="zRequest" Type="DatabaseModel.zRequest" Multiplicity="*" />
+    <End Type="DatabaseModel.zDay" Role="zDay" Multiplicity="1" />
+    <End Type="DatabaseModel.zRequest" Role="zRequest" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="zDay">
         <PropertyRef Name="DayId" />
@@ -358,9 +375,21 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_zLecturer_zDepartment">
+    <End Type="DatabaseModel.zDepartment" Role="zDepartment" Multiplicity="1" />
+    <End Type="DatabaseModel.zLecturer" Role="zLecturer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="zDepartment">
+        <PropertyRef Name="DeptCode" />
+      </Principal>
+      <Dependent Role="zLecturer">
+        <PropertyRef Name="DeptCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_zModule1_zDepartment1">
-    <End Role="zDepartment" Type="DatabaseModel.zDepartment" Multiplicity="1" />
-    <End Role="zModule" Type="DatabaseModel.zModule" Multiplicity="*" />
+    <End Type="DatabaseModel.zDepartment" Role="zDepartment" Multiplicity="1" />
+    <End Type="DatabaseModel.zModule" Role="zModule" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="zDepartment">
         <PropertyRef Name="DeptCode" />
@@ -371,8 +400,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_zProgramme_zDepartment">
-    <End Role="zDepartment" Type="DatabaseModel.zDepartment" Multiplicity="1" />
-    <End Role="zProgramme" Type="DatabaseModel.zProgramme" Multiplicity="*" />
+    <End Type="DatabaseModel.zDepartment" Role="zDepartment" Multiplicity="1" />
+    <End Type="DatabaseModel.zProgramme" Role="zProgramme" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="zDepartment">
         <PropertyRef Name="DeptCode" />
@@ -383,8 +412,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_zUser_zDepartment">
-    <End Role="zDepartment" Type="DatabaseModel.zDepartment" Multiplicity="1" />
-    <End Role="zUser" Type="DatabaseModel.zUser" Multiplicity="*" />
+    <End Type="DatabaseModel.zDepartment" Role="zDepartment" Multiplicity="1" />
+    <End Type="DatabaseModel.zUser" Role="zUser" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="zDepartment">
         <PropertyRef Name="DeptCode" />
@@ -395,8 +424,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_zRequest_zModule">
-    <End Role="zModule" Type="DatabaseModel.zModule" Multiplicity="1" />
-    <End Role="zRequest" Type="DatabaseModel.zRequest" Multiplicity="*" />
+    <End Type="DatabaseModel.zModule" Role="zModule" Multiplicity="1" />
+    <End Type="DatabaseModel.zRequest" Role="zRequest" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="zModule">
         <PropertyRef Name="ModCode" />
@@ -407,8 +436,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_zRoomBooking_zPark1">
-    <End Role="zPark" Type="DatabaseModel.zPark" Multiplicity="0..1" />
-    <End Role="zRoomBooking" Type="DatabaseModel.zRoomBooking" Multiplicity="*" />
+    <End Type="DatabaseModel.zPark" Role="zPark" Multiplicity="0..1" />
+    <End Type="DatabaseModel.zRoomBooking" Role="zRoomBooking" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="zPark">
         <PropertyRef Name="ParkId" />
@@ -419,8 +448,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_zRequest_zPeriod">
-    <End Role="zPeriod" Type="DatabaseModel.zPeriod" Multiplicity="1" />
-    <End Role="zRequest" Type="DatabaseModel.zRequest" Multiplicity="*" />
+    <End Type="DatabaseModel.zPeriod" Role="zPeriod" Multiplicity="1" />
+    <End Type="DatabaseModel.zRequest" Role="zRequest" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="zPeriod">
         <PropertyRef Name="PeriodId" />
@@ -431,8 +460,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_zPreference_zUser">
-    <End Role="zUser" Type="DatabaseModel.zUser" Multiplicity="1" />
-    <End Role="zPreference" Type="DatabaseModel.zPreference" Multiplicity="0..1" />
+    <End Type="DatabaseModel.zUser" Role="zUser" Multiplicity="1" />
+    <End Type="DatabaseModel.zPreference" Role="zPreference" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="zUser">
         <PropertyRef Name="UserId" />
@@ -443,8 +472,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_zRequest_zRound">
-    <End Role="zRound" Type="DatabaseModel.zRound" Multiplicity="1" />
-    <End Role="zRequest" Type="DatabaseModel.zRequest" Multiplicity="*" />
+    <End Type="DatabaseModel.zRound" Role="zRound" Multiplicity="1" />
+    <End Type="DatabaseModel.zRequest" Role="zRequest" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="zRound">
         <PropertyRef Name="RoundNo" />
@@ -455,8 +484,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_zRequest_zStatus">
-    <End Role="zStatus" Type="DatabaseModel.zStatus" Multiplicity="1" />
-    <End Role="zRequest" Type="DatabaseModel.zRequest" Multiplicity="*" />
+    <End Type="DatabaseModel.zStatus" Role="zStatus" Multiplicity="1" />
+    <End Type="DatabaseModel.zRequest" Role="zRequest" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="zStatus">
         <PropertyRef Name="StatusId" />
@@ -467,8 +496,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_zRequest_zUser">
-    <End Role="zUser" Type="DatabaseModel.zUser" Multiplicity="1" />
-    <End Role="zRequest" Type="DatabaseModel.zRequest" Multiplicity="*" />
+    <End Type="DatabaseModel.zUser" Role="zUser" Multiplicity="1" />
+    <End Type="DatabaseModel.zRequest" Role="zRequest" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="zUser">
         <PropertyRef Name="UserId" />
@@ -479,10 +508,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_zRequest_zWeek">
-    <End Role="zWeek" Type="DatabaseModel.zWeek" Multiplicity="1">
+    <End Type="DatabaseModel.zWeek" Role="zWeek" Multiplicity="1">
       <OnDelete Action="Cascade" />
     </End>
-    <End Role="zRequest" Type="DatabaseModel.zRequest" Multiplicity="*" />
+    <End Type="DatabaseModel.zRequest" Role="zRequest" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="zWeek">
         <PropertyRef Name="WeekId" />
@@ -493,8 +522,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_zRoomBooking_zRoom1">
-    <End Role="zRoom" Type="DatabaseModel.zRoom" Multiplicity="0..1" />
-    <End Role="zRoomBooking" Type="DatabaseModel.zRoomBooking" Multiplicity="*" />
+    <End Type="DatabaseModel.zRoom" Role="zRoom" Multiplicity="0..1" />
+    <End Type="DatabaseModel.zRoomBooking" Role="zRoomBooking" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="zRoom">
         <PropertyRef Name="RoomId" />
@@ -504,28 +533,32 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="zBookedRoom">
+    <End Type="DatabaseModel.zRequest" Role="zRequest" Multiplicity="*" />
+    <End Type="DatabaseModel.zRoom" Role="zRoom" Multiplicity="*" />
+  </Association>
   <Association Name="zFacilityInRequest">
-    <End Role="zFacility" Type="DatabaseModel.zFacility" Multiplicity="*" />
-    <End Role="zRequest" Type="DatabaseModel.zRequest" Multiplicity="*" />
+    <End Type="DatabaseModel.zFacility" Role="zFacility" Multiplicity="*" />
+    <End Type="DatabaseModel.zRequest" Role="zRequest" Multiplicity="*" />
   </Association>
   <Association Name="zFacilityInRoom">
-    <End Role="zFacility" Type="DatabaseModel.zFacility" Multiplicity="*" />
-    <End Role="zRoom" Type="DatabaseModel.zRoom" Multiplicity="*" />
+    <End Type="DatabaseModel.zFacility" Role="zFacility" Multiplicity="*" />
+    <End Type="DatabaseModel.zRoom" Role="zRoom" Multiplicity="*" />
   </Association>
   <Association Name="zLecturerInModule">
-    <End Role="zLecturer" Type="DatabaseModel.zLecturer" Multiplicity="*" />
-    <End Role="zModule" Type="DatabaseModel.zModule" Multiplicity="*" />
+    <End Type="DatabaseModel.zLecturer" Role="zLecturer" Multiplicity="*" />
+    <End Type="DatabaseModel.zModule" Role="zModule" Multiplicity="*" />
   </Association>
   <Association Name="zModuleInProgramme">
-    <End Role="zModule" Type="DatabaseModel.zModule" Multiplicity="*" />
-    <End Role="zProgramme" Type="DatabaseModel.zProgramme" Multiplicity="*" />
+    <End Type="DatabaseModel.zModule" Role="zModule" Multiplicity="*" />
+    <End Type="DatabaseModel.zProgramme" Role="zProgramme" Multiplicity="*" />
   </Association>
   <Association Name="zRoomInDepartment">
-    <End Role="zDepartment" Type="DatabaseModel.zDepartment" Multiplicity="*" />
-    <End Role="zRoom" Type="DatabaseModel.zRoom" Multiplicity="*" />
+    <End Type="DatabaseModel.zDepartment" Role="zDepartment" Multiplicity="*" />
+    <End Type="DatabaseModel.zRoom" Role="zRoom" Multiplicity="*" />
   </Association>
   <Association Name="zRoomInRequest">
-    <End Role="zRequest" Type="DatabaseModel.zRequest" Multiplicity="*" />
-    <End Role="zRoomBooking" Type="DatabaseModel.zRoomBooking" Multiplicity="*" />
+    <End Type="DatabaseModel.zRequest" Role="zRequest" Multiplicity="*" />
+    <End Type="DatabaseModel.zRoomBooking" Role="zRoomBooking" Multiplicity="*" />
   </Association>
 </Schema>

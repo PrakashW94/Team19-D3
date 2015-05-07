@@ -25,6 +25,21 @@ namespace TeamProject2.Controllers
         //
         // GET: /zRequests/
 
+        public ActionResult Submit()
+        {
+            var db = new DatabaseContext();
+            var userQry = from user in db.zUser where user.DeptCode == User.Identity.Name select user.UserId;
+            var userID = userQry.FirstOrDefault();
+            var reqList = from Request in db.zRequest where Request.UserId == userID where Request.StatusId == 3 select Request;
+            foreach (var item in reqList)
+            {
+                item.StatusId = 4;
+                zrequestRepository.Modify(item);
+                zrequestRepository.Save();
+            }
+            return RedirectToAction("Index");
+        }
+
         public ViewResult Index(string sortOrder, string filter)
         {//this code shows the user only their own requests, filtered by UserID
 
@@ -362,6 +377,7 @@ namespace TeamProject2.Controllers
             return View();
         }//essentially adds everything that needs to be displayed to the ViewBag 
 
+        [HttpPost]
         public JsonResult Building(string park)
         {//this function is called from the room selector, returns the buildings from the selected park
             var db = new DatabaseContext();
@@ -382,6 +398,7 @@ namespace TeamProject2.Controllers
             }
         }
 
+        [HttpPost]
         public JsonResult Room(string buildingCode)
         {//this function is called from the room selector, returns the rooms from the selected building
             if (buildingCode != "Any")
@@ -397,6 +414,7 @@ namespace TeamProject2.Controllers
             }
         }
 
+        [HttpPost]
         public JsonResult RoomCapacityCheck(string room, int capacity)
         {
             var db = new DatabaseContext();
@@ -478,14 +496,16 @@ namespace TeamProject2.Controllers
             //load facilities
             
             var roomsList = new List<string>();
-            var capsList = Capacities.Split(',');
+            var capsList = new List<string>();
             if(Rooms == "")
             {
                 roomsList.Add("0");
+                capsList.Add("100");
             }
             else
             {
                 roomsList = Rooms.Split(',').ToList();
+                capsList = Capacities.Split(',').ToList();
             }
             foreach (var place in roomsList)
             {
@@ -547,8 +567,26 @@ namespace TeamProject2.Controllers
             //store of the number of rooms on the request
             zrequest.RoomCount = (short)roomsList.Count();
 
-            //these need to be coded still
-            zrequest.RoundNo = 1;
+            zrequest.RoundNo = -1; //default value
+            var roundInfo = (from Round in db.zRound select Round).ToList();
+            var currentDate = System.DateTime.Now;
+
+            foreach (var round in roundInfo)
+            {
+                if (DateTime.Compare(currentDate, round.StartDate) > 0) //current date is after start date
+                {
+                    if (DateTime.Compare(currentDate, round.EndDate) < 0) //current date is before end date
+                    {
+                        zrequest.RoundNo = round.RoundNo; //set round number
+                    }
+                }
+            }
+
+            if (zrequest.RoundNo == -1)//if current date is outside of rounds
+            {
+                zrequest.RoundNo = roundInfo.LastOrDefault().RoundNo;
+            }//add request to last round
+
             zrequest.Semester = 1;
 
             zrequest.StatusId = 3;
@@ -799,7 +837,26 @@ namespace TeamProject2.Controllers
             zrequest.RoomCount = (short)roomsList.Count();
             
             //these two need to be coded
-            zrequest.RoundNo = 1;
+            zrequest.RoundNo = -1; //default value
+            var roundInfo = (from Round in db.zRound select Round).ToList();
+            var currentDate = System.DateTime.Now;
+
+            foreach (var round in roundInfo)
+            {
+                if (DateTime.Compare(currentDate, round.StartDate) > 0) //current date is after start date
+                {
+                    if (DateTime.Compare(currentDate, round.EndDate) < 0) //current date is before end date
+                    {
+                        zrequest.RoundNo = round.RoundNo; //set round number
+                    }
+                }
+            }
+
+            if (zrequest.RoundNo == -1)//if current date is outside of rounds
+            {
+                zrequest.RoundNo = roundInfo.LastOrDefault().RoundNo;
+            }//add request to last round
+
             zrequest.Semester = 1;
 
             zrequest.StatusId = 3; //status is pending

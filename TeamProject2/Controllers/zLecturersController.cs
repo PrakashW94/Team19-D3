@@ -92,6 +92,7 @@ namespace TeamProject2.Controllers
                 item.Part = selectedMod.Part;
                 zlecturer.zModule.Add(item);
             }
+            zlecturer.DeptCode = User.Identity.Name;
             zlecturerRepository.InsertOrUpdate(zlecturer);
             zlecturerRepository.Save();
             return RedirectToAction("Index");
@@ -135,6 +136,7 @@ namespace TeamProject2.Controllers
                 item.Part = selectedMod.Part;
                 zlecturer.zModule.Add(item);
             }
+            zlecturer.DeptCode = User.Identity.Name;
             zlecturerRepository.InsertOrUpdate(zlecturer);
             zlecturerRepository.Save();
             return RedirectToAction("Index");

@@ -11,7 +11,64 @@
     <fieldset>
         <legend>zProgramme</legend>
 
-		@Html.Partial("_CreateOrEdit", Model)
+        <script src="~/Scripts/moduleselector.js"></script>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ProgrammeTitle)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ProgrammeTitle)
+            @Html.ValidationMessageFor(model => model.ProgrammeTitle)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.DeptCode)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("DeptCode", new SelectList(ViewBag.deptList))
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.GradType)
+        </div>
+        <div class="editor-field">
+            @Html.RadioButtonFor(model => model.GradType, true, new { @checked = "checked" }) Undergraduate
+            @Html.RadioButtonFor(model => model.GradType, false) Postgraduate
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ProgramType)
+        </div>
+        <div class="editor-field">
+            @Html.RadioButtonFor(model => model.ProgramType, true, new { @checked = "checked" }) Bachelors
+            @Html.RadioButtonFor(model => model.ProgramType, false) Masters
+        </div>
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Part)
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("Part", new SelectList(ViewBag.partList))
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Modules")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("ModList")
+
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("Associated Modules")
+        </div>
+        <div class="editor-field">
+            <select id="ModDisp" name="ModDisp" size="5"></select>
+            @Html.Hidden("Modules")
+        </div>
+
+        <input type="button" id="AddModule" value="Add Module" />
+        <input type="button" id="RemoveModule" value="Remove Module" />
 
         <p>
             <input type="submit" value="Create" />

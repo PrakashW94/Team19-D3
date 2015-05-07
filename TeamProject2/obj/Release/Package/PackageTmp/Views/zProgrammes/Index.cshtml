@@ -13,13 +13,13 @@
     <tr>
         <th></th>
         <th>
-            ProgrammeTitle
+            Programme Code
+        </th>
+        <th>
+            Programme Title
         </th>
         <th>
             DeptCode
-        </th>
-        <th>
-            zDepartment
         </th>
         <th>
             zModule
@@ -34,13 +34,13 @@
             @Html.ActionLink("Delete", "Delete", new { id=item.ProgrammeCode })
         </td>
         <td>
+              @item.DeptCode@{if(item.GradType){<text>U</text>} else {<text>PT</text>}}@if (item.ProgramType){<text>B</text>} else {<text>M</text>}@if (@item.ProgrammeCode < 10){<text>0</text>}@item.ProgrammeCode
+        </td>
+        <td>
 			@item.ProgrammeTitle
         </td>
         <td>
-			@item.DeptCode
-        </td>
-        <td>
-			@Html.DisplayTextFor(_ => item.zDepartment).ToString()
+			@item.zDepartment.DeptCode - @item.zDepartment.DeptName
         </td>
         <td>
 			@(item.zModule == null ? "None" : item.zModule.Count.ToString())

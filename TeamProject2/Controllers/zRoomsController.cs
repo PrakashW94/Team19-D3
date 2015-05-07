@@ -104,7 +104,9 @@ namespace TeamProject2.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                ViewBag.BuildingList = populateBuildingList();
+                ViewBag.facilityList = populateFacilityList();
+                return View();
             }
         } 
 
@@ -138,6 +140,16 @@ namespace TeamProject2.Controllers
                 }
             }
             //load facilities
+
+            if (User.Identity.Name != "CA")
+            {
+                var dept = (from Dept in db.zDepartment where Dept.DeptCode == User.Identity.Name select Dept).FirstOrDefault();
+                var newDept = new zDepartment();
+                newDept.DeptCode = dept.DeptCode;
+                newDept.DeptName = dept.DeptName;
+                zroom.zDepartment.Add(newDept);
+                zroom.Private = true;
+            }
 
             zroomRepository.InsertOrUpdate(zroom);
             zroomRepository.Save();

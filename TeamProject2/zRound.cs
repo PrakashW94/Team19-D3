@@ -19,9 +19,10 @@ namespace TeamProject2
             this.zRequest = new HashSet<zRequest>();
         }
     
-        public short RoundNo { get; set; }
+        public int RoundNo { get; set; }
         public System.DateTime StartDate { get; set; }
         public System.DateTime EndDate { get; set; }
+        public bool Viewable { get; set; }
     
         public virtual ICollection<zRequest> zRequest { get; set; }
     }

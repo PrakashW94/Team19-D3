@@ -9,13 +9,15 @@
 <link rel="stylesheet" type="text/css" href="~/Content/weekselector.css" />
 
 <h2>Create</h2>
-@* code to display ViewBag *@
+
+@* code to display ViewBag 
 <ul>
     @foreach (var pair in ViewData)
     {
         <li>@pair.Key : @pair.Value</li>
     }
 </ul>
+*@
 
 @using (Html.BeginForm("Create", "zRequests")) 
 {

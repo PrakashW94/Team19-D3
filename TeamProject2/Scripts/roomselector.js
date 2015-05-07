@@ -8,7 +8,7 @@ $(document).ready(function ()
         {
             $.ajax(
             {
-                url: "/zRequests/Building",
+                url: "../zRequests/Building",
                 type: "POST",
                 data: { park: $("#Park").val() },
                 success: function (buildings)
@@ -32,7 +32,7 @@ $(document).ready(function ()
         {
             $.ajax(
             {
-                url: "/zRequests/Building",
+                url: "../zRequests/Building",
                 type: "POST",
                 data: { park: 'Any' },
                 success: function (buildings) {
@@ -48,7 +48,7 @@ $(document).ready(function ()
 
             $.ajax(
             {
-                url: "/zRequests/Room",
+                url: "../zRequests/Room",
                 type: "POST",
                 data: { buildingCode: 'Any' },
                 success: function (rooms) {
@@ -70,7 +70,7 @@ $(document).ready(function ()
             buildingCode = $("#Building").val().split(" ")[0];
             $.ajax(
             {
-                url: "/zRequests/Room",
+                url: "../zRequests/Room",
                 type: "POST",
                 data: { buildingCode: buildingCode },
                 success: function (rooms)
@@ -99,7 +99,7 @@ $(document).ready(function ()
             {
                 $.ajax(
                 {
-                    url: "/zRequests/Room",
+                    url: "../zRequests/Room",
                     type: "POST",
                     data: { building: 'Any' },
                     success: function (rooms) {
@@ -159,7 +159,7 @@ $(document).ready(function ()
                     {
                         $.ajax(
                         {
-                            url: "/zRequests/RoomCapacityCheck",
+                            url: "../zRequests/RoomCapacityCheck",
                             type: "POST",
                             data: { room: room, capacity: capacity },
                             success: function (result)
@@ -212,7 +212,7 @@ $(document).ready(function ()
                     {
                         $.ajax(
                         {
-                            url: "/zRequests/RoomCapacityCheck",
+                            url: "../zRequests/RoomCapacityCheck",
                             type: "POST",
                             data: { room: room, capacity: capacity },
                             success: function (result)
@@ -275,7 +275,7 @@ $(document).ready(function ()
                     {
                         $.ajax(
                         {
-                            url: "/zRequests/RoomCapacityCheck",
+                            url: "../zRequests/RoomCapacityCheck",
                             type: "POST",
                             data: { room: room, capacity: capacity },
                             success: function (result) {

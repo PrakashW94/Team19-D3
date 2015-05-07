@@ -36,11 +36,25 @@ namespace TeamProject2.Models
         {
             if (zroom.RoomId == default(int)) {
                 // New entity
+                foreach (var facility in zroom.zFacility)
+                {
+                    context.zFacility.Attach(facility);
+                }
+                foreach (var dept in zroom.zDepartment)
+                {
+                    context.zDepartment.Attach(dept);
+                }
                 context.zRoom.Add(zroom);
             } 
             else {
                 // Existing entity
                 var updateRoom = context.zRoom.Find(zroom.RoomId);
+
+                updateRoom.BuildingId = zroom.BuildingId;
+                updateRoom.Capacity = zroom.Capacity;
+                updateRoom.ImgLink = zroom.ImgLink;
+                updateRoom.Private = zroom.Private;
+                updateRoom.RoomCode = zroom.RoomCode;
 
                 var removedFacs1 = updateRoom.zFacility.ToList();
                 var newFacs1 = zroom.zFacility.ToList();
@@ -58,6 +72,8 @@ namespace TeamProject2.Models
                     context.zFacility.Attach(item);
                     updateRoom.zFacility.Add(item);
                 }
+
+
             }
         }
 

@@ -21,32 +21,33 @@ namespace TeamProject2.Controllers
 			this.zrequestRepository = zrequestRepository;
         }
 
-
-
         //
         // GET: /Timetable/
 
-        public ViewResult Index(string sortWeek, string filter)
+        public ViewResult Index(string sortWeek, string filter, string TimetableType, string Selector)
         {//this code shows the user only their own requests, filtered by UserID
-
-            var weekFilter = Convert.ToInt32(sortWeek);
 
             var db = new DatabaseContext();
             var userQry = from user in db.zUser where user.DeptCode == User.Identity.Name select user.UserId;
             var userID = userQry.FirstOrDefault();
-            if (userID == 1) //if the user is the central admin, show all requests
+            
+            if (TimetableType == "0")
             {
-                var reqQry = from request in db.zRequest where request.StatusId == 4 select request;
+                var lecturerId = int.Parse(Selector);
+                var lecturer = (from Lecturer in db.zLecturer where Lecturer.LecturerId == lecturerId select Lecturer).FirstOrDefault();
+                List<zRequest> reqList = new List<zRequest>();
+                foreach (var module in lecturer.zModule)
+                {
+                    reqList.AddRange(module.zRequest.Where(r => r.StatusId == 1 || r.StatusId == 5));
+                }
+
                 if (!String.IsNullOrWhiteSpace(filter))
                 {
-                    //Could also search based on module name, etc. if included in view
-                    reqQry = reqQry.Where(r => r.ModCode.Contains(filter.ToUpper())
-                                                || r.SpecialRequirement.ToUpper().Contains(filter.ToUpper())
-                                                || r.zDay.DayValue.ToUpper().Contains(filter.ToUpper()));
+
                 }
 
                 List<string> ReqIdList = new List<string>();
-                foreach (var zrequest in reqQry)
+                foreach (var zrequest in reqList)
                 {
                     List<string> weeksList = new List<string>();
                     ReqIdList.Add("" + zrequest.RequestId);
@@ -63,21 +64,26 @@ namespace TeamProject2.Controllers
                     //ViewBag.reqId = String.Join(",", weeksList.ToArray());
                 }
                 ViewBag.RequestIdList = String.Join(",", ReqIdList.ToArray());
-                reqQry = SortRequests(reqQry, weekFilter);
-                return View(reqQry);
+                ViewBag.empty = populateLecturerList();
+                return View(reqList);
             }
-            else //else show requests associated with the user's account
+            else if (TimetableType == "1")
             {
-                var reqQry = from request in db.zRequest where request.UserId == userID select request;
+                var progId = int.Parse(Selector);
+                var programme = (from Programme in db.zProgramme where Programme.ProgrammeCode == progId select Programme).FirstOrDefault();
+                List<zRequest> reqList = new List<zRequest>();
+                foreach (var module in programme.zModule)
+                {
+                    reqList.AddRange(module.zRequest.Where(r => r.StatusId == 1 || r.StatusId == 5));
+                }
+
                 if (!String.IsNullOrWhiteSpace(filter))
                 {
-                    //Could also search based on module name, etc. if included in view
-                    reqQry = reqQry.Where(r => r.ModCode.Contains(filter.ToUpper())
-                                                || r.SpecialRequirement.ToUpper().Contains(filter.ToUpper())
-                                                || r.zDay.DayValue.ToUpper().Contains(filter.ToUpper()));
+
                 }
+
                 List<string> ReqIdList = new List<string>();
-                foreach (var zrequest in reqQry)
+                foreach (var zrequest in reqList)
                 {
                     List<string> weeksList = new List<string>();
                     ReqIdList.Add("" + zrequest.RequestId);
@@ -94,10 +100,18 @@ namespace TeamProject2.Controllers
                     //ViewBag.reqId = String.Join(",", weeksList.ToArray());
                 }
                 ViewBag.RequestIdList = String.Join(",", ReqIdList.ToArray());
-                reqQry = SortRequests(reqQry, weekFilter);
-                return View(reqQry);
+                ViewBag.empty = populateProgrammeList();
+                return View(reqList);
             }
-            //zrequestRepository.AllIncluding(zrequest => zrequest.zFacility, zrequest => zrequest.zRoom)
+            else 
+            {
+                ViewBag.empty = populateLecturerList();
+                var empty = from Request in db.zRequest where Request.RequestId == -1 select Request;
+                var emptyList = new List<SelectListItem>();
+                emptyList.Add(new SelectListItem { Text = "Please select a timetable type", Value = "-1" });
+                ViewBag.empty = emptyList;
+                return View(empty);
+            }
         }
 
         private IQueryable<zRequest> SortRequests(IQueryable<zRequest> requests, int sortWeek)
@@ -126,6 +140,197 @@ namespace TeamProject2.Controllers
             }
             requests = requests.OrderBy(r => r.ModCode);
             return (requests);
+        }
+
+        public List<SelectListItem> populateLecturerList()
+        {
+            var db = new DatabaseContext();
+            if (User.Identity.Name == "CA")
+            {
+                var lecQry = from Lecturer in db.zLecturer select Lecturer;
+                var lecList = new List<SelectListItem>();
+                foreach (var person in lecQry)
+                {
+                    lecList.Add(new SelectListItem { Text = person.LecturerName, Value = person.LecturerId.ToString() });
+                }
+                return lecList;
+            }
+            else
+            {
+                var lecQry = from Lecturer in db.zLecturer where Lecturer.DeptCode == User.Identity.Name select Lecturer;
+                var lecList = new List<SelectListItem>();
+                foreach (var person in lecQry)
+                {
+                    lecList.Add(new SelectListItem { Text = person.LecturerName, Value = person.LecturerId.ToString() });
+                }
+                return lecList;
+            }
+        }
+
+        public List<SelectListItem> populateProgrammeList()
+        {
+            var db = new DatabaseContext();
+            if (User.Identity.Name == "CA")
+            {
+                var progQry = from Programme in db.zProgramme select Programme;
+                var progList = new List<SelectListItem>();
+                foreach (var Programme in progQry)
+                {
+                    var progCode = Programme.DeptCode;
+                    if (Programme.GradType)
+                    {
+                        progCode += "U";
+                    }
+                    else
+                    {
+                        progCode += "PT";
+                    }
+                    if (Programme.ProgramType)
+                    {
+                        progCode += "B";
+                    }
+                    else
+                    {
+                        progCode += "M";
+                    }
+                    if (Programme.ProgrammeCode < 10)
+                    {
+                        progCode += "0";
+                    }
+                    progCode += Programme.ProgrammeCode;
+                    progList.Add(new SelectListItem { Text = progCode, Value = Programme.ProgrammeCode.ToString() });
+                }
+                return progList;
+            }
+            else
+            {
+                var progQry = from Programme in db.zProgramme where Programme.DeptCode == User.Identity.Name select Programme;
+                var progList = new List<SelectListItem>();
+                foreach (var Programme in progQry)
+                {
+                    var progCode = Programme.DeptCode;
+                    if (Programme.GradType)
+                    {
+                        progCode += "U";
+                    }
+                    else
+                    {
+                        progCode += "PT";
+                    }
+                    if (Programme.ProgramType)
+                    {
+                        progCode += "B";
+                    }
+                    else
+                    {
+                        progCode += "M";
+                    }
+                    if (Programme.ProgrammeCode < 10)
+                    {
+                        progCode += "0";
+                    }
+                    progCode += Programme.ProgrammeCode;
+                    progList.Add(new SelectListItem { Text = progCode, Value = Programme.ProgrammeCode.ToString() });
+                }
+                return progList;
+            }
+        }
+
+        [HttpPost]
+        public JsonResult fillSelector(int type)
+        {
+            if (type == 0)
+            {
+                var db = new DatabaseContext();
+                if (User.Identity.Name == "CA")
+                {
+                    var lecQry = from Lecturer in db.zLecturer select Lecturer;
+                    var lecList = new List<SelectListItem>();
+                    foreach (var person in lecQry)
+                    {
+                        lecList.Add(new SelectListItem { Text = person.LecturerName, Value = person.LecturerId.ToString() });
+                    }
+                    return Json(lecList);
+                }
+                else
+                {
+                    var lecQry = from Lecturer in db.zLecturer where Lecturer.DeptCode == User.Identity.Name select Lecturer;
+                    var lecList = new List<SelectListItem>();
+                    foreach (var person in lecQry)
+                    {
+                        lecList.Add(new SelectListItem { Text = person.LecturerName, Value = person.LecturerId.ToString() });
+                    }
+                    return Json(lecList);
+                }
+            }
+            else
+            {
+                var db = new DatabaseContext();
+                if (User.Identity.Name == "CA")
+                {
+                    var progQry = from Programme in db.zProgramme select Programme;
+                    var progList = new List<SelectListItem>();
+                    foreach (var Programme in progQry)
+                    {
+                        var progCode = Programme.DeptCode;
+                        if (Programme.GradType)
+                        {
+                            progCode += "U";
+                        }
+                        else
+                        {
+                            progCode += "PT";
+                        }
+                        if (Programme.ProgramType)
+                        {
+                            progCode += "B";
+                        }
+                        else
+                        {
+                            progCode += "M";
+                        }
+                        if (Programme.ProgrammeCode < 10)
+                        {
+                            progCode += "0";
+                        }
+                        progCode += Programme.ProgrammeCode;
+                        progList.Add(new SelectListItem { Text = progCode, Value = Programme.ProgrammeCode.ToString() });
+                    }
+                    return Json(progList);
+                }
+                else
+                {
+                    var progQry = from Programme in db.zProgramme where Programme.DeptCode == User.Identity.Name select Programme;
+                    var progList = new List<SelectListItem>();
+                    foreach (var Programme in progQry)
+                    {
+                        var progCode = Programme.DeptCode;
+                        if (Programme.GradType)
+                        {
+                            progCode += "U";
+                        }
+                        else
+                        {
+                            progCode += "PT";
+                        }
+                        if (Programme.ProgramType)
+                        {
+                            progCode += "B";
+                        }
+                        else
+                        {
+                            progCode += "M";
+                        }
+                        if (Programme.ProgrammeCode < 10)
+                        {
+                            progCode += "0";
+                        }
+                        progCode += Programme.ProgrammeCode;
+                        progList.Add(new SelectListItem { Text = progCode, Value = Programme.ProgrammeCode.ToString() });
+                    }
+                    return Json(progList);
+                }
+            }
         }
     }
 }

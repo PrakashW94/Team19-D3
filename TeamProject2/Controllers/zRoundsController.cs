@@ -61,11 +61,14 @@ namespace TeamProject2.Controllers
         [HttpPost]
         public ActionResult Create(zRound zround)
         {
-            if (ModelState.IsValid) {
+            if (ModelState.IsValid) 
+            {
                 zroundRepository.InsertOrUpdate(zround);
                 zroundRepository.Save();
                 return RedirectToAction("Index");
-            } else {
+            } 
+            else 
+            {
 				return View();
 			}
         }
@@ -73,7 +76,7 @@ namespace TeamProject2.Controllers
         //
         // GET: /zRounds/Edit/5
  
-        public ActionResult Edit(short id)
+        public ActionResult Edit(int id)
         {
             string accName = User.Identity.Name;
             if (accName == "CA")
@@ -105,7 +108,7 @@ namespace TeamProject2.Controllers
         //
         // GET: /zRounds/Delete/5
  
-        public ActionResult Delete(short id)
+        public ActionResult Delete(int id)
         {
             string accName = User.Identity.Name;
             if (accName == "CA")
@@ -122,11 +125,20 @@ namespace TeamProject2.Controllers
         // POST: /zRounds/Delete/5
 
         [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(short id)
+        public ActionResult DeleteConfirmed(int id)
         {
             zroundRepository.Delete(id);
             zroundRepository.Save();
 
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult Viewable(int id)
+        {
+            var zround = zroundRepository.Find(id);
+            zround.Viewable = true;
+            zroundRepository.InsertOrUpdate(zround);
+            zroundRepository.Save();
             return RedirectToAction("Index");
         }
 

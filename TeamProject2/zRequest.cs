@@ -16,9 +16,9 @@ namespace TeamProject2
     {
         public zRequest()
         {
+            this.zRoom = new HashSet<zRoom>();
             this.zFacility = new HashSet<zFacility>();
             this.zRoomBooking = new HashSet<zRoomBooking>();
-            this.zRoom = new HashSet<zRoom>();
         }
     
         public int RequestId { get; set; }
@@ -29,7 +29,7 @@ namespace TeamProject2
         public short PeriodId { get; set; }
         public short SessionLength { get; set; }
         public short Semester { get; set; }
-        public short RoundNo { get; set; }
+        public int RoundNo { get; set; }
         public string SpecialRequirement { get; set; }
         public short UserId { get; set; }
         public int RoomCount { get; set; }
@@ -41,9 +41,9 @@ namespace TeamProject2
         public virtual zStatus zStatus { get; set; }
         public virtual zUser zUser { get; set; }
         public virtual zWeek zWeek { get; set; }
+        public virtual ICollection<zRoom> zRoom { get; set; }
         public virtual ICollection<zFacility> zFacility { get; set; }
         public virtual ICollection<zRoomBooking> zRoomBooking { get; set; }
-        public virtual ICollection<zRoom> zRoom { get; set; }
     }
     
 }

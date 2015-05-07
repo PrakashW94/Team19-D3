@@ -27,15 +27,17 @@ namespace TeamProject2.Models
             return query;
         }
 
-        public zRound Find(short id)
+        public zRound Find(int id)
         {
             return context.zRound.Find(id);
         }
 
         public void InsertOrUpdate(zRound zround)
         {
-            if (zround.RoundNo == default(short)) {
+            if (zround.RoundNo == default(int)) 
+            {
                 // New entity
+                zround.RoundNo = context.zRound.Count() + 1;
                 context.zRound.Add(zround);
             } else {
                 // Existing entity
@@ -43,7 +45,7 @@ namespace TeamProject2.Models
             }
         }
 
-        public void Delete(short id)
+        public void Delete(int id)
         {
             var zround = context.zRound.Find(id);
             context.zRound.Remove(zround);
@@ -64,9 +66,9 @@ namespace TeamProject2.Models
     {
         IQueryable<zRound> All { get; }
         IQueryable<zRound> AllIncluding(params Expression<Func<zRound, object>>[] includeProperties);
-        zRound Find(short id);
+        zRound Find(int id);
         void InsertOrUpdate(zRound zround);
-        void Delete(short id);
+        void Delete(int id);
         void Save();
     }
 }

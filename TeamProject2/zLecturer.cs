@@ -21,7 +21,9 @@ namespace TeamProject2
     
         public int LecturerId { get; set; }
         public string LecturerName { get; set; }
+        public string DeptCode { get; set; }
     
+        public virtual zDepartment zDepartment { get; set; }
         public virtual ICollection<zModule> zModule { get; set; }
     }
     
