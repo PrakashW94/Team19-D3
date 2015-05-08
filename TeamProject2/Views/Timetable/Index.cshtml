@@ -31,25 +31,37 @@
 
     @Html.DropDownList("Selector", new SelectList(ViewBag.empty, "Value", "Text"))
     <input type="submit" value="View Timetable" />
+    
+    <br />
+    @Html.RadioButton("selectedWeek", "All", true ) <text>All</text>
+    for (var i = 1; i <= 16; i++)
+    {
+        @Html.RadioButton("selectedWeek", i, false) <text>@i.ToString()</text>
+    }
+
+    @*
+    <table class="weekLink">
+        <tr>
+            <td class="weekLinkCell"><strong>Select Week:</strong></td>
+            <td class="weekLinkCell">@Html.ActionLink("All", "Index")</td>
+            @for (var i = 1; i <= 16; i++)
+            {
+                <td class="weekLinkCell">@Html.ActionLink(i.ToString(), "Index", new { sortWeek = i.ToString() })</td>
+            }
+        </tr>
+    </table>
+    *@
 }
-@*
-<table class="weekLink">
-    <tr>
-        <td class="weekLinkCell"><strong>Select Week:</strong></td>
-        <td class="weekLinkCell">@Html.ActionLink("All", "Index")</td>
-        @for (var i = 1; i <= 16; i++)
-        {
-            <td class="weekLinkCell">@Html.ActionLink(i.ToString(), "Index", new { sortWeek = i.ToString() })</td>
-        }
-    </tr>
-</table>
-*@
+
+
+
 <h3>
     @{
-        String Week = Request.QueryString["sortWeek"];
+        String Week = Request.QueryString["selectedWeek"];
+        
     }
     Week
-    @if (Request.QueryString["sortWeek"] == null)
+    @if (Request.QueryString["selectedWeek"] == null)
     {
         var all = "1-16";
         @all
@@ -63,7 +75,7 @@
 @{
     string[] days = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
 }
-
+@Html.Hidden("RequestIdList")
 <table class="ttView">
     @for (var i = 0; i <= 5; i++)
     {
@@ -102,7 +114,7 @@
                                     <hr class="tthr" />
                                     @if (Request.QueryString["sortWeek"] == null)
                                     {
-                                        @Html.Hidden("RequestIdList")
+                                        
                                         @Html.Hidden(@item.RequestId + "")
                                         <div class="WeekDisp-@item.RequestId"></div>
                                     }

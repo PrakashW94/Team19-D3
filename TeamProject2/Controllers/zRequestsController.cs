@@ -351,10 +351,17 @@ namespace TeamProject2.Controllers
         public List<string> populateRoomList()
         {//function to return a list of rooms and return it as a list of strings
             var db = new DatabaseContext();
-            var roomQry = from Room in db.zRoom select Room.RoomCode;
+            var roomQry = (from Room in db.zRoom select Room).OrderBy(x => x.RoomCode);
             var roomList = new List<string>();
-            roomList = roomQry.ToList();
-            roomList.Insert(0, "Any");
+            roomList.Add("Any");
+            foreach (var room in roomQry)
+            {
+                if ((!room.Private) || (room.Private && room.zDepartment.FirstOrDefault().DeptCode == User.Identity.Name))
+                {
+                    roomList.Add(room.RoomCode);
+                }
+            }
+
             return roomList;
         }
 
@@ -405,7 +412,15 @@ namespace TeamProject2.Controllers
             {//if a specific park is selected, return rooms in that building
                 var db = new DatabaseContext();
                 var building = (from Building in db.zBuilding where Building.BuildingCode == buildingCode select Building.BuildingId).ToList().FirstOrDefault();
-                var roomList = (from Room in db.zRoom where Room.BuildingId == building select Room.RoomCode).ToList();
+                var roomQry = (from Room in db.zRoom where Room.BuildingId == building orderby Room.RoomCode select Room).OrderBy(x => x.RoomCode);
+                var roomList = new List<string>();
+                foreach (var room in roomQry)
+                {
+                    if ((!room.Private) || (room.Private && room.zDepartment.FirstOrDefault().DeptCode == User.Identity.Name))
+                    {
+                        roomList.Add(room.RoomCode);
+                    }
+                }
                 return Json(roomList);
             }
             else
@@ -497,6 +512,7 @@ namespace TeamProject2.Controllers
             
             var roomsList = new List<string>();
             var capsList = new List<string>();
+            var privRoomCount = 0;
             if(Rooms == "")
             {
                 roomsList.Add("0");
@@ -549,6 +565,10 @@ namespace TeamProject2.Controllers
                     case 3: //specific room
                         var roomCode = place.Substring(1);
                         var roomDB = (from Room in db.zRoom where Room.RoomCode == roomCode select Room).FirstOrDefault();
+                        if (roomDB.Private)
+                        {
+                            privRoomCount++;
+                        }
                         var room = new zRoomBooking();
                         room.Type = type;
                         room.Capacity = cap;
@@ -589,7 +609,14 @@ namespace TeamProject2.Controllers
 
             zrequest.Semester = 1;
 
-            zrequest.StatusId = 3;
+            if (zrequest.RoomCount == privRoomCount)
+            {
+                zrequest.StatusId = 1;
+            }
+            else
+            {
+                zrequest.StatusId = 3;
+            }
             //set status to pending
             zrequestRepository.Insert(zrequest);
             zrequestRepository.Save();

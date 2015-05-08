@@ -24,7 +24,7 @@ namespace TeamProject2.Controllers
         //
         // GET: /Timetable/
 
-        public ViewResult Index(string sortWeek, string filter, string TimetableType, string Selector)
+        public ViewResult Index(string selectedWeek, string TimetableType, string Selector)
         {//this code shows the user only their own requests, filtered by UserID
 
             var db = new DatabaseContext();
@@ -39,11 +39,6 @@ namespace TeamProject2.Controllers
                 foreach (var module in lecturer.zModule)
                 {
                     reqList.AddRange(module.zRequest.Where(r => r.StatusId == 1 || r.StatusId == 5));
-                }
-
-                if (!String.IsNullOrWhiteSpace(filter))
-                {
-
                 }
 
                 List<string> ReqIdList = new List<string>();
@@ -75,11 +70,6 @@ namespace TeamProject2.Controllers
                 foreach (var module in programme.zModule)
                 {
                     reqList.AddRange(module.zRequest.Where(r => r.StatusId == 1 || r.StatusId == 5));
-                }
-
-                if (!String.IsNullOrWhiteSpace(filter))
-                {
-
                 }
 
                 List<string> ReqIdList = new List<string>();

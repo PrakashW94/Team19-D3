@@ -27,7 +27,7 @@ namespace TeamProject2.Controllers
 
         public ViewResult Index()
         {
-            return View(zlecturerRepository.All);
+            return View(zlecturerRepository.All.Where(x => x.DeptCode == User.Identity.Name));
         }
 
         //

@@ -42,7 +42,8 @@ namespace TeamProject2.Models
                     context.zModule.Attach(module);
                 }
                 context.zLecturer.Add(zlecturer);
-            } else 
+            } 
+            else 
             {
                 // Existing entity
                 var updateLecturer = context.zLecturer.Find(zlecturer.LecturerId);
