@@ -9,7 +9,7 @@
 
 #keywords thead {
   cursor: pointer;
-  background: #c9dff0;
+  background: #D8D8D8;
 }
 #keywords thead tr th { 
   font-weight: bold;
@@ -34,9 +34,27 @@
 }
 
 
-#keywords tbody tr { 
-  color: #555;
+#keywords tr:hover { 
+  background-color: #E6E6E6;
 }
+
+.status-1 {
+background-color : #BCF5A9;
+}
+
+.status-2 {
+background-color : #F5A9A9;
+}
+
+.status-5 {
+background-color : #CEF6EC;
+}
+
+#keywords tbody tr { 
+    
+    color: #555;
+}
+
 #keywords tbody tr td {
   text-align: center;
   padding: 15px 10px;

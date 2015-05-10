@@ -6,6 +6,7 @@
     <script src="~/Scripts/jquery-ui-1.8.24.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="~/Scripts/jquery.tablesorter.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/Content/tables.css" />
     <link rel="stylesheet" type="text/css" href="~/Content/Site.css" />
     
     @*
@@ -29,7 +30,7 @@
                  <img id="img_logo" alt="Logo" src="@Url.Content("~/Content/Images/logo.png")" /> 
                 <br>
                 <br />
-                <p class="site-title">@Html.ActionLink("Loughborough Timetabling System", "Index", "Home")</p>
+                <p class="site-title">@Html.ActionLink("Loughborough Timetabling System", "Index", "zRequests")</p>
                  </div>
             <div class="float-right">
                 
@@ -49,7 +50,7 @@
                                   <li> <a href="#">Manage Stored Data</a>
                                    
                                  <ul id="submenu" class="nested">
-                                   <li>@Html.ActionLink("Check Room Availability", "Availability", "zRooms")</li>
+                                   <li>@Html.ActionLink("Room Availability", "Availability", "zRooms")</li>
                                      <li>@Html.ActionLink("View Rooms", "Index", "zRooms")</li>
                                     <li>@Html.ActionLink("View Facilities", "Index", "zFacilities") </li>
                                      <li>@Html.ActionLink("View Rounds", "Index", "zRounds")</li>
@@ -86,6 +87,4 @@
     </footer>
     
 </body>
-
-
 </html>

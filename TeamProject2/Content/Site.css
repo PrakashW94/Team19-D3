@@ -7,7 +7,7 @@ html {
 body {
     background-color: #FFFFFF;
     color: #333;
-    font-size: .85em;
+    font-size: 1em;
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
     margin: 0;
     padding: 0;
@@ -29,7 +29,7 @@ a {
     }
 
     a:hover {
-        background-color: #000000;
+        background-color: #7ac0da;
     }
 
 header, footer, hgroup,
@@ -99,7 +99,7 @@ h5, h6 {
 ----------------------------------------------------------*/
 .content-wrapper {
     margin: 15px auto;
-    max-width: 1500px;
+    max-width: 1600px;
 }
 
 #body {
@@ -112,8 +112,9 @@ h5, h6 {
         padding-left: 10px;
         padding-top: 3px;
         border-style: solid;
-        border-color: #DDDDDD;
-        border-width: 1px;
+        border-color: #371a4d;
+        border-radius: 5px;
+        border-width: 5px;
     }
 
 header .content-wrapper {
@@ -186,10 +187,12 @@ footer {
 ul#menu, ul#menu ul
 {
     list-style: none;
-    border: 1px solid #F2F2F2;
-    background-color: #FAFAFA;
+    border: 0px solid #000000;
+    background-color: #FFFFFF;
     padding: 0 0 26px 0;
-    margin: 0;
+    margin: 3px;
+    margin-top: 10px;
+
 }
 ul#menu li
 {
@@ -197,6 +200,8 @@ ul#menu li
     margin-right: 3px;
     border: 1px solid #E7E7E7;
     position: relative;
+    padding-top: 0;
+    padding-bottom: 5px;
 }
 
 ul#menu ul
@@ -221,12 +226,13 @@ ul#menu a:link, ul#menu a:visited
 {
     display: block;
     font-family: Tahoma;
-    font-size: 0.75em;
+    font-size: 1.1em;
     font-weight: bold;
     text-align: left;
     text-decoration: none;
-    color: #D8D8D8;
+    color: #000000;
     padding: 5px;
+    height: auto;
 }
 
 ul#menu li:hover
@@ -385,7 +391,7 @@ aside {
         margin: 0;
     }
 
-    #loginForm input {
+    #loginForm input {input[type="submit"], input[type="button"]
         width: 250px;
     }
 
@@ -518,7 +524,7 @@ textarea {
         padding: 7px;
         margin-right: 8px;
         width: auto;
-        margin-left: 1000px;
+        margin-left: 10px;
 
     }
 
@@ -586,7 +592,7 @@ input[type="checkbox"].input-validation-error {
 
 
 /* tables
-----------------------------------------------------------*/
+----------------------------------------------------------
 table {
     border-collapse: collapse;
     border-spacing: 0;
@@ -646,7 +652,8 @@ th {
 td {
     padding: 0.25em 2em 0.25em 0em;
     border: 1px solid;
-    text-align: left;
+    text-align: left;h
+
 
 }
 
@@ -654,7 +661,7 @@ tr.pager td {
     padding: 0 0.25em 0 0;
 }
 
-
+*/
 
 
 /********************

@@ -8,6 +8,7 @@ using TeamProject2.Models;
 
 namespace TeamProject2.Controllers
 {   
+    [Authorize]
     public class zRequestsController : Controller
     {
 		private readonly IzRequestRepository zrequestRepository;

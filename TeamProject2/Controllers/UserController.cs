@@ -52,7 +52,7 @@ namespace TeamProject2.Controllers
                 if (isValid(user.DeptCode, user.Password))
                 {
                     FormsAuthentication.SetAuthCookie(user.DeptCode, false);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "zRequests");
                 }
                 else 
                 {
@@ -66,7 +66,7 @@ namespace TeamProject2.Controllers
         public ActionResult LogOut()
         {
             FormsAuthentication.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "User");
         }
 
         private bool isValid(string deptCode, string password)
