@@ -15,8 +15,9 @@ namespace TeamProject2.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            return View();
+            //return View();
             //return RedirectToAction("Login", "User");
+            return RedirectToAction("Index", "zRequests");
         }
 
     }
