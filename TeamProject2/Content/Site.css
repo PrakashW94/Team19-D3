@@ -1,18 +1,17 @@
 html {
-    background-color: #ffffff;
+    background-color: #333;
     margin: 0;
     padding: 0;
 }
 
 body {
     background-color: #FFFFFF;
+    border-top: solid 10px #000;
     color: #333;
     font-size: .85em;
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
     margin: 0;
     padding: 0;
-    margin-top: 50px;
-    margin-right: 20px;
 }
 
 a {
@@ -99,7 +98,7 @@ h5, h6 {
 ----------------------------------------------------------*/
 .content-wrapper {
     margin: 15px auto;
-    max-width: 1500px;
+    max-width: 960px;
 }
 
 #body {
@@ -135,8 +134,6 @@ footer {
     font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
     font-size: 2.3em;
     margin: 0;
-    margin-top: 1px;
-    margin-bottom: 50px;
 }
 
 .site-title a, .site-title a:hover, .site-title a:active {
@@ -478,10 +475,6 @@ input, select {
     width: 300px;
 }
 
-#capacityslider{
-    margin-top:10px;
-    }
-
 input[type=radio]{
     border: 1px solid #e2e2e2;
     background: #fff;
@@ -518,8 +511,6 @@ textarea {
         padding: 7px;
         margin-right: 8px;
         width: auto;
-        margin-left: 1000px;
-
     }
 
     td input[type="submit"],
@@ -592,9 +583,6 @@ table {
     border-spacing: 0;
     margin-top: 0.75em;
     border: 0 none;
-    border: 2px solid #000000;
-    width: 1500px;
-    border: 2px solid #000000;
 }
 
 th {
@@ -602,9 +590,6 @@ th {
     text-align: left;
     border: none 0px;
     padding-left: 0;
-    border-left: 10px;
-    border-right: 10px;
-    text-align: left;
 }
 
     th a {
@@ -645,16 +630,12 @@ th {
 
 td {
     padding: 0.25em 2em 0.25em 0em;
-    border: 1px solid;
-    text-align: left;
-
+    border: 0 none;
 }
 
 tr.pager td {
     padding: 0 0.25em 0 0;
 }
-
-
 
 
 /********************
@@ -733,7 +714,7 @@ tr.pager td {
     }
 
     .content-wrapper {
-        padding-right: 15px;
+        padding-right: 10px;
         padding-left: 10px;
     }
 

@@ -17,9 +17,9 @@
     }
 </p>
 
-<form id="capacityslider" action="/zRooms?roomCap=@ViewBag.RoomCap" id="form" method="post">
+<form action="/zRooms?roomCap=@ViewBag.RoomCap" id="form" method="post">
     <p>
-        <input type=range id=capacity value="@ViewBag.RoomCap" min=1 max=400 oninput="outputUpdate(value)" /> <!--<output for=capacity id=capOutput>@ViewBag.RoomCap</output>--> <br />
+        <input type=range id=capacity value="@ViewBag.RoomCap" min=1 max=400 oninput="outputUpdate(value)" /> <!--<output for=capacity id=capOutput>@ViewBag.RoomCap</output>-->
         <input type="number" id="capOutput" value="@ViewBag.RoomCap" min=1 max=400 oninput="rangeUpdate(value)" />
         <input type="submit" value="Search Capacity" /> <!--Changed <output> to <input number> to let timetabler type if they want (figured that's something Dawson/Batmaz would complain about)-->
         @Html.ActionLink("Reset Room View", "Index") @*Returns view to default easily*@
