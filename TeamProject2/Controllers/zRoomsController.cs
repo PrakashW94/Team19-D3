@@ -45,24 +45,59 @@ namespace TeamProject2.Controllers
             return facilityQry.ToList();
         }
 
-        public ViewResult Index(int? roomCap, string sortOrder)
+        public ViewResult Index()
         {
-            ViewBag.RoomSortParm = String.IsNullOrEmpty(sortOrder) ? "roomCode_desc" : "";
-            ViewBag.CapSortParm = sortOrder == "roomCap" ? "roomCap_desc" : "roomCap";
-            ViewBag.ChosenSort = sortOrder;
-
             var roomQry = zroomRepository.AllIncluding(zroom => zroom.zFacility);
-            if (roomCap.HasValue)
+            return View(roomQry);
+        }
+
+        public ActionResult Availability()
+        {
+            ViewBag.facilityList = populateFacilityList();
+            ViewBag.selectedFacilities = "";
+            List<zRoom> empty = new List<zRoom>();
+            return View(empty);
+        }
+
+        [HttpPost]
+        public ActionResult Availability(string[] Facilities, string capacity, int? sortCode)
+        {
+            var db = new DatabaseContext();
+            var FacList = new List<zFacility>();
+            var FacStringSplit = new List<string>();
+            if (Facilities != null)
             {
-                ViewBag.RoomCap = roomCap;
-                roomQry = zroomRepository.AllIncluding(zroom => zroom.zFacility).Where(r => r.Capacity >= roomCap);
+                FacStringSplit = Facilities.ToList();
+            }
+            foreach (var facility in FacStringSplit)
+            {
+                var facName = facility.Replace('.', ' ');
+                FacList.Add((from Facility in db.zFacility where Facility.FacilityName == facName select Facility).FirstOrDefault());
+            }
+            var cap = int.Parse(capacity);
+            var roomQry = (from Room in db.zRoom where Room.Capacity >= cap select Room).OrderBy(x => x.RoomCode);
+
+            var roomFilterList = new List<zRoom>();
+            foreach (var room in roomQry)
+            {
+                var facCheck = room.zFacility.Intersect(FacList).Count();
+                if (facCheck >= FacList.Count())
+                {
+                    roomFilterList.Add(room);
+                }
+            }
+            ViewBag.facilityList = populateFacilityList();
+            ViewBag.roomList = String.Join(",", roomFilterList.Select(x => x.RoomId.ToString()));
+            if (Facilities != null)
+            {
+                ViewBag.selectedFacilities = FacList.Select(x => x.FacilityName).ToList();
+                ViewBag.selectedFacilitiesString = String.Join(",", FacList.Select(x => x.FacilityName).ToList());
             }
             else
             {
-                ViewBag.RoomCap = 100;
+                ViewBag.selectedFacilities = FacStringSplit;
             }
-            roomQry = SortRooms(roomQry, sortOrder);
-            return View(roomQry);
+            return View(roomFilterList);
         }
 
         public IQueryable<zRoom> SortRooms(IQueryable<zRoom> rooms, string sortOrder)
@@ -91,7 +126,6 @@ namespace TeamProject2.Controllers
 
         //
         // GET: /zRooms/Create
-
 
         public ActionResult Create()
         {

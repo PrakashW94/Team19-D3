@@ -1,14 +1,14 @@
-@model TeamProject2.zRequest
+﻿@model TeamProject2.zRequest
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create Ad-Hoc";
 }
 
 <script src="~/Scripts/weekselector.js"></script>
 <script src="~/Scripts/roomselector.js"></script>
 <link rel="stylesheet" type="text/css" href="~/Content/weekselector.css" />
 
-<h2>Create</h2>
+<h2>Create Ad-Hoc</h2>
 
 @* code to display ViewBag 
 <ul>
@@ -19,7 +19,7 @@
 </ul>
 *@
 
-@using (Html.BeginForm("Create", "zRequests")) 
+@using (Html.BeginForm("CreateAdHoc", "zRequests")) 
 {
     <fieldset>
         <legend>zRequest</legend>
@@ -48,10 +48,18 @@
         </div>
 
         <div class="editor-label">
+            @Html.Label("Semester")
+        </div>
+        <div class="editor-field">
+            @Html.RadioButton("Semester", "1", true, new {@onclick = "toggleWeeks(this.value)" }) <text>1</text>
+            @Html.RadioButton("Semester", "2", false, new {@onclick = "toggleWeeks(this.value)" }) <text>2</text>
+        </div>
+
+        <div class="editor-label">
             @Html.Label("Weeks")
         </div>
         <div class="editor-field">
-            <ol id="weekSelector">
+            <ol id="adhocWeekSelector">
                 <li class="ui-state-default">1</li>
                 <li class="ui-state-default">2</li>
                 <li class="ui-state-default">3</li>

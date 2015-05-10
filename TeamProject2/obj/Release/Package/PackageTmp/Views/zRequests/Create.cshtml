@@ -122,10 +122,10 @@
         <div class="editor-label">
             @Html.Label("Facilities")
         </div>
-        <div class="editor-field">
+        <div id="FacilitiesChkBox" class="editor-field">
             @foreach (var item in ViewBag.facilityList)
             {
-                <input type="checkbox" name="Facilities" id="Facilities" value=@item.Replace(" ", ".") /> @item <br />
+                <input type="checkbox" name="Facilities" id="Facilities" value="@item.Replace(" ", ".")" onchange="filterByFacs()" /> @item <br />
             }
         </div>
 

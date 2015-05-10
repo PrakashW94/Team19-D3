@@ -111,6 +111,101 @@ namespace TeamProject2.Models
             context.zRequest.Add(zrequest);
         }
 
+        public void InsertAdHoc(zRequest zrequest)
+        {
+            // New entity
+            foreach (var facility in zrequest.zFacility)
+            {
+                context.zFacility.Attach(facility);
+            } //all stuff being added that already exists in the database needs to be attached 
+            //otherwise a new entry for it will be added in the db which is baaad
+            List<zPark> parkList = new List<zPark>();
+            List<zBuilding> buildingList = new List<zBuilding>();
+            List<zRoom> roomList = new List<zRoom>();
+            var bookedRoomList = zrequest.zRoom.ToList();
+            var index = 0;
+            foreach (var booking in zrequest.zRoomBooking)
+            {
+                
+                switch (booking.Type)
+                {
+                    case 0:
+                        if (zrequest.StatusId == 1)
+                        {
+                            context.zRoom.Attach(bookedRoomList.ElementAt(index));
+                        }
+                    //no attachment required for any room
+                        break;
+
+                    case 1: //any room in a park
+                        var newPark = true;
+                        foreach (var item in parkList)
+                        {
+                            if (booking.zPark.ParkId == item.ParkId)
+                            {
+                                newPark = false;
+                            }
+                        }
+                        if (newPark)
+                        {
+                            context.zPark.Attach(booking.zPark);
+                            parkList.Add(booking.zPark);
+                            if (zrequest.StatusId == 1)
+                            {
+                                context.zRoom.Attach(bookedRoomList.ElementAt(index));
+                            }
+                        }
+                        break;
+
+                    case 2: //any room in a building
+                        var newBuilding = true;
+                        foreach (var item in buildingList)
+                        {
+                            if (booking.zBuilding.BuildingId == item.BuildingId)
+                            {
+                                newBuilding = false;
+                            }
+                        }
+                        if (newBuilding)
+                        {
+                            context.zBuilding.Attach(booking.zBuilding);
+                            buildingList.Add(booking.zBuilding);
+                            if (zrequest.StatusId == 1)
+                            {
+                                context.zRoom.Attach(bookedRoomList.ElementAt(index));
+                            }
+                        }
+                        break;
+
+                    case 3: //specific room
+                        var newRoom = true;
+                        foreach (var item in roomList)
+                        {
+                            if (booking.zRoom.RoomId == item.RoomId)
+                            {
+                                newRoom = false;
+                            }
+                        }
+                        if (newRoom)
+                        {
+                            context.zRoom.Attach(booking.zRoom);
+                            roomList.Add(booking.zRoom);
+                        }
+                        break;
+                    /*
+                     * the code in this section (checked if a booking is unique or not) 
+                     * is a attempt to allow for multiple "Any room in a park/building" 
+                     * in a single request but it didn't really work.
+                     * if such a request is created, the second park/building will be 
+                     * added to the db as a new park/building.
+                     * need to find a way to fix this, attaching multiple times doesn't work
+                     */
+                }
+            index++;
+            }
+            context.zRequest.Add(zrequest);
+        }
+
         public void Update(zRequest zrequest)
         {//this is called when editing a request
             // Existing entity
@@ -219,6 +314,7 @@ namespace TeamProject2.Models
         IQueryable<zRequest> AllIncluding(params Expression<Func<zRequest, object>>[] includeProperties);
         zRequest Find(int id);
         void Insert(zRequest zrequest);
+        void InsertAdHoc(zRequest zrequest);
         void Update(zRequest zrequest);
         void Modify(zRequest zrequest);
         void Delete(int id);

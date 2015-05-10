@@ -26,11 +26,9 @@ namespace TeamProject2.Controllers
 
         public ViewResult Index(string selectedWeek, string TimetableType, string Selector)
         {//this code shows the user only their own requests, filtered by UserID
-
             var db = new DatabaseContext();
             var userQry = from user in db.zUser where user.DeptCode == User.Identity.Name select user.UserId;
             var userID = userQry.FirstOrDefault();
-            
             if (TimetableType == "0")
             {
                 var lecturerId = int.Parse(Selector);
@@ -41,6 +39,23 @@ namespace TeamProject2.Controllers
                     reqList.AddRange(module.zRequest.Where(r => r.StatusId == 1 || r.StatusId == 5));
                 }
 
+                if (selectedWeek != "All" || selectedWeek == null)
+                {
+                    var remList = new List<int>();
+                    foreach (var zrequest in reqList)
+                    {
+                        var value = zrequest.zWeek.GetType().GetProperty("Week" + selectedWeek).GetValue(zrequest.zWeek, null).ToString();
+                        if (value == "False")
+                        {
+                            remList.Add(reqList.IndexOf(zrequest));
+                        }
+                    }
+
+                    foreach (var index in remList)
+                    {
+                        reqList.RemoveAt(index);
+                    }
+                }
                 List<string> ReqIdList = new List<string>();
                 foreach (var zrequest in reqList)
                 {
@@ -70,6 +85,24 @@ namespace TeamProject2.Controllers
                 foreach (var module in programme.zModule)
                 {
                     reqList.AddRange(module.zRequest.Where(r => r.StatusId == 1 || r.StatusId == 5));
+                }
+
+                if (selectedWeek != "All" || selectedWeek == null)
+                {
+                    var remList = new List<int>();
+                    foreach (var zrequest in reqList)
+                    {
+                        var value = zrequest.zWeek.GetType().GetProperty("Week" + selectedWeek).GetValue(zrequest.zWeek, null).ToString();
+                        if (value == "False")
+                        {
+                            remList.Add(reqList.IndexOf(zrequest));
+                        }
+                    }
+
+                    foreach (var index in remList)
+                    {
+                        reqList.RemoveAt(index);
+                    }
                 }
 
                 List<string> ReqIdList = new List<string>();
@@ -102,34 +135,6 @@ namespace TeamProject2.Controllers
                 ViewBag.empty = emptyList;
                 return View(empty);
             }
-        }
-
-        private IQueryable<zRequest> SortRequests(IQueryable<zRequest> requests, int sortWeek)
-        {//check what user wants to sort by and orders it
-            switch (sortWeek)
-            {
-                case 1: requests = requests.Where(r => r.zWeek.Week1 == true); break;
-                case 2: requests = requests.Where(r => r.zWeek.Week2 == true); break;
-                case 3: requests = requests.Where(r => r.zWeek.Week3 == true); break;
-                case 4: requests = requests.Where(r => r.zWeek.Week4 == true); break;
-                case 5: requests = requests.Where(r => r.zWeek.Week5 == true); break;
-                case 6: requests = requests.Where(r => r.zWeek.Week6 == true); break;
-                case 7: requests = requests.Where(r => r.zWeek.Week7 == true); break;
-                case 8: requests = requests.Where(r => r.zWeek.Week8 == true); break;
-                case 9: requests = requests.Where(r => r.zWeek.Week9 == true); break;
-                case 10: requests = requests.Where(r => r.zWeek.Week10 == true); break;
-                case 11: requests = requests.Where(r => r.zWeek.Week11 == true); break;
-                case 12: requests = requests.Where(r => r.zWeek.Week12 == true); break;
-                case 13: requests = requests.Where(r => r.zWeek.Week13 == true); break;
-                case 14: requests = requests.Where(r => r.zWeek.Week14 == true); break;
-                case 15: requests = requests.Where(r => r.zWeek.Week15 == true); break;
-                case 16: requests = requests.Where(r => r.zWeek.Week16 == true); break;
-
-                default:
-                    requests = requests.OrderBy(r => r.ModCode); break;
-            }
-            requests = requests.OrderBy(r => r.ModCode);
-            return (requests);
         }
 
         public List<SelectListItem> populateLecturerList()

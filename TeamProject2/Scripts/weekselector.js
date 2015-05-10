@@ -96,6 +96,16 @@ var selectedItems = [];
 			updateSelectedWeeks(selectedItems);
 			$("#Weeks").val(selectedItems.toString());
 		});
+
+		$("#adhocWeekSelector li").on('click', function ()
+		{
+		    $("#adhocWeekSelector").find('li.ui-selected').removeClass('ui-selected');
+		    $(this).addClass('ui-selected');
+		    $("#Weeks").val($('#adhocWeekSelector').find('li.ui-selected').text());
+		});
+
+		$('#adhocWeekSelector li').first().addClass('ui-selected');
+
 	});
 
 function updateSelectedWeeks(selectedItems)
@@ -135,6 +145,7 @@ function updateSelectedWeeks(selectedItems)
 	output.pop(); // remove trailing comma
 	return output.join("");
 }
+
 function setSelectedWeeks(weeks)
 {
     selectedItems = weeks.split(",");
@@ -149,4 +160,45 @@ function setSelectedWeeks(weeks)
             }
         }
     });
+}
+
+function toggleWeeks(semester)
+{
+    if (semester == "1")
+    {
+        if ($("#adhocWeekSelector").children().length == 16)
+        {
+            if ($('#adhocWeekSelector li').last().hasClass('ui-selected'))
+            {
+                $('#adhocWeekSelector li').first().addClass('ui-selected');
+            }
+            $('#adhocWeekSelector li').last().remove();
+        }
+    }
+    else
+    {
+        if ($("#adhocWeekSelector").children().length == 15)
+        {
+            var html = "<li class='ui-state-default'>16</li>";
+            $('#adhocWeekSelector').append(html);
+
+            $('#adhocWeekSelector li').last().on('click', function ()
+            {
+                $("#adhocWeekSelector").find('li.ui-selected').removeClass('ui-selected');
+                $(this).addClass('ui-selected');
+
+                // Reset selected items
+                selectedItems.length = 0;
+
+                // For every selected element, add it to the array
+                $(".ui-selected").each(function () {
+                    selectedItems.push($(this).text());
+                });
+
+                updateSelectedWeeks(selectedItems);
+                $("#Weeks").val(selectedItems.toString());
+
+            });
+        }
+    }
 }

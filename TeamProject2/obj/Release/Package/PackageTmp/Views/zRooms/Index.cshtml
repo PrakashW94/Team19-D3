@@ -11,11 +11,15 @@
     {
         @Html.ActionLink("Create New", "Create")
     }
+    else
+    {
+        @Html.ActionLink("Create New Private Room", "Create")
+    }
 </p>
 
 <form action="/zRooms?roomCap=@ViewBag.RoomCap" id="form" method="post">
     <p>
-        <input type=range id=capacity value="@ViewBag.RoomCap" min=1 max=400 oninput="outputUpdate(value)" /> <!--<output for=capacity id=capOutput>@ViewBag.RoomCap</output>-->
+        <input type=range id=capacity value="@ViewBag.RoomCap" min=1 max=400 oninput="outputUpdate(value)" />
         <input type="number" id="capOutput" value="@ViewBag.RoomCap" min=1 max=400 oninput="rangeUpdate(value)" />
         <input type="submit" value="Search Capacity" /> <!--Changed <output> to <input number> to let timetabler type if they want (figured that's something Dawson/Batmaz would complain about)-->
         @Html.ActionLink("Reset Room View", "Index") @*Returns view to default easily*@
@@ -77,49 +81,53 @@
 
     @foreach (var item in Model) 
     {
-        if (!@item.Private)
+        if (
+            (!@item.Private)
+            || 
+            (@item.Private && @item.zDepartment.FirstOrDefault().DeptCode == User.Identity.Name)
+            )
         {
-        <tr>
-            <td>
-                @if (@Html.Encode(User.Identity.Name) == "CA")
+            <tr>
+                <td>
+                    @if (@Html.Encode(User.Identity.Name) == "CA")
+                    {
+                        @Html.ActionLink("Edit", "Edit", new { id = item.RoomId })
+                        @Html.ActionLink("Details", "Details", new { id = item.RoomId })
+                        @Html.ActionLink("Delete", "Delete", new { id = item.RoomId })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Details", "Details", new { id = item.RoomId })
+                    }
+                </td>
+                <td>
+			        @item.RoomCode
+                </td>
+                <td>
+			        @item.Capacity
+                </td>
+                <td>
+			        @item.zBuilding.BuildingCode
+                </td>
+                <td>
+			        @item.Private
+                </td>
+                <td>
+                @if (item.zFacility == null)
                 {
-                    @Html.ActionLink("Edit", "Edit", new { id = item.RoomId })
-                    @Html.ActionLink("Details", "Details", new { id = item.RoomId })
-                    @Html.ActionLink("Delete", "Delete", new { id = item.RoomId })
+                    <p>None</p>;
                 }
                 else
                 {
-                    @Html.ActionLink("Details", "Details", new { id = item.RoomId })
+                    List<string> facName = new List<string>();
+                    foreach (var facility in item.zFacility)
+                    {
+                        facName.Add(facility.FacilityName);
+                    }
+                    <p>@string.Join(", ", facName)</p>
                 }
-            </td>
-            <td>
-			    @item.RoomCode
-            </td>
-            <td>
-			    @item.Capacity
-            </td>
-            <td>
-			    @item.zBuilding.BuildingCode
-            </td>
-            <td>
-			    @item.Private
-            </td>
-            <td>
-            @if (item.zFacility == null)
-            {
-                <p>None</p>;
-            }
-            else
-            {
-                List<string> facName = new List<string>();
-                foreach (var facility in item.zFacility)
-                {
-                    facName.Add(facility.FacilityName);
-                }
-                <p>@string.Join(", ", facName)</p>
-            }
-            </td>
-        </tr>
+                </td>
+            </tr>
         }
     }
 </table>

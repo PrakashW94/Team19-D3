@@ -25,3 +25,31 @@
 	list-style-position:inside;
 	border: 1px solid black;
 }
+
+#adhocWeekSelector .ui-selecting{ 
+	background: #CC0066; 
+}
+
+#adhocWeekSelector .ui-selected { 
+	background: #CC0068; 
+	color: white; 
+}
+
+#adhocWeekSelector { 
+	list-style-type: none;
+	margin: 0; 
+	padding: 0; 
+	width: 100%; 
+}
+
+#adhocWeekSelector li { 
+	width: 25px;
+	height: 25px;
+	margin: 1px; 
+	padding: 1px; 
+	float: left;
+	font-size: 1.4em;
+	text-align: center;
+	list-style-position:inside;
+	border: 1px solid black;
+}

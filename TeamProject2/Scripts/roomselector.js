@@ -50,7 +50,7 @@ $(document).ready(function ()
             {
                 url: "../zRequests/Room",
                 type: "POST",
-                data: { buildingCode: 'Any' },
+                data: { buildingCode: 'Any', facilities: selectedFacs.toString() },
                 success: function (rooms) {
                     $("#Room").empty();
                     for (var i = 0; i < rooms.length; i++) {
@@ -72,11 +72,18 @@ $(document).ready(function ()
             {
                 url: "../zRequests/Room",
                 type: "POST",
-                data: { buildingCode: buildingCode },
+                data: { buildingCode: buildingCode, facilities: selectedFacs.toString() },
                 success: function (rooms)
                 {
                     $("#Room").empty();
-                    $("#Room").append("<option> Any </option>");
+                    if (rooms.length == 0) {
+                        $("#Room").append("<option> None available </option>");
+                    }
+                    else
+                    {
+                        $("#Room").append("<option> Any </option>");
+                    }
+                    
                     for (var i = 0; i < rooms.length; i++)
                     {
                         $("#Room").append("<option>" + rooms[i] + "</option>");
@@ -91,7 +98,7 @@ $(document).ready(function ()
         else
         {
             if ($("#Park").val() != "Any")
-            {        
+            {  
                 $("#Room").empty();
                 $("#Room").append("<option> Please select a building </option>");
             }
@@ -101,8 +108,9 @@ $(document).ready(function ()
                 {
                     url: "../zRequests/Room",
                     type: "POST",
-                    data: { building: 'Any' },
-                    success: function (rooms) {
+                    data: { building: 'Any', facilities: selectedFacs.toString() },
+                    success: function (rooms)
+                    {
                         $("#Room").empty();
                         for (var i = 0; i < rooms.length; i++) {
                             $("#Room").append("<option>" + rooms[i] + "</option>");
@@ -115,7 +123,6 @@ $(document).ready(function ()
             }
         }
     });
-
 
     if ($("#Rooms").val() != "")
     {
@@ -329,3 +336,51 @@ if the string begins with 3, this indicates "Specific room"
 This is used to make the processing server-side a bit easier. 
 Prakash
 */
+
+var selectedFacs = [];
+
+function filterByFacs()
+{
+    selectedFacs = [];
+    $("#FacilitiesChkBox input:checked").each(function ()
+    {
+        selectedFacs.push($(this).attr('value').split(".").join(" "));
+    })
+
+    buildingCode = $("#Building").val().split(" ")[0];
+
+    $.ajax(
+    {
+        url: "../zRequests/FilterByFacilities",
+        type: "POST",
+        data: { facilities: selectedFacs.toString(), building: buildingCode },
+        success: function (rooms)
+        {
+            if ($("#Park").val() != "Any" && $("#Building").val() == "Any")
+            {
+                $("#Room").empty();
+                $("#Room").append("<option> Please select a building </option>");
+            }
+            else
+            {
+                $("#Room").empty();
+                if (rooms.length == 0)
+                {
+                    $("#Room").append("<option>None available</option>");
+                }
+                else
+                {
+                    $("#Room").append("<option>Any</option>");
+                }
+                for (var i = 0; i < rooms.length; i++)
+                {
+                    $("#Room").append("<option>" + rooms[i] + "</option>");
+                }
+            }
+        },
+        error: function () {
+            alert("Error getting rooms!");
+        }
+    });
+
+}

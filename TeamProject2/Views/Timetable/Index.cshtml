@@ -33,10 +33,10 @@
     <input type="submit" value="View Timetable" />
     
     <br />
-    @Html.RadioButton("selectedWeek", "All", true ) <text>All</text>
+    @Html.RadioButton("selectedWeek", "All", true, new {@onclick = "updateSelectedWeek(this.value)" }) <text>All</text>
     for (var i = 1; i <= 16; i++)
     {
-        @Html.RadioButton("selectedWeek", i, false) <text>@i.ToString()</text>
+        @Html.RadioButton("selectedWeek", i, false, new {@onclick = "updateSelectedWeek(this.value)" }) <text>@i.ToString()</text>
     }
 
     @*
@@ -53,24 +53,21 @@
     *@
 }
 
-
-
-<h3>
-    @{
-        String Week = Request.QueryString["selectedWeek"];
-        
-    }
-    Week
-    @if (Request.QueryString["selectedWeek"] == null)
+<script>
+    function updateSelectedWeek(week)
     {
-        var all = "1-16";
-        @all
+        if (week == "All")
+        {
+            $("#weekDisp").text("Week 1-16");
+        }
+        else
+        {
+            $("#weekDisp").text("Week " + week);
+        }
     }
-    else
-    {
-       @Week
-    }
-</h3>
+</script>
+
+    <h3 id="weekDisp">Week 1-16</h3>
 
 @{
     string[] days = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };

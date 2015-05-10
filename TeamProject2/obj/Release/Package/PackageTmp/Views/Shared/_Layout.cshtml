@@ -10,9 +10,6 @@
     <script src="~/Scripts/jquery.datetimepicker.js"></script>
     <link rel="stylesheet" type="text/css" href="~/Content/Site.css" />
     
-    
-    
-
     @*
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr") this still hasn't been included... 
@@ -29,29 +26,40 @@
 </head>
 <body>
     <header>
-
-
         <div class="content-wrapper">
             <div class="float-left">
                 <p class="site-title">@Html.ActionLink("Loughborough Timetabling System", "Index", "Home")</p>
             </div>
             <div class="float-right">
+                
+               <div id="Identity">
+                 @Html.Encode(User.Identity.Name)
+                   </div>
+
                 <nav>
                     <ul id="menu">
                         @if (Request.IsAuthenticated)
                         {
-                            <li><strong>@Html.Encode(User.Identity.Name)</strong></li>
+                           
                             //if (@Html.Encode(User.Identity.Name)=="CA")
                             //{
-                                @Html.ActionLink("Edit Facilities", "Index", "zFacilities")
-                                @Html.ActionLink("Edit Pool Rooms", "Index", "zRooms")
-                                @Html.ActionLink("Edit Rounds", "Index", "zRounds")
-                                @Html.ActionLink("Edit Lecturers", "Index", "zLecturers")
-                                @Html.ActionLink("Edit Programmes", "Index", "zProgrammes")
-                                @Html.ActionLink("View Timetables", "Index", "Timetable")
-                            //}
-                            @Html.ActionLink("Edit Requests", "Index", "zRequests")
-                            @Html.ActionLink("Log out", "Logout", "User")
+                                  <li>@Html.ActionLink("Make a Request", "Index", "zRequests")</li>
+                                  <li>@Html.ActionLink("View Timetable", "Index", "Timetable")</li>
+                                  <li> <a href="#">Manage Stored Data</a>
+                                   
+                                 <ul id="submenu" class="nested">
+                                   <li>@Html.ActionLink("View Rooms", "Availability", "zRooms")</li>
+                                    <li>@Html.ActionLink("View Facilities", "Index", "zFacilities") </li>
+                                     <li>@Html.ActionLink("View Rounds", "Index", "zRounds")</li>
+                                     <li>@Html.ActionLink("Manage Programmes", "Index", "zProgrammes")</li>
+                                     <li>@Html.ActionLink("Manage Lecturers", "Index", "zLecturers")</li>
+
+
+                                 </ul>
+                                      
+                                  </li>
+                                 <li> @Html.ActionLink("Log out", "Logout", "User")
+                   </li>
                         }
                         else
                         {
@@ -61,7 +69,6 @@
                 </nav>
             </div>
         </div>
-
     </header>
     <div id="body">
         <section class="content-wrapper main-content clear-fix">

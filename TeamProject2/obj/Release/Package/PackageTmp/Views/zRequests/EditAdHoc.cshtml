@@ -1,30 +1,25 @@
-@model TeamProject2.zRequest
+﻿@model TeamProject2.zRequest
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Edit";
 }
 
-<script src="~/Scripts/weekselector.js"></script>
-<script src="~/Scripts/roomselector.js"></script>
-<link rel="stylesheet" type="text/css" href="~/Content/weekselector.css" />
+<h2>Edit</h2>
 
-<h2>Create</h2>
-
-@* code to display ViewBag 
-<ul>
-    @foreach (var pair in ViewData)
-    {
-        <li>@pair.Key : @pair.Value</li>
-    }
-</ul>
-*@
-
-@using (Html.BeginForm("Create", "zRequests")) 
+@using (Html.BeginForm("CreateAdHoc", "zRequests"))
 {
+    @Html.ValidationSummary(true)
     <fieldset>
         <legend>zRequest</legend>
 
+        @Html.HiddenFor(model => model.WeekId)
+        @Html.HiddenFor(model => model.zWeek.WeekId)
 
+@* This partial view defines form fields that will appear when creating and editing entities *@
+
+        <script src="~/Scripts/weekselector.js"></script>
+        <script src="~/Scripts/roomselector.js"></script>
+        <link rel="stylesheet" type="text/css" href="~/Content/weekselector.css" />
 
         <div class="editor-label">
             @Html.Label("Department Code")
@@ -32,11 +27,11 @@
         <div class="editor-field">
             @if (User.Identity.Name == "CA")
             {
-                @Html.DropDownList("DeptCode", new SelectList(ViewBag.deptList))
+                @Html.DropDownList("DeptCode")
             }
             else
             {
-                <p id="DeptCode"> @User.Identity.Name</p>;
+                @Html.DisplayText("DeptCode")
             }
         </div>
 
@@ -44,8 +39,26 @@
             @Html.Label("Module")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("ModCode", new SelectList(ViewBag.moduleList))
+            @Html.DropDownList("ModCode")
         </div>
+
+        <div class="editor-label">
+            @Html.Label("Semester")
+        </div>
+        <div class="editor-field">
+            
+            @if (Model.Semester == 1)
+            {
+                @Html.RadioButton("Semester", "1", true, new { @onclick = "toggleWeeks(this.value)" }) <text>1</text>
+                @Html.RadioButton("Semester", "2", false, new { @onclick = "toggleWeeks(this.value)" }) <text>2</text>
+            }
+            else
+            {
+                @Html.RadioButton("Semester", "1", false, new { @onclick = "toggleWeeks(this.value)" }) <text>1</text>
+                @Html.RadioButton("Semester", "2", true, new { @onclick = "toggleWeeks(this.value)" }) <text>2</text>
+            }
+        </div>
+        
 
         <div class="editor-label">
             @Html.Label("Weeks")
@@ -66,50 +79,51 @@
                 <li class="ui-state-default">12</li>
                 <li class="ui-state-default">13</li>
                 <li class="ui-state-default">14</li>
-                <li class="ui-state-default">15</li>
+                @if (Model.Semester != 1)
+                {
+                    <li class="ui-state-default">16</li>
+                }
             </ol>
             <br /><br />
         </div>
 
         @Html.Hidden("Weeks")
-        @Html.HiddenFor(model => model.zWeek.Week1)
-
+        
         <div class="editor-label">
             @Html.Label("Day")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("Day", new SelectList(ViewBag.dayList))
+            @Html.DropDownList("Day")
         </div>
 
         <div class="editor-label">
             @Html.Label("Period")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("Period", new SelectList(ViewBag.periodList))
+            @Html.DropDownList("Period")
         </div>
 
         <script type="text/javascript">
-        $(document).ready(function () {
-            $("#Period").change(function () {
-                var pID = parseInt($(this).val());
-                var select = $("#SeshLength");
-                select.empty();
-                select.append("<option value = 1> 1 Hour </option>");
-                var hour = 2;
-                for (var i = pID; i <= 8; i++)
-                {
-                    select.append("<option value = " + hour + ">" + hour + " Hours </option>");
-                    hour++;
-                }
+            $(document).ready(function () {
+                $("#Period").change(function () {
+                    var pID = parseInt($(this).val());
+                    var select = $("#SeshLength");
+                    select.empty();
+                    select.append("<option value = 1> 1 Hour </option>");
+                    var hour = 2;
+                    for (var i = pID; i <= 8; i++) {
+                        select.append("<option value = " + hour + ">" + hour + " Hours </option>");
+                        hour++;
+                    }
+                });
             });
-        });
         </script>
 
         <div class="editor-label">
             @Html.Label("Session Length")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("SeshLength", new SelectList(ViewBag.seshLengthList))
+            @Html.DropDownList("SeshLength")
         </div>
 
         <div class="editor-label">
@@ -122,10 +136,17 @@
         <div class="editor-label">
             @Html.Label("Facilities")
         </div>
-        <div id="FacilitiesChkBox" class="editor-field">
+        <div class="editor-field">
             @foreach (var item in ViewBag.facilityList)
             {
-                <input type="checkbox" name="Facilities" id="Facilities" value="@item.Replace(" ", ".")" onchange="filterByFacs()" /> @item <br />
+                if (ViewBag.selectedFacilities.Contains(item))
+                {
+                    <input type="checkbox" name="Facilities" id="Facilities" value=@item.Replace(" ", ".") checked /> @item <br />
+                }
+                else
+                {
+                    <input type="checkbox" name="Facilities" id="Facilities" value=@item.Replace(" ", ".") /> @item <br />
+                }
             }
         </div>
 
@@ -135,14 +156,14 @@
         <div class="editor-field">
             @Html.DropDownList("Park", new SelectList(ViewBag.parkList))
         </div>
-
+        
         <div class="editor-label">
             @Html.Label("Room - Building")
         </div>
         <div class="editor-field">
             @Html.DropDownList("Building", new SelectList(ViewBag.buildingList))
         </div>
-
+        
         <div class="editor-label">
             @Html.Label("Room - Room")
         </div>
@@ -158,8 +179,7 @@
         </div>
         
         <script>
-            function outputUpdate(cap)
-            {
+            function outputUpdate(cap) {
                 document.querySelector('#capOutput').value = cap;
             }
         </script>
@@ -168,20 +188,20 @@
             @Html.Label("Selected Rooms")
         </div>
         <div class="editor-field">
-            <select id="RoomDisp" name="RoomDisp" size="5"></select>
+            @Html.DropDownList("RoomDisp", new SelectList(ViewBag.RoomDropDown), new { size = 5 }) 
             @Html.Hidden("Rooms")
             @Html.Hidden("Capacities")
         </div>
-
+        
         <input type="button" id="AddRoom" value="Add Room" />
         <input type="button" id="RemoveRoom" value="Remove Room" />
 
-        <p><input type="submit" value="Create" /></p>
+        <p>
+            <input type="submit" value="Save" />
+        </p>
     </fieldset>
 }
 
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-
-

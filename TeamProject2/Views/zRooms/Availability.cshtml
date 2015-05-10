@@ -1,0 +1,130 @@
+﻿@model IEnumerable<TeamProject2.zRoom>
+
+@{
+    ViewBag.Title = "Availability";
+}
+
+<link rel="stylesheet" type="text/css" href="~/Content/tables.css" />
+
+<h2>Availability</h2>
+
+@using (Html.BeginForm()) 
+{
+    <div class="editor-label">
+        @Html.Label("Capacity")
+    </div>
+    <div class="editor-field">
+        <input type="range" id="capacity" name="capacity" value=100 min=1 max=400 oninput="outputUpdate(value)" /><br />
+        <input type="number" id="capOutput" value=100 min=1 max=400 oninput="rangeUpdate(value)" style="width: 50px;" />
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("Facilities")
+    </div>
+    <div id="FacilitiesChkBox" class="editor-field">
+        @foreach (var item in ViewBag.facilityList)
+        {
+            if (ViewBag.selectedFacilities.Contains(item))
+            {
+                <input type="checkbox" name="Facilities" id="Facilities" value=@item.Replace(" ", ".") checked /> @item <br />
+            }
+            else
+            {
+                <input type="checkbox" name="Facilities" id="Facilities" value=@item.Replace(" ", ".") /> @item <br />
+            }
+        }
+    </div>
+    
+    <p><input type="submit" value="Search" /></p>
+}
+
+@if (Model.Count() != 0)
+{
+    @Html.Hidden("roomList")
+    @Html.Hidden("selectedFacilitiesString")
+    
+    <table id ="keywords">
+        <thead>
+            <tr>
+                <th>
+                    Actions
+                </th>
+                <th>
+                    Rooms
+                </th>
+                <th>
+                    Capacity
+                </th>
+                <th>
+                    Building
+                </th>
+                <th>
+                    Private
+                </th>
+                <th>
+                    Facility
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model) 
+            {
+                if (
+                    (!@item.Private)
+                    || 
+                    (@item.Private && @item.zDepartment.FirstOrDefault().DeptCode == User.Identity.Name)
+                    )
+                {
+                    <tr id =@item.RoomId>
+                        <td>
+                            @Html.ActionLink("Details", "Details", new { id = item.RoomId })
+                        </td>
+                        <td>
+			                @item.RoomCode
+                        </td>
+                        <td>
+			                @item.Capacity
+                        </td>
+                        <td>
+			                @item.zBuilding.BuildingCode
+                        </td>
+                        <td>
+			                @item.Private
+                        </td>
+                        <td>
+                        @if (item.zFacility == null)
+                        {
+                            <p>None</p>;
+                        }
+                        else
+                        {
+                            List<string> facName = new List<string>();
+                            foreach (var facility in item.zFacility)
+                            {
+                                facName.Add(facility.FacilityName);
+                            }
+                            <p>@string.Join(", ", facName)</p>
+                        }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+<script>
+    function outputUpdate(value)
+    {
+        $("#capOutput").val(value);
+    }
+
+    function rangeUpdate(value)
+    {
+        $("#capacity").val(value);
+    }
+
+    $(function () {
+        $('#keywords').tablesorter();
+    });
+</script>
