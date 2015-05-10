@@ -43,14 +43,14 @@ namespace TeamProject2.Controllers
         public ViewResult Index(string sortOrder, string filter, bool? adHoc)
         {//this code shows the user only their own requests, filtered by UserID
 
-            //Allows sorting in descending order too
+            /*//Allows sorting in descending order too
             ViewBag.ReqSortParm = String.IsNullOrEmpty(sortOrder) ? "ReqID_desc" : "";
             ViewBag.ModSortParm = sortOrder == "ModCode" ? "ModCode_desc" : "ModCode";
             ViewBag.NumRoomSortParm = sortOrder == "NumRoom" ? "NumRoom_desc" : "NumRoom";
             ViewBag.NumFacSortParm = sortOrder == "NumFac" ? "NumFac_desc" : "NumFac";
             ViewBag.DaySortParm = sortOrder == "Day" ? "Day_desc" : "Day";
             ViewBag.StatSortParm = sortOrder == "Status" ? "Status_desc" : "Status";
-
+            */
             ViewBag.AdHoc = adHoc;
 
             var db = new DatabaseContext();
@@ -92,7 +92,7 @@ namespace TeamProject2.Controllers
                     }
                 }
                 ViewBag.RequestIdList = String.Join(",", ReqIdList.ToArray());
-                reqQry = SortRequests(reqQry, sortOrder);
+                //reqQry = SortRequests(reqQry, sortOrder);
                 return View(reqQry);
             }
             else //else show requests associated with the user's account
@@ -132,13 +132,13 @@ namespace TeamProject2.Controllers
                     }
                 }
                 ViewBag.RequestIdList = String.Join(",", ReqIdList.ToArray());
-                reqQry = SortRequests(reqQry, sortOrder);
+                //reqQry = SortRequests(reqQry, sortOrder);
                 return View(reqQry);
             }
             //zrequestRepository.AllIncluding(zrequest => zrequest.zFacility, zrequest => zrequest.zRoom)
         }
 
-        private IQueryable<zRequest> SortRequests(IQueryable<zRequest> requests, string sortOrder)
+        /*private IQueryable<zRequest> SortRequests(IQueryable<zRequest> requests, string sortOrder)
         {//check what user wants to sort by and orders it
             switch (sortOrder)
             {
@@ -169,7 +169,7 @@ namespace TeamProject2.Controllers
                     requests = requests.OrderByDescending(r => r.StatusId); break;
             }
             return (requests);
-        }
+        }*/
 
         //
         // GET: /zRequests/Details/5
