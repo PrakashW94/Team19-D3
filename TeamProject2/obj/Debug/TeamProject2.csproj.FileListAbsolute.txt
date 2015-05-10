@@ -173,7 +173,7 @@ C:\Users\Prakash\Desktop\Work\D3\TeamProject2\TeamProject2\bin\System.Net.Http.x
 C:\Users\Prakash\Desktop\Work\D3\TeamProject2\TeamProject2\bin\System.Net.Http.Formatting.xml
 C:\Users\Prakash\Desktop\Work\D3\TeamProject2\TeamProject2\bin\System.Web.Http.xml
 C:\Users\Prakash\Desktop\Work\D3\TeamProject2\TeamProject2\bin\System.Web.Http.WebHost.xml
-<<<<<<< HEAD
+
 D:\EF4.0\New2\TeamProject2\TeamProject2\bin\TeamProject2.dll
 D:\EF4.0\New2\TeamProject2\TeamProject2\bin\TeamProject2.pdb
 D:\EF4.0\New2\TeamProject2\TeamProject2\bin\Antlr3.Runtime.dll
@@ -211,7 +211,6 @@ D:\EF4.0\New2\TeamProject2\TeamProject2\bin\System.Web.WebPages.Razor.xml
 D:\EF4.0\New2\TeamProject2\TeamProject2\obj\Debug\TeamProject2.csprojResolveAssemblyReference.cache
 D:\EF4.0\New2\TeamProject2\TeamProject2\obj\Debug\TeamProject2.dll
 D:\EF4.0\New2\TeamProject2\TeamProject2\obj\Debug\TeamProject2.pdb
-=======
 C:\Users\cgpw\Desktop\Team19-D3\TeamProject2\bin\TeamProject2.dll
 C:\Users\cgpw\Desktop\Team19-D3\TeamProject2\bin\TeamProject2.pdb
 C:\Users\cgpw\Desktop\Team19-D3\TeamProject2\bin\Antlr3.Runtime.dll
@@ -321,4 +320,3 @@ D:\team projects - prakash changes\Team19-D3-master\TeamProject2\bin\System.Web.
 D:\team projects - prakash changes\Team19-D3-master\TeamProject2\obj\Debug\TeamProject2.csprojResolveAssemblyReference.cache
 D:\team projects - prakash changes\Team19-D3-master\TeamProject2\obj\Debug\TeamProject2.dll
 D:\team projects - prakash changes\Team19-D3-master\TeamProject2\obj\Debug\TeamProject2.pdb
->>>>>>> origin/master
