@@ -40,16 +40,18 @@ namespace TeamProject2.Controllers
             return RedirectToAction("Index");
         }
 
-        public ViewResult Index(string sortOrder, string filter)
+        public ViewResult Index(string sortOrder, string filter, bool? adHoc)
         {//this code shows the user only their own requests, filtered by UserID
 
             //Allows sorting in descending order too
-            ViewBag.ReqSortParm = sortOrder == "ReqID" ? "ReqID_desc" : "ReqID";
-            ViewBag.ModSortParm = String.IsNullOrEmpty(sortOrder) ? "ModCode_desc" : "";
+            ViewBag.ReqSortParm = String.IsNullOrEmpty(sortOrder) ? "ReqID_desc" : "";
+            ViewBag.ModSortParm = sortOrder == "ModCode" ? "ModCode_desc" : "ModCode";
             ViewBag.NumRoomSortParm = sortOrder == "NumRoom" ? "NumRoom_desc" : "NumRoom";
             ViewBag.NumFacSortParm = sortOrder == "NumFac" ? "NumFac_desc" : "NumFac";
             ViewBag.DaySortParm = sortOrder == "Day" ? "Day_desc" : "Day";
             ViewBag.StatSortParm = sortOrder == "Status" ? "Status_desc" : "Status";
+
+            ViewBag.AdHoc = adHoc;
 
             var db = new DatabaseContext();
             var userQry = from user in db.zUser where user.DeptCode == User.Identity.Name select user.UserId;
@@ -57,6 +59,10 @@ namespace TeamProject2.Controllers
             if(userID == 1) //if the user is the central admin, show all requests
             {
                 var reqQry = from request in db.zRequest where request.StatusId == 4 select request;
+                if (adHoc.HasValue && adHoc == true)
+                {
+                    reqQry = reqQry.Where(r => r.RoundNo.Equals(-1));
+                }
                 if (!String.IsNullOrWhiteSpace(filter))
                 {
                     //Could also search based on module name, etc. if included in view
@@ -92,6 +98,10 @@ namespace TeamProject2.Controllers
             else //else show requests associated with the user's account
             {
                 var reqQry = from request in db.zRequest where request.UserId == userID select request;
+                if (adHoc.HasValue && adHoc == true)
+                {
+                    reqQry = reqQry.Where(r => r.RoundNo.Equals(-1));
+                }
                 if (!String.IsNullOrWhiteSpace(filter))
                 {
                     //Could also search based on module name, etc. if included in view
@@ -132,28 +142,31 @@ namespace TeamProject2.Controllers
         {//check what user wants to sort by and orders it
             switch (sortOrder)
             {
-                case "ReqID":
+                default:
                     requests = requests.OrderBy(r => r.RequestId); break;
-                case "Status":
-                    requests = requests.OrderBy(r => r.StatusId); break;
-                case "Day":
-                    requests = requests.OrderBy(r => r.zDay.DayId); break;
+                case "ModCode":
+                    requests = requests.OrderBy(r => r.ModCode); break;
                 case "NumRoom":
                     requests = requests.OrderBy(r => r.RoomCount); break;
                 case "NumFac":
                     requests = requests.OrderBy(r => r.zFacility.Count); break;
+                case "Day":
+                    requests = requests.OrderBy(r => r.zDay.DayId); break;
+                case "Status":
+                    requests = requests.OrderBy(r => r.StatusId); break;
+
+                case "ReqID_desc":
+                    requests = requests.OrderByDescending(r => r.RequestId); break;
                 case "ModCode_desc":
                     requests = requests.OrderByDescending(r => r.ModCode); break;
-                case "Status_desc":
-                    requests = requests.OrderByDescending(r => r.StatusId); break;
-                case "Day_desc":
-                    requests = requests.OrderByDescending(r => r.zDay.DayId); break;
                 case "NumRoom_desc":
                     requests = requests.OrderByDescending(r => r.RoomCount); break;
                 case "NumFac_desc":
                     requests = requests.OrderByDescending(r => r.zFacility.Count); break;
-                default:
-                    requests = requests.OrderBy(r => r.ModCode); break;
+                case "Day_desc":
+                    requests = requests.OrderByDescending(r => r.zDay.DayId); break;
+                case "Status_desc":
+                    requests = requests.OrderByDescending(r => r.StatusId); break;
             }
             return (requests);
         }

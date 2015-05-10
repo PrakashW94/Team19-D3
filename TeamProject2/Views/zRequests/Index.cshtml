@@ -1,17 +1,23 @@
 @model IEnumerable<TeamProject2.zRequest>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Requests";
 }
 
-<h2>Index</h2>
+<h2>Requests</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
     @Html.ActionLink("Submit Requests", "Submit")
     @Html.ActionLink("Allocate Requests", "Allocate")
     @Html.ActionLink("Create Ad-Hoc Request", "CreateAdHoc")
-
+    <br /><br />
+    @if (ViewBag.AdHoc == true) {
+        @Html.ActionLink("Show All Requests", "Index");
+    }
+    else{
+        @Html.ActionLink("Show Ad-Hoc Requests", "Index", new { adHoc = true });
+    }
 </p>
 
 @using (Html.BeginForm())
