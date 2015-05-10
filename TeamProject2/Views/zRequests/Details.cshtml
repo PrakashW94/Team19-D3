@@ -72,11 +72,20 @@
     <div class="display-field">@Model.Semester</div>
 
     <div class="display-label">Round</div>
-    <div class="display-field">@Model.RoundNo</div>
+    <div class="display-field">
+        @if (@Model.RoundNo == -1)
+        { 
+            <text>Adhoc</text>
+        }
+        else
+        {
+            @Model.RoundNo
+        }
+    </div>
 
     <div class="display-label">Special Requirements</div>
     <div class="display-field">
-        @if (Model.SpecialRequirement == "")
+        @if (Model.SpecialRequirement == null)
         {
             <text>N/A</text>
         }
@@ -103,44 +112,78 @@
         }
     </div>
 
-    <div class="display-label">zRoom</div>
-    <div class="display-field">
-        @{
-            List<String> roomDisp = new List<string>();
-            int dbRooms = Model.zRoomBooking.Count();
-            if (Model.RoomCount != dbRooms)
-            {
-                int diff = Model.RoomCount - dbRooms;
-                for (int i = 0; i < diff; i++)
-                {
-                    roomDisp.Add("Any Room");
-                }
-            }
+    @{
+        List<String> roomDisp = new List<string>();
             
-            foreach (var item in Model.zRoomBooking)
+        foreach (var item in Model.zRoomBooking)
+        {
+            switch (item.Type)
             {
-                switch (item.Type)
-                {
-                    case 1:
-                        roomDisp.Add("Any Room in the " + item.zPark.ParkName + " Park");
-                        break;
+                case 0:
+                    roomDisp.Add("Any Room");
+                    break;
+                case 1:
+                    roomDisp.Add("Any Room in the " + item.zPark.ParkName + " Park");
+                    break;
                         
-                    case 2:
-                        roomDisp.Add("Any Room in " + item.zBuilding.BuildingCode + " - " + item.zBuilding.BuildingName);
-                        break;
+                case 2:
+                    roomDisp.Add("Any Room in " + item.zBuilding.BuildingCode + " - " + item.zBuilding.BuildingName);
+                    break;
                         
-                    case 3:
-                        roomDisp.Add(item.zRoom.RoomCode);
-                        break;
-                }
-                    
+                case 3:
+                    roomDisp.Add(item.zRoom.RoomCode);
+                    break;
             }
-            <text>@string.Join(", ", roomDisp)</text>
+                    
         }
-    </div>
+    }
+    <div class="display-label">Rooms</div>
+    @if (Model.StatusId == 1 || Model.StatusId == 5)
+    {
+        
+        List<String> allocatedRooms = new List<string>();
+        foreach (var item in Model.zRoom)
+        {
+            allocatedRooms.Add(item.RoomCode);
+        }
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Room Preference
+                    </th>
+                    <th>
+                        Allocated Room
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.RoomCount; i++)
+                {
+                    <tr> 
+                        <td>
+                            @roomDisp.ElementAt(i)
+                        </td>
+                        <td>
+                            @allocatedRooms.ElementAt(i)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="display-label">Room Preferences</div>
+        <div class="display-field">
+            @{
+                <text>@string.Join(", ", roomDisp)</text>
+            }
+        </div>
+    }
+
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.RequestId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
 

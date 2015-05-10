@@ -1,10 +1,10 @@
 @model IEnumerable<TeamProject2.zRoom>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "View Rooms";
 }
 
-<h2>Index</h2>
+<h2>View Rooms</h2>
 
 <p>
     @if (@Html.Encode(User.Identity.Name) == "CA")
@@ -17,119 +17,84 @@
     }
 </p>
 
-<form action="/zRooms?roomCap=@ViewBag.RoomCap" id="form" method="post">
-    <p>
-        <input type=range id=capacity value="@ViewBag.RoomCap" min=1 max=400 oninput="outputUpdate(value)" />
-        <input type="number" id="capOutput" value="@ViewBag.RoomCap" min=1 max=400 oninput="rangeUpdate(value)" />
-        <input type="submit" value="Search Capacity" /> <!--Changed <output> to <input number> to let timetabler type if they want (figured that's something Dawson/Batmaz would complain about)-->
-        @Html.ActionLink("Reset Room View", "Index") @*Returns view to default easily*@
-    </p>
-</form>
-
-<script>
-    var chosenSort = "";
-    $(document).ready(function () {
-        chosenSort = '@ViewBag.ChosenSort';
-        if (chosenSort == "") {
-            document.getElementById('form').action = "/zRooms?roomCap=" + cap;
-        }
-        else {
-            document.getElementById('form').action = "/zRooms?sortOrder=" + chosenSort + "&roomCap=" + cap;
-        }
-    });
-
-    function outputUpdate(cap)
-    {
-        document.querySelector('#capOutput').value = cap;
-        if(chosenSort==""){
-            document.getElementById('form').action = "/zRooms?roomCap=" + cap;
-        }
-        else{
-            document.getElementById('form').action = "/zRooms?sortOrder=" + chosenSort + "&roomCap=" + cap;
-        }
-    }
-    function rangeUpdate(cap) {
-        document.querySelector('#capacity').value = cap;
-        if (chosenSort == "") {
-            document.getElementById('form').action = "/zRooms?roomCap=" + cap;
-        }
-        else {
-            document.getElementById('form').action = "/zRooms?sortOrder=" + chosenSort + "&roomCap=" + cap;
-        }
-    }
-</script>
-
-<table>
-    <tr>
-        <th></th>
-        <th>
-            @Html.ActionLink("Room", "Index", new { sortOrder = ViewBag.RoomSortParm, roomCap = ViewBag.RoomCap })
-        </th>
-        <th>
-            @Html.ActionLink("Capacity", "Index", new { sortOrder = ViewBag.CapSortParm, roomCap = ViewBag.RoomCap })
-        </th>
-        <th>
-            Building
-        </th>
-        <th>
-            Private
-        </th>
-        <th>
-            Facility
-        </th>
-    </tr>
-
-    @foreach (var item in Model) 
-    {
-        if (
-            (!@item.Private)
-            || 
-            (@item.Private && @item.zDepartment.FirstOrDefault().DeptCode == User.Identity.Name)
-            )
+<table id="keywords">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                Room
+            </th>
+            <th>
+                Capacity
+            </th>
+            <th>
+                Building
+            </th>
+            <th>
+                Private
+            </th>
+            <th>
+                Facility
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) 
         {
-            <tr>
-                <td>
-                    @if (@Html.Encode(User.Identity.Name) == "CA")
+            if (
+                (!@item.Private)
+                || 
+                (@item.Private && @item.zDepartment.FirstOrDefault().DeptCode == User.Identity.Name)
+                )
+            {
+                <tr>
+                    <td>
+                        @if (@Html.Encode(User.Identity.Name) == "CA")
+                        {
+                            @Html.ActionLink("Edit", "Edit", new { id = item.RoomId })
+                            @Html.ActionLink("Details", "Details", new { id = item.RoomId })
+                            @Html.ActionLink("Delete", "Delete", new { id = item.RoomId })
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Details", "Details", new { id = item.RoomId })
+                        }
+                    </td>
+                    <td>
+			            @item.RoomCode
+                    </td>
+                    <td>
+			            @item.Capacity
+                    </td>
+                    <td>
+			            @item.zBuilding.BuildingCode
+                    </td>
+                    <td>
+			            @item.Private
+                    </td>
+                    <td>
+                    @if (item.zFacility == null)
                     {
-                        @Html.ActionLink("Edit", "Edit", new { id = item.RoomId })
-                        @Html.ActionLink("Details", "Details", new { id = item.RoomId })
-                        @Html.ActionLink("Delete", "Delete", new { id = item.RoomId })
+                        <p>None</p>;
                     }
                     else
                     {
-                        @Html.ActionLink("Details", "Details", new { id = item.RoomId })
+                        List<string> facName = new List<string>();
+                        foreach (var facility in item.zFacility)
+                        {
+                            facName.Add(facility.FacilityName);
+                        }
+                        <p>@string.Join(", ", facName)</p>
                     }
-                </td>
-                <td>
-			        @item.RoomCode
-                </td>
-                <td>
-			        @item.Capacity
-                </td>
-                <td>
-			        @item.zBuilding.BuildingCode
-                </td>
-                <td>
-			        @item.Private
-                </td>
-                <td>
-                @if (item.zFacility == null)
-                {
-                    <p>None</p>;
-                }
-                else
-                {
-                    List<string> facName = new List<string>();
-                    foreach (var facility in item.zFacility)
-                    {
-                        facName.Add(facility.FacilityName);
-                    }
-                    <p>@string.Join(", ", facName)</p>
-                }
-                </td>
-            </tr>
+                    </td>
+                </tr>
+            }
         }
-    }
+    </tbody>
 </table>
 
-
+<script>
+    $(function () {
+        $('#keywords').tablesorter();
+    });
+</script>

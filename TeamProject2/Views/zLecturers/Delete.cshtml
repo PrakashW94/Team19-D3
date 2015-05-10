@@ -10,10 +10,10 @@
 <fieldset>
     <legend>zLecturer</legend>
 
-    <div class="display-label">LecturerName</div>
+    <div class="display-label">Lecturer Name</div>
     <div class="display-field">@Model.LecturerName</div>
 
-    <div class="display-label">zModule</div>
+    <div class="display-label">Associated Modules</div>
     <div class="display-field">@(Model.zModule == null ? "None" : Model.zModule.Count.ToString())</div>
 </fieldset>
 @using (Html.BeginForm()) {

@@ -54,6 +54,19 @@
 }
 
 <script>
+    $(function ()
+    {
+        if ($("#selectedWeekDisp").val() == "All")
+        {
+            $("#weekDisp").text("Week 1-16");
+        }
+        else
+        {
+            $("#weekDisp").text("Week " + $("#selectedWeekDisp").val());
+        }
+        $("#weekDisp").text();
+    });
+
     function updateSelectedWeek(week)
     {
         if (week == "All")
@@ -67,7 +80,9 @@
     }
 </script>
 
-    <h3 id="weekDisp">Week 1-16</h3>
+@Html.Hidden("selectedWeekDisp")
+
+<h3 id="weekDisp">Week 1-16</h3>
 
 @{
     string[] days = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
