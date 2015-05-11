@@ -1,62 +1,189 @@
 @model TeamProject2.zRequest
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Delete Request";
 }
 
-<h2>Delete</h2>
+<h2>Delete Request @Model.RequestId</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Are you sure you want to delete Request @Model.RequestId?</h3>
 <fieldset>
     <legend>zRequest</legend>
 
-    <div class="display-label">ModCode</div>
+    <div class="display-label">Module Code</div>
     <div class="display-field">@Model.ModCode</div>
 
-    <div class="display-label">StatusId</div>
-    <div class="display-field">@Model.StatusId</div>
+    <div class="display-label">Status</div>
+    <div class="display-field">@Model.zStatus.StatusValue</div>
 
-    <div class="display-label">WeekId</div>
-    <div class="display-field">@Model.WeekId</div>
+    <div class="display-label">Weeks</div>
+    <div class="display-field" id="WeekDisp"></div>
+    @Html.Hidden("Weeks")
+    <script type="text/javascript">
+        $(document).ready(function () {
+            setSelectedWeeks();
+        })
 
-    <div class="display-label">DayId</div>
-    <div class="display-field">@Model.DayId</div>
+        function setSelectedWeeks() {
+            var selectedItems = $("#Weeks").val().split(',');
+            var length = selectedItems.length;
+            var output = [];
+            var i, j;
 
-    <div class="display-label">PeriodId</div>
-    <div class="display-field">@Model.PeriodId</div>
+            for (i = 0; i < length; i = j + 1) {
+                // Beginning of range or single
+                output.push(selectedItems[i]);
 
-    <div class="display-label">SessionLength</div>
+                // Find end of range
+                for (var j = i + 1; j < length && parseInt(selectedItems[j]) == parseInt(selectedItems[j - 1]) + 1; j++);
+                j--;
+
+                if (i == j) {
+                    // single number
+                    output.push(",");
+                }
+                else {
+                    if (i == j) {
+                        // two numbers
+                        output.push(",", selectedItems[j], ",");
+                    }
+                    else {
+                        // range
+                        output.push("-", selectedItems[j], ",");
+                    }
+                }
+            }
+
+            output.pop(); // remove trailing comma
+            $("#WeekDisp").append(output.join(""));
+        }
+    </script>
+
+    <div class="display-label">Day</div>
+    <div class="display-field">@Model.zDay.DayValue</div>
+
+    <div class="display-label">Start Period</div>
+    <div class="display-field">@Model.zPeriod.PeriodValue</div>
+
+    <div class="display-label">Session Length</div>
     <div class="display-field">@Model.SessionLength</div>
 
     <div class="display-label">Semester</div>
     <div class="display-field">@Model.Semester</div>
 
-    <div class="display-label">RoundNo</div>
-    <div class="display-field">@Model.RoundNo</div>
+    <div class="display-label">Round</div>
+    <div class="display-field">
+        @if (@Model.RoundNo == -1)
+        { 
+            <text>Adhoc</text>
+        }
+        else
+        {
+            @Model.RoundNo
+        }
+    </div>
 
-    <div class="display-label">SpecialRequirement</div>
-    <div class="display-field">@Model.SpecialRequirement</div>
+    <div class="display-label">Special Requirements</div>
+    <div class="display-field">
+        @if (Model.SpecialRequirement == null)
+        {
+            <text>N/A</text>
+        }
+        else
+        {
+            <text>@Model.SpecialRequirement</text>
+        }
+    </div>
 
-    <div class="display-label">zDay</div>
-    <div class="display-field">@Html.DisplayTextFor(_ => Model.zDay).ToString()</div>
+    <div class="display-label">Facilities</div>
+    <div class="display-field">
+        @if (Model.zFacility.Count == 0)
+        {
+            <text>None</text>
+        }
+        else
+        {
+            List<string> facName = new List<string>();
+            foreach (var facility in Model.zFacility)
+            {
+                facName.Add(facility.FacilityName);
+            }
+            <text>
+                @(Model.zFacility.Count == 1 ? "1 Facility" : Model.zFacility.Count.ToString() + " Facilities")
+                @string.Join(", ", facName)
+            </text>
+        }
+    </div>
 
-    <div class="display-label">zPeriod</div>
-    <div class="display-field">@Html.DisplayTextFor(_ => Model.zPeriod).ToString()</div>
-
-    <div class="display-label">zRound</div>
-    <div class="display-field">@Html.DisplayTextFor(_ => Model.zRound).ToString()</div>
-
-    <div class="display-label">zStatus</div>
-    <div class="display-field">@Html.DisplayTextFor(_ => Model.zStatus).ToString()</div>
-
-    <div class="display-label">zWeek</div>
-    <div class="display-field">@Html.DisplayTextFor(_ => Model.zWeek).ToString()</div>
-
-    <div class="display-label">zFacility</div>
-    <div class="display-field">@(Model.zFacility == null ? "None" : Model.zFacility.Count.ToString())</div>
-
-    <div class="display-label">zRoom</div>
-    <div class="display-field">@(Model.zRoom == null ? "None" : Model.zRoom.Count.ToString())</div>
+    @{
+        List<String> roomDisp = new List<string>();
+            
+        foreach (var item in Model.zRoomBooking)
+        {
+            switch (item.Type)
+            {
+                case 0:
+                    roomDisp.Add("Any Room");
+                    break;
+                case 1:
+                    roomDisp.Add("Any Room in the " + item.zPark.ParkName + " Park");
+                    break;
+                        
+                case 2:
+                    roomDisp.Add("Any Room in " + item.zBuilding.BuildingCode + " - " + item.zBuilding.BuildingName);
+                    break;
+                        
+                case 3:
+                    roomDisp.Add(item.zRoom.RoomCode);
+                    break;
+            }
+                    
+        }
+    }
+    <div class="display-label">Rooms</div>
+    @if (Model.StatusId == 1 || Model.StatusId == 5)
+    {
+        
+        List<String> allocatedRooms = new List<string>();
+        foreach (var item in Model.zRoom)
+        {
+            allocatedRooms.Add(item.RoomCode);
+        }
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Room Preference
+                    </th>
+                    <th>
+                        Allocated Room
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.RoomCount; i++)
+                {
+                    <tr> 
+                        <td>
+                            @roomDisp.ElementAt(i)
+                        </td>
+                        <td>
+                            @allocatedRooms.ElementAt(i)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="display-label">Room Preferences</div>
+        <div class="display-field">
+            @{
+                <text>@string.Join(", ", roomDisp)</text>
+            }
+        </div>
+    }
 </fieldset>
 @using (Html.BeginForm()) {
     <p>

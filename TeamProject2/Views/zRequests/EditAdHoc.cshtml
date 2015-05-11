@@ -1,10 +1,10 @@
 ﻿@model TeamProject2.zRequest
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Ad-Hoc";
 }
 
-<h2>Edit</h2>
+<h2>Edit Ad-Hoc Request @Model.RequestId</h2>
 
 @using (Html.BeginForm("CreateAdHoc", "zRequests"))
 {
@@ -175,12 +175,23 @@
             @Html.Label("Number of Students")
         </div>
         <div class="editor-field">
-            <input type=range id=capacity min=1 value=100 max=400 oninput="outputUpdate(value)"/> <output for=capacity id=capOutput>100</output>
+            <input type="range" id="capacity" name="capacity" value=100 min=1 max=400 oninput="capUpdate(value)" /><br />
+            <input type="number" id="capOutput" value=100 min=1 max=400 oninput="capUpdate(value)" style="width: 50px;" />
         </div>
         
         <script>
-            function outputUpdate(cap) {
-                document.querySelector('#capOutput').value = cap;
+            function capUpdate(value) {
+                switch (value) {
+                    case (value > 400):
+                        $("#capacity").val(400); $("#capOutput").val(400);
+                        break;
+                    case (value < 0):
+                        $("#capacity").val(1); $("#capOutput").val(1);
+                        break;
+                    default:
+                        $("#capacity").val(value); $("#capOutput").val(value);
+                        break;
+                }
             }
         </script>
 

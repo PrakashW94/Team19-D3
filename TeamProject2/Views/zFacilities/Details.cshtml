@@ -1,15 +1,16 @@
 @model TeamProject2.zFacility
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Facility Details";
 }
 
-<h2>Details</h2>
+<h2>@Model.FacilityName Details</h2>
 
 <fieldset>
     <legend>zFacility</legend>
 
-    <div class="display-label">FacilityName</div>
+    <div class="display-label">Facility Name</div>
+    <br />
     <div class="display-field">@Model.FacilityName</div>
 
 </fieldset>

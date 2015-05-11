@@ -1,67 +1,74 @@
 @model TeamProject2.zWeek
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Week Set Details";
 }
 
-<h2>Details</h2>
+<h2>Week Set @Model.WeekId Details</h2>
 
 <fieldset>
     <legend>zWeek</legend>
 
-    <div class="display-label">Week1</div>
+    <div class="display-label">Week 1</div>
     <div class="display-field">@Model.Week1</div>
 
-    <div class="display-label">Week2</div>
+    <div class="display-label">Week 2</div>
     <div class="display-field">@Model.Week2</div>
 
-    <div class="display-label">Week3</div>
+    <div class="display-label">Week 3</div>
     <div class="display-field">@Model.Week3</div>
 
-    <div class="display-label">Week4</div>
+    <div class="display-label">Week 4</div>
     <div class="display-field">@Model.Week4</div>
 
-    <div class="display-label">Week5</div>
+    <div class="display-label">Week 5</div>
     <div class="display-field">@Model.Week5</div>
 
-    <div class="display-label">Week6</div>
+    <div class="display-label">Week 6</div>
     <div class="display-field">@Model.Week6</div>
 
-    <div class="display-label">Week7</div>
+    <div class="display-label">Week 7</div>
     <div class="display-field">@Model.Week7</div>
 
-    <div class="display-label">Week8</div>
+    <div class="display-label">Week 8</div>
     <div class="display-field">@Model.Week8</div>
 
-    <div class="display-label">Week9</div>
+    <div class="display-label">Week 9</div>
     <div class="display-field">@Model.Week9</div>
 
-    <div class="display-label">Week10</div>
+    <div class="display-label">Week 10</div>
     <div class="display-field">@Model.Week10</div>
 
-    <div class="display-label">Week11</div>
+    <div class="display-label">Week 11</div>
     <div class="display-field">@Model.Week11</div>
 
-    <div class="display-label">Week12</div>
+    <div class="display-label">Week 12</div>
     <div class="display-field">@Model.Week12</div>
 
-    <div class="display-label">Week13</div>
+    <div class="display-label">Week 13</div>
     <div class="display-field">@Model.Week13</div>
 
-    <div class="display-label">Week14</div>
+    <div class="display-label">Week 14</div>
     <div class="display-field">@Model.Week14</div>
 
-    <div class="display-label">Week15</div>
+    <div class="display-label">Week 15</div>
     <div class="display-field">@Model.Week15</div>
 
-    <div class="display-label">Week16</div>
+    <div class="display-label">Week 16</div>
     <div class="display-field">@Model.Week16</div>
 
-    <div class="display-label">zRequest</div>
-    <div class="display-field">@(Model.zRequest == null ? "None" : Model.zRequest.Count.ToString())</div>
+    <div class="display-label">Number of Requests</div>
+    <div class="display-field">
+        @if(Model.zRequest.Count == 0){
+            <text>None</text>
+        }
+        else{
+            @(Model.zRequest.Count == 1 ? "1 Request" : Model.zRequest.Count.ToString() + " Requests")
+        }
+    </div>
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.WeekId }) |
+    @Html.ActionLink("Edit Week Set", "Edit", new { id=Model.WeekId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
 

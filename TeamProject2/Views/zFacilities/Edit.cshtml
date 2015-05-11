@@ -1,10 +1,10 @@
 @model TeamProject2.zFacility
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Facility";
 }
 
-<h2>Edit</h2>
+<h2>Edit @Model.FacilityName Details</h2>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)

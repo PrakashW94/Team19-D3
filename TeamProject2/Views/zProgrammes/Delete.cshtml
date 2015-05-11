@@ -1,26 +1,46 @@
 @model TeamProject2.zProgramme
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Delete Programme";
 }
 
-<h2>Delete</h2>
+<h2>Delete @Model.ProgrammeCode - @Model.ProgrammeTitle</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Are you sure you want to delete @Model.ProgrammeCode - @Model.ProgrammeTitle?</h3>
 <fieldset>
     <legend>zProgramme</legend>
 
     <div class="display-label">ProgrammeTitle</div>
     <div class="display-field">@Model.ProgrammeTitle</div>
 
-    <div class="display-label">DeptCode</div>
+    <div class="display-label">Department Code</div>
     <div class="display-field">@Model.DeptCode</div>
 
     <div class="display-label">zDepartment</div>
     <div class="display-field">@Html.DisplayTextFor(_ => Model.zDepartment).ToString()</div>
 
-    <div class="display-label">zModule</div>
-    <div class="display-field">@(Model.zModule == null ? "None" : Model.zModule.Count.ToString())</div>
+    <div class="display-label">Modules (Hover to view title):</div>
+    <div class="display-field">
+        @if (Model.zModule == null)
+            {
+                <p>None</p>;
+            }
+            else
+            {
+                <text>
+                    @(Model.zModule.Count == 1 ? "1 Module" : Model.zModule.Count.ToString() + " Modules")
+                </text>
+                <ul>
+                @{
+                    List<string> modName = new List<string>();
+                    foreach (var module in Model.zModule)
+                    {
+                        <li title="@module.ModTitle">@module.ModCode</li>
+                    }
+                }
+                </ul>
+            }
+    </div>
 </fieldset>
 @using (Html.BeginForm()) {
     <p>

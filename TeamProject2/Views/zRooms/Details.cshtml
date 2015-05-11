@@ -1,10 +1,10 @@
 @model TeamProject2.zRoom
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Room Details";
 }
 
-<h2>Details</h2>
+<h2>@Model.RoomCode Details</h2>
 
 <fieldset>
     <legend>zRoom</legend>
@@ -12,13 +12,18 @@
     <div class="display-label">Capacity</div>
     <div class="display-field">@Model.Capacity</div>
 
-    <div class="display-label">BuildingCode</div>
+    <div class="display-label">Building Code</div>
     <div class="display-field">@Model.zBuilding.BuildingCode</div>
 
     <div class="display-label">Private</div>
-    <div class="display-field">@Model.Private</div>
+    <div class="display-field">
+        @if (Model.Private == false) { 
+            <text>Not </text>
+        }
+        Private
+    </div>
 
-    <div class="display-label">zFacility</div>
+    <div class="display-label">Facilities</div>
     <div class="display-field">
         @if (Model.zFacility.Count == 0)
         {
@@ -31,7 +36,10 @@
             {
                 facName.Add(facility.FacilityName);
             }
-            <text>@string.Join(", ", facName)</text>
+            <text>
+                @(Model.zFacility.Count == 1 ? "1 Facility" : Model.zFacility.Count.ToString() + " Facilities")
+                @string.Join(", ", facName)
+            </text>
         }
     </div>
     
@@ -40,7 +48,7 @@
 
 </fieldset>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.RoomCode }) |
+    @Html.ActionLink("Edit Room", "Edit", new { id=Model.RoomCode }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
 

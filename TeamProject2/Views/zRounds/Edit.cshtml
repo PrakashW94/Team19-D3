@@ -1,10 +1,10 @@
 @model TeamProject2.zRound
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Round";
 }
 
-<h2>Edit</h2>
+<h2>Edit Round @Model.RoundNo</h2>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)

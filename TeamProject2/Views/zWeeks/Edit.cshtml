@@ -1,10 +1,10 @@
 @model TeamProject2.zWeek
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Week Set";
 }
 
-<h2>Edit</h2>
+<h2>Edit Week Set @Model.WeekId</h2>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
