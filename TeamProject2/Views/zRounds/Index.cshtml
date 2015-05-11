@@ -1,10 +1,10 @@
 @model IEnumerable<TeamProject2.zRound>
 
 @{
-    ViewBag.Title = "Rounds";
+    ViewBag.Title = "Index";
 }
 
-<h2>Rounds</h2>
+<h2>Index</h2>
 
 <p>
     @{
@@ -13,7 +13,7 @@
     
     @if (@Html.Encode(User.Identity.Name) == "CA")
     {
-        @Html.ActionLink("Create New Round", "Create")
+        @Html.ActionLink("Create New", "Create")
     }
 </p>
 
@@ -44,7 +44,7 @@
                 <td>
                     @if (@Html.Encode(User.Identity.Name) == "CA")
                     {
-                        if(item.RoundNo == -1 || item.Viewable)
+                        if(item.Viewable)
                         {
                             @Html.ActionLink("Details", "Details", new { id = item.RoundNo })
                         }
@@ -103,10 +103,7 @@
 			        @(item.zRequest == null ? "None" : item.zRequest.Count.ToString())
                 </td>
                 <td>
-                    @if(item.Viewable == false){
-                        <text>Not </text>
-                    }
-                    Viewable
+                    @item.Viewable
                 </td>
             </tr>
         }

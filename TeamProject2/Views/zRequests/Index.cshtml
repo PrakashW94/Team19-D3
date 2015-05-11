@@ -7,7 +7,7 @@
 <h2>Requests</h2>
 
 <p>
-    @Html.ActionLink("Create New Request", "Create")
+    @Html.ActionLink("Create New", "Create")
     @Html.ActionLink("Submit Requests", "Submit")
     @if (User.Identity.Name == "CA")
     { 
@@ -27,7 +27,7 @@
 
 @using (Html.BeginForm())
 { 
-    <p title="Searchable Fields: Request ID, Module Code, Module Title, Day, Status" >
+    <p>
         Filter Requests: @Html.TextBox("filter")
         <input type="submit" value="Filter" />
         @Html.ActionLink("Reset Request View", "Index") @*Returns view to default easily*@
@@ -55,7 +55,7 @@
         {
             if ((item.zStatus.StatusValue == "Pending") || (item.zRound.Viewable))
             { 
-                <tr title="@item.ModCode - @item.zModule.ModTitle">
+                <tr>
                     <td>
                         @switch (item.StatusId)
                         {
@@ -203,6 +203,10 @@
     $(document).ready(function ()
     {
         setSelectedWeeks();
+    });
+
+    $(function () {
+        $('#table').tablesorter();
     });
 
     function setSelectedWeeks() 

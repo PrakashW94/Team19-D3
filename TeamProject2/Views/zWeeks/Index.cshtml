@@ -1,67 +1,67 @@
 @model IEnumerable<TeamProject2.zWeek>
 
 @{
-    ViewBag.Title = "Week Sets";
+    ViewBag.Title = "Index";
 }
 
-<h2>Week Sets</h2>
+<h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New Week Set", "Create")
+    @Html.ActionLink("Create New", "Create")
 </p>
 <table>
     <tr>
         <th></th>
         <th>
-            Week 1
+            Week1
         </th>
         <th>
-            Week 2
+            Week2
         </th>
         <th>
-            Week 3
+            Week3
         </th>
         <th>
-            Week 4
+            Week4
         </th>
         <th>
-            Week 5
+            Week5
         </th>
         <th>
-            Week 6
+            Week6
         </th>
         <th>
-            Week 7
+            Week7
         </th>
         <th>
-            Week 8
+            Week8
         </th>
         <th>
-            Week 9
+            Week9
         </th>
         <th>
-            Week 10
+            Week10
         </th>
         <th>
-            Week 11
+            Week11
         </th>
         <th>
-            Week 12
+            Week12
         </th>
         <th>
-            Week 13
+            Week13
         </th>
         <th>
-            Week 14
+            Week14
         </th>
         <th>
-            Week 15
+            Week15
         </th>
         <th>
-            Week 16
+            Week16
         </th>
         <th>
-            Number of Requests
+            zRequest
         </th>
     </tr>
 
@@ -121,12 +121,7 @@
 			@item.Week16
         </td>
         <td>
-			@if(item.zRequest.Count == 0){
-                <text>None</text>
-            }
-            else{
-                @(item.zRequest.Count == 1 ? "1 Request" : item.zRequest.Count.ToString() + " Requests")
-            }
+			@(item.zRequest == null ? "None" : item.zRequest.Count.ToString())
         </td>
     </tr>
 }

@@ -1,37 +1,23 @@
 @model TeamProject2.zFacility
 
 @{
-    ViewBag.Title = "Delete Facility";
+    ViewBag.Title = "Delete";
 }
 
-<h2>Delete @Model.FacilityName</h2>
+<h2>Delete</h2>
 
-<h3>Are you sure you want to delete @Model.FacilityName from Facilities?</h3>
+<h3>Are you sure you want to delete this?</h3>
 <fieldset>
     <legend>zFacility</legend>
 
-    <div class="display-label">Facility Name</div>
+    <div class="display-label">FacilityName</div>
     <div class="display-field">@Model.FacilityName</div>
-    <br />
-    <div class="display-label">Number of Requests:</div>
-    <div class="display-field">
-        @if(Model.zRequest.Count == 0){
-            <text>None</text>
-        }
-        else{
-            @(Model.zRequest.Count == 1 ? "1 Facility" : Model.zRequest.Count.ToString() + " Facilities")
-        }
-    </div>
-    <br />
-    <div class="display-label">Number of Rooms:</div>
-    <div class="display-field">
-        @if(Model.zRoom.Count == 0){
-            <text>None</text>
-        }
-        else{
-            @(Model.zRoom.Count == 1 ? "1 Room" : Model.zRequest.Count.ToString() + " Rooms")
-        }
-    </div>
+
+    <div class="display-label">zRequest</div>
+    <div class="display-field">@(Model.zRequest == null ? "None" : Model.zRequest.Count.ToString())</div>
+
+    <div class="display-label">zRoom</div>
+    <div class="display-field">@(Model.zRoom == null ? "None" : Model.zRoom.Count.ToString())</div>
 </fieldset>
 @using (Html.BeginForm()) {
     <p>

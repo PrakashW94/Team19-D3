@@ -1,10 +1,10 @@
 @model TeamProject2.zRequest
 
 @{
-    ViewBag.Title = "Request Details";
+    ViewBag.Title = "Details";
 }
 
-<h2>Request @Model.RequestId Details</h2>
+<h2>Details</h2>
 
 <fieldset>
     <legend>zRequest</legend>
@@ -108,10 +108,7 @@
             {
                 facName.Add(facility.FacilityName);
             }
-            <text>
-                @(Model.zFacility.Count == 1 ? "1 Facility" : Model.zFacility.Count.ToString() + " Facilities")
-                @string.Join(", ", facName)
-            </text>
+            <text>@string.Join(", ", facName)</text>
         }
     </div>
 

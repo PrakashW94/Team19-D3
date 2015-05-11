@@ -1,38 +1,22 @@
 @model TeamProject2.zLecturer
 
 @{
-    ViewBag.Title = "Lecturer Details";
+    ViewBag.Title = "Details";
 }
-@{
-    var name = Model.LecturerName;
-    if(name.LastIndexOf('s') == name.Length - 1){
-        <h2>@Model.LecturerName' Details</h2>
-    }
-    else{
-        <h2>@Model.LecturerName's Details</h2>
-    }
-}
+
+<h2>Details</h2>
 
 <fieldset>
     <legend>zLecturer</legend>
 
-    <div class="display-label">Lecturer's Name</div>
+    <div class="display-label">LecturerName</div>
     <div class="display-field">@Model.LecturerName</div>
-    <br />
-    <div class="display-label">Number of Modules</div>
-    <div class="display-field">
-        @{
-            if(Model.zModule.Count == 0){
-                <text>None</text>
-            }
-            else{
-                @(Model.zModule.Count == 1 ? "1 Module" : Model.zModule.Count.ToString() + " Modules")
-            }
-        }
-    </div>
+
+    <div class="display-label">zModule</div>
+    <div class="display-field">@(Model.zModule == null ? "None" : Model.zModule.Count.ToString())</div>
 </fieldset>
 <p>
-    @Html.ActionLink("Edit Lecturer Details", "Edit", new { id=Model.LecturerId }) |
+    @Html.ActionLink("Edit", "Edit", new { id=Model.LecturerId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
 

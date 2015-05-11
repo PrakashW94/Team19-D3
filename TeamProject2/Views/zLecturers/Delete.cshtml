@@ -1,29 +1,20 @@
 @model TeamProject2.zLecturer
 
 @{
-    ViewBag.Title = "Remove Lecturer";
+    ViewBag.Title = "Delete";
 }
 
-<h2>Remove @Model.LecturerName</h2>
+<h2>Delete</h2>
 
-<h3>Are you sure you want to remove @Model.LecturerName from the system?</h3>
+<h3>Are you sure you want to delete this?</h3>
 <fieldset>
     <legend>zLecturer</legend>
 
-    <div class="display-label">Lecturer's Name</div>
+    <div class="display-label">Lecturer Name</div>
     <div class="display-field">@Model.LecturerName</div>
 
-    <div class="display-label">Number of Modules</div>
-    <div class="display-field">
-        @{
-            if(Model.zModule.Count == 0){
-                <text>None</text>
-            }
-            else{
-                @(Model.zModule.Count == 1 ? "1 Module" : Model.zModule.Count.ToString() + " Modules")
-            }
-        }
-    </div>
+    <div class="display-label">Associated Modules</div>
+    <div class="display-field">@(Model.zModule == null ? "None" : Model.zModule.Count.ToString())</div>
 </fieldset>
 @using (Html.BeginForm()) {
     <p>

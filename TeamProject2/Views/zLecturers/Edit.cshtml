@@ -1,17 +1,10 @@
 @model TeamProject2.zLecturer
 
 @{
-    ViewBag.Title = "Edit Lecturer";
+    ViewBag.Title = "Edit";
 }
-@{
-    var name = Model.LecturerName;
-    if(name.LastIndexOf('s') == name.Length - 1){
-        <h2>Edit @Model.LecturerName' Details</h2>
-    }
-    else{
-        <h2>Edit @Model.LecturerName's Details</h2>
-    }
-}
+
+<h2>Edit</h2>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)

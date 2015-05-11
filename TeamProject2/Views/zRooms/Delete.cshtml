@@ -1,73 +1,38 @@
 @model TeamProject2.zRoom
 
 @{
-    ViewBag.Title = "Delete Room";
+    ViewBag.Title = "Delete";
 }
 
-<h2>Delete @Model.RoomCode</h2>
+<h2>Delete</h2>
 
-<h3>Are you sure you want to delete @Model.RoomCode?</h3>
+<h3>Are you sure you want to delete this?</h3>
 <fieldset>
     <legend>zRoom</legend>
 
     <div class="display-label">Capacity</div>
     <div class="display-field">@Model.Capacity</div>
 
-    <div class="display-label">Building Code</div>
-    <div class="display-field">@Model.zBuilding.BuildingCode</div>
+    <div class="display-label">BuildingCode</div>
+    <div class="display-field">@Model.BuildingCode</div>
+
+    <div class="display-label">ImgLink</div>
+    <div class="display-field">@Model.ImgLink</div>
 
     <div class="display-label">Private</div>
-    <div class="display-field">
-        @if (Model.Private == false) { 
-            <text>Not </text>
-        }
-        Private
-    </div>
+    <div class="display-field">@Model.Private</div>
 
-    <div class="display-label">Number of Facilities</div>
-    <div class="display-field">
-        @if (Model.zFacility.Count == 0)
-        {
-            <text>None</text>
-        }
-        else
-        {
-            <text>
-                @(Model.zFacility.Count == 1 ? "1 Facility" : Model.zFacility.Count.ToString() + " Facilities")
-            </text>
-        }
-    </div>
+    <div class="display-label">zBuilding</div>
+    <div class="display-field">@Html.DisplayTextFor(_ => Model.zBuilding).ToString()</div>
 
-    <div class="display-label">Number of Departments</div>
-    <div class="display-field">
-        @if (Model.zDepartment.Count == 0)
-        {
-            <text>None</text>
-        }
-        else
-        {
-            <text>
-                @(Model.zDepartment.Count == 1 ? "1 Department" : Model.zDepartment.Count.ToString() + " Departments")
-            </text>
-        }
-    </div>
+    <div class="display-label">zFacility</div>
+    <div class="display-field">@(Model.zFacility == null ? "None" : Model.zFacility.Count.ToString())</div>
 
-    <div class="display-label">Number of Requests</div>
-    <div class="display-field">
-        @if (Model.zRequest.Count == 0)
-        {
-            <text>None</text>
-        }
-        else
-        {
-            <text>
-                @(Model.zRequest.Count == 1 ? "1 Request" : Model.zRequest.Count.ToString() + " Requests")
-            </text>
-        }
-    </div>
-    
-    <div class="display-label">Image</div>
-    <div class="display-field"><img src="@Model.ImgLink"</div>
+    <div class="display-label">zDepartment</div>
+    <div class="display-field">@(Model.zDepartment == null ? "None" : Model.zDepartment.Count.ToString())</div>
+
+    <div class="display-label">zRequest</div>
+    <div class="display-field">@(Model.zRequest == null ? "None" : Model.zRequest.Count.ToString())</div>
 </fieldset>
 @using (Html.BeginForm()) {
     <p>

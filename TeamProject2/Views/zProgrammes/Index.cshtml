@@ -1,13 +1,13 @@
 @model IEnumerable<TeamProject2.zProgramme>
 
 @{
-    ViewBag.Title = "Programmes";
+    ViewBag.Title = "Index";
 }
 
-<h2>Programmes</h2>
+<h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New Programme", "Create")
+    @Html.ActionLink("Create New", "Create")
 </p>
 <table id="keywords">
     <thead>
@@ -23,7 +23,7 @@
                 Department Code
             </th>
             <th>
-                Number of Module
+                Associated Module
             </th>
         </tr>
     </thead>
@@ -46,12 +46,7 @@
 			        @item.zDepartment.DeptCode - @item.zDepartment.DeptName
                 </td>
                 <td>
-                    @if (item.zModule.Count == 0) { 
-                        <text>None</text>
-                    }
-                    else{
-			            @(item.zModule.Count == 1 ? "1 Module" : item.zModule.Count.ToString() + " Modules")
-                    }
+			        @(item.zModule == null ? "None" : item.zModule.Count.ToString())
                 </td>
             </tr>
         }
