@@ -68,6 +68,7 @@ namespace TeamProject2.Controllers
                 {
                     //Could also search based on module name, etc. if included in view
                     reqQry = reqQry.Where(r => r.ModCode.Contains(filter.ToUpper())
+                                                || r.RequestId.Equals(int.Parse(filter))
                                                 || r.SpecialRequirement.ToUpper().Contains(filter.ToUpper())
                                                 || r.zDay.DayValue.ToUpper().Contains(filter.ToUpper())
                                                 || r.zStatus.StatusValue.ToUpper().Contains(filter.ToUpper()));
@@ -103,10 +104,17 @@ namespace TeamProject2.Controllers
                 {
                     reqQry = reqQry.Where(r => r.RoundNo.Equals(-1));
                 }
+                int intFilter = 0;
+
+                if (int.TryParse(filter, out intFilter))
+                {
+                    intFilter = int.Parse(filter);
+                }
                 if (!String.IsNullOrWhiteSpace(filter))
                 {
                     //Could also search based on module name, etc. if included in view
                     reqQry = reqQry.Where(r => r.ModCode.Contains(filter.ToUpper())
+                                                || r.RequestId.Equals(intFilter)
                                                 || r.SpecialRequirement.ToUpper().Contains(filter.ToUpper())
                                                 || r.zDay.DayValue.ToUpper().Contains(filter.ToUpper())
                                                 || r.zStatus.StatusValue.ToUpper().Contains(filter.ToUpper()));
@@ -422,6 +430,14 @@ namespace TeamProject2.Controllers
             //this is where you set the default weeks you want shown
             return View();
         }//essentially adds everything that needs to be displayed to the ViewBag 
+
+        [HttpPost]
+        public JsonResult getCapacity(string room)
+        {
+            var db = new DatabaseContext();
+            var capacity = (from Room in db.zRoom where Room.RoomCode == room select Room.Capacity).FirstOrDefault();
+            return Json(capacity);
+        }
 
         [HttpPost]
         public JsonResult FilterByFacilities(string facilities, string building)

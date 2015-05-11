@@ -41,19 +41,19 @@ namespace TeamProject2.Controllers
 
                 if (selectedWeek != "All" || selectedWeek == null)
                 {
-                    var remList = new List<int>();
+                    var remList = new List<zRequest>();
                     foreach (var zrequest in reqList)
                     {
                         var value = zrequest.zWeek.GetType().GetProperty("Week" + selectedWeek).GetValue(zrequest.zWeek, null).ToString();
                         if (value == "False")
                         {
-                            remList.Add(reqList.IndexOf(zrequest));
+                            remList.Add(zrequest);
                         }
                     }
 
-                    foreach (var index in remList)
+                    foreach (var request in remList)
                     {
-                        reqList.RemoveAt(index);
+                        reqList.Remove(request);
                     }
                 }
                 List<string> ReqIdList = new List<string>();
@@ -73,6 +73,7 @@ namespace TeamProject2.Controllers
                     ViewData.Add("" + zrequest.RequestId, String.Join(",", weeksList.ToArray()));
                     //ViewBag.reqId = String.Join(",", weeksList.ToArray());
                 }
+                ViewBag.selectedWeekDisp = selectedWeek;
                 ViewBag.RequestIdList = String.Join(",", ReqIdList.ToArray());
                 ViewBag.empty = populateLecturerList();
                 return View(reqList);
@@ -122,12 +123,14 @@ namespace TeamProject2.Controllers
                     ViewData.Add("" + zrequest.RequestId, String.Join(",", weeksList.ToArray()));
                     //ViewBag.reqId = String.Join(",", weeksList.ToArray());
                 }
+                ViewBag.selectedWeek = selectedWeek;
                 ViewBag.RequestIdList = String.Join(",", ReqIdList.ToArray());
                 ViewBag.empty = populateProgrammeList();
                 return View(reqList);
             }
             else 
             {
+                ViewBag.selectedWeek = "Week 1-16";
                 ViewBag.empty = populateLecturerList();
                 var empty = from Request in db.zRequest where Request.RequestId == -1 select Request;
                 var emptyList = new List<SelectListItem>();

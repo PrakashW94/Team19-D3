@@ -6,28 +6,25 @@
 
 <h2>Requests</h2>
 
-</br>
-
-<p class="buttons">
+<p>
     @Html.ActionLink("Create New", "Create")
-
     @Html.ActionLink("Submit Requests", "Submit")
-
     @if (User.Identity.Name == "CA")
     { 
         @Html.ActionLink("Allocate Requests", "Allocate")
     }
     @Html.ActionLink("Create Ad-Hoc Request", "CreateAdHoc")
-
-    @if (ViewBag.AdHoc == true) {
+    <br /><br />
+    @if (ViewBag.AdHoc == true)
+    {
         @Html.ActionLink("Show All Requests", "Index");
     }
-    else{
+    else
+    {
         @Html.ActionLink("Show Ad-Hoc Requests", "Index", new { adHoc = true });
     }
+</p>
 
-       </p>
-</br>
 @using (Html.BeginForm())
 { 
     <p>
@@ -60,17 +57,43 @@
             { 
                 <tr>
                     <td>
-                        @if (item.RoundNo > 0)
+                        @switch (item.StatusId)
                         {
-                            @Html.ActionLink("Edit", "Edit", new { id = item.RequestId }) 
-                        }
-                        else
-                        {
-                            @Html.ActionLink("Edit", "EditAdhoc", new { id = item.RequestId }) 
-                        }
+                            case 1: 
+                                @Html.ActionLink("Details", "Details", new { id = item.RequestId })<br />
+                                @Html.ActionLink("Delete", "Delete", new { id = item.RequestId })
+                                break;
+                            case 2:
+                                if (item.RoundNo > 0)
+                                {
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.RequestId }) <br />
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Edit", "EditAdhoc", new { id = item.RequestId }) <br />
+                                }
+                                @Html.ActionLink("Details", "Details", new { id = item.RequestId })<br />
+                                @Html.ActionLink("Delete", "Delete", new { id = item.RequestId })
+                                break;
+                            case 3:
+                                @Html.ActionLink("Edit", "Edit", new { id = item.RequestId })<br />
+                                @Html.ActionLink("Details", "Details", new { id = item.RequestId })<br />
+                                @Html.ActionLink("Delete", "Delete", new { id = item.RequestId })
+                                break;
+                            case 4:
+                                @Html.ActionLink("Details", "Details", new { id = item.RequestId })
+                                break;
+                            case 5: 
+                                @Html.ActionLink("Edit", "Edit", new { id = item.RequestId })<br />
+                                @Html.ActionLink("Details", "Details", new { id = item.RequestId })<br />
+                                @Html.ActionLink("Delete", "Delete", new { id = item.RequestId })
+                                break;
+                            case 6:
+                                @Html.ActionLink("Edit", "Edit", new { id = item.RequestId })<br />
+                                @Html.ActionLink("Details", "Details", new { id = item.RequestId })
+                                break;
 
-                        @Html.ActionLink("Details", "Details", new { id = item.RequestId })
-                        @Html.ActionLink("Delete", "Delete", new { id = item.RequestId })
+                        }
                     </td>
                     <td>
 			            @item.RequestId
@@ -81,6 +104,7 @@
                     <td>
                         @{
                         List<string> selectedRoomsDisp = new List<string>();
+                        List<string> allocatedRoomsDisp = new List<string>();
                         /*
                         var dbRooms = item.zRoomBooking.Count(); //number of rooms in the db
                         var diff = item.RoomCount - dbRooms;
@@ -89,6 +113,7 @@
                             selectedRoomsDisp.Add("Any Room");
                         }
                         */
+
                         foreach (var booking in item.zRoomBooking)
                         {
                             switch (booking.Type)
@@ -111,7 +136,21 @@
                                     break;
                             }
                         }
-                            <p title="@string.Join(", ", selectedRoomsDisp)">@item.RoomCount</p>
+
+                        if (item.StatusId == 1 || item.StatusId == 5)
+                        {
+                            foreach (var room in item.zRoom)
+                            {
+                                allocatedRoomsDisp.Add(room.RoomCode);
+                            }
+                                <p title=
+                                    "Room Preferences: @string.Join(", ", selectedRoomsDisp) ----- Allocated Rooms: @string.Join(", ", allocatedRoomsDisp)">@item.RoomCount</p>
+                        }
+                        else
+                        {
+                                <p title="@string.Join(", ", selectedRoomsDisp)">@item.RoomCount</p>
+                        }
+                            
                         }
                     </td>
                     <td>
@@ -141,13 +180,13 @@
                     </td>
                     <td>
 			            @if (item.SpecialRequirement == null)
-                            {
+               {
                                 <p title="N/A">None</p>
-                            }
-                            else
-                            {
+               }
+               else
+               {
                                 <p title ="@item.SpecialRequirement">Hover to View</p>
-                            }
+               }
                     </td>
                     <td class="status-@item.zStatus.StatusId">
 

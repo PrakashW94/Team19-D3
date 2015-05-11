@@ -84,7 +84,14 @@
                     }
                 </td>
                 <td>
-                    @item.RoundNo.ToString()
+                    @if (item.RoundNo == -1)
+                    {
+                        <text>Ad-Hoc</text> 
+                    }
+                    else
+                    {
+                        @item.RoundNo.ToString()
+                    }
                 </td>
                 <td>
 			        @String.Format("{0:g}", item.StartDate)

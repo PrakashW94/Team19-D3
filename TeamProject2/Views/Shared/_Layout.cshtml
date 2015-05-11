@@ -30,7 +30,7 @@
                  <img id="img_logo" alt="Logo" src="@Url.Content("~/Content/Images/logo.png")" /> 
                 <br>
                 <br />
-
+                <p class="site-title">@Html.ActionLink("Loughborough Timetabling System", "Index", "zRequests")</p>
                  </div>
             <div class="float-right">
                 
@@ -45,7 +45,6 @@
                            
                             //if (@Html.Encode(User.Identity.Name)=="CA")
                             //{
-
                                   <li>@Html.ActionLink("Make a Request", "Index", "zRequests")</li>
                                   <li>@Html.ActionLink("View Timetable", "Index", "Timetable")</li>
                                   <li> <a href="#">Manage Stored Data</a>

@@ -28,7 +28,7 @@
     font-size: 0.8em;
     text-align: center;
     width: 100%;
-    background-color: #BABCBE;
+    background-color: #F2F2F2;
     color: #371A4D;
 }
 
@@ -51,8 +51,4 @@
 .weekLinkCell{
     border: 1px solid #000000;
     
-}
-
-.radio td {
-    border: 1px solid #000000;
 }
