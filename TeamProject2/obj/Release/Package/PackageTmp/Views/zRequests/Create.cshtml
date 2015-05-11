@@ -1,14 +1,14 @@
 @model TeamProject2.zRequest
 
 @{
-    ViewBag.Title = "Create Request";
+    ViewBag.Title = "Create";
 }
 
 <script src="~/Scripts/weekselector.js"></script>
 <script src="~/Scripts/roomselector.js"></script>
 <link rel="stylesheet" type="text/css" href="~/Content/weekselector.css" />
 
-<h2>Create Request</h2>
+<h2>Create</h2>
 
 @* code to display ViewBag 
 <ul>
@@ -67,7 +67,6 @@
                 <li class="ui-state-default">13</li>
                 <li class="ui-state-default">14</li>
                 <li class="ui-state-default">15</li>
-                <li class="ui-state-default">16</li>
             </ol>
             <br /><br />
         </div>
@@ -155,25 +154,13 @@
             @Html.Label("Number of Students")
         </div>
         <div class="editor-field">
-            <input type="range" id="capacity" name="capacity" value=100 min=1 max=400 oninput="outputUpdate(value)" /><br/>
-            <input type="number" id="capOutput" value=100 min=1 max=400 oninput="outputUpdate(value)" style="width: 50px;" />
+            <input type=range id=capacity min=1 value=100 max=400 oninput="outputUpdate(value)"/> <output for=capacity id=capOutput>100</output>
         </div>
         
         <script>
             function outputUpdate(cap)
             {
-                if (cap > 400) {
-                    document.querySelector('#capOutput').value = 400;
-                    document.querySelector('#capacity').value = 400;
-                }
-                else if (cap < 1) {
-                    document.querySelector('#capOutput').value = 1;
-                    document.querySelector('#capacity').value = 1;
-                }
-                else {
-                    document.querySelector('#capOutput').value = cap;
-                    document.querySelector('#capacity').value = cap;
-                }
+                document.querySelector('#capOutput').value = cap;
             }
         </script>
 

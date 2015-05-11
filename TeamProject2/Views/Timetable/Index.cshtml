@@ -33,12 +33,33 @@
     <input type="submit" value="View Timetable" />
     
     <br />
+  
+  <table class="radio">
+      <tr>
+          <td>
+              All
+          </td>
+          @for(var i = 1; i<=16; i++)
+          {
+              <td><p>@i</p></td>
+          }
+      </tr>
+      <tr>
+          @for (var i = 0; i <= 16; i++)
+          { 
+            <td>@Html.RadioButton("selectedWeek", i, false, new { @onclick = "updateSelectedWeek(this.value)" })</td>
+          }
+      </tr>
+  </table>
+    @*
     @Html.RadioButton("selectedWeek", "All", true, new {@onclick = "updateSelectedWeek(this.value)" }) <text>All</text>
     for (var i = 1; i <= 16; i++)
-    {
-        @Html.RadioButton("selectedWeek", i, false, new {@onclick = "updateSelectedWeek(this.value)" }) <text>@i.ToString()</text>
-    }
+        
 
+    {
+        @Html.RadioButton("selectedWeek", i, false, new { @onclick = "updateSelectedWeek(this.value)" }) <text>@i.ToString()</text>
+    }
+    *@
     @*
     <table class="weekLink">
         <tr>
@@ -54,19 +75,6 @@
 }
 
 <script>
-    $(function ()
-    {
-        if ($("#selectedWeekDisp").val() == "All")
-        {
-            $("#weekDisp").text("Week 1-16");
-        }
-        else
-        {
-            $("#weekDisp").text("Week " + $("#selectedWeekDisp").val());
-        }
-        $("#weekDisp").text();
-    });
-
     function updateSelectedWeek(week)
     {
         if (week == "All")
@@ -80,9 +88,7 @@
     }
 </script>
 
-@Html.Hidden("selectedWeekDisp")
-
-<h3 id="weekDisp">Week 1-16</h3>
+    <h3 id="weekDisp">Week 1-16</h3>
 
 @{
     string[] days = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };

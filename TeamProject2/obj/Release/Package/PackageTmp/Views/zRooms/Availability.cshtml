@@ -4,8 +4,6 @@
     ViewBag.Title = "Availability";
 }
 
-<link rel="stylesheet" type="text/css" href="~/Content/tables.css" />
-
 <h2>Availability</h2>
 
 @using (Html.BeginForm()) 
@@ -25,13 +23,13 @@
         @foreach (var item in ViewBag.facilityList)
         {
             if (ViewBag.selectedFacilities.Contains(item))
-            {
-                <input type="checkbox" name="Facilities" id="Facilities" value=@item.Replace(" ", ".") checked /> @item <br />
-            }
-            else
-            {
-                <input type="checkbox" name="Facilities" id="Facilities" value=@item.Replace(" ", ".") /> @item <br />
-            }
+                {
+                    <input type="checkbox" name="Facilities" id="Facilities" value=@item.Replace(" ", ".") checked /> @item <br />
+                }
+                else
+                {
+                    <input type="checkbox" name="Facilities" id="Facilities" value=@item.Replace(" ", ".") /> @item <br />
+                }
         }
     </div>
     
@@ -40,77 +38,72 @@
 
 @if (Model.Count() != 0)
 {
-    @Html.Hidden("roomList")
-    @Html.Hidden("selectedFacilitiesString")
-    
-    <table id ="keywords">
-        <thead>
-            <tr>
-                <th>
-                    Actions
-                </th>
-                <th>
-                    Rooms
-                </th>
-                <th>
-                    Capacity
-                </th>
-                <th>
-                    Building
-                </th>
-                <th>
-                    Private
-                </th>
-                <th>
-                    Facility
-                </th>
-            </tr>
-        </thead>
+    <table>
+        <tr>
+            <th>
+                Actions
+            </th>
+            <th>
+                <text onclick ="Sort(@ViewBag.roomList, @ViewBag.selectedFacilities., 1);">Rooms</text>
+            </th>
+            <th>
+                Capacity
+            </th>
+            <th>
+                Building
+            </th>
+            <th>
+                Private
+            </th>
+            <th>
+                Facility
+            </th>
+        </tr>
 
-        <tbody>
-            @foreach (var item in Model) 
+        @Html.Hidden("roomList")
+        @Html.Hidden("selectedFacilitiesString")
+        @foreach (var item in Model) 
+        {
+            if (
+                (!@item.Private)
+                || 
+                (@item.Private && @item.zDepartment.FirstOrDefault().DeptCode == User.Identity.Name)
+                )
             {
-                if (
-                    (!@item.Private)
-                    || 
-                    (@item.Private && @item.zDepartment.FirstOrDefault().DeptCode == User.Identity.Name)
-                    )
-                {
-                    <tr id =@item.RoomId>
-                        <td>
-                            @Html.ActionLink("Details", "Details", new { id = item.RoomId })
-                        </td>
-                        <td>
-			                @item.RoomCode
-                        </td>
-                        <td>
-			                @item.Capacity
-                        </td>
-                        <td>
-			                @item.zBuilding.BuildingCode
-                        </td>
-                        <td>
-			                @item.Private
-                        </td>
-                        <td>
-                        @if (item.zFacility == null)
+                <tr>
+                    <td>
+                        @Html.ActionLink("Details", "Details", new { id = item.RoomId })
+                    </td>
+                    <td>
+			            @item.RoomCode
+                    </td>
+                    <td>
+			            @item.Capacity
+                    </td>
+                    <td>
+			            @item.zBuilding.BuildingCode
+                    </td>
+                    <td>
+			            @item.Private
+                    </td>
+                    <td>
+                    @if (item.zFacility == null)
+                    {
+                        <p>None</p>;
+                    }
+                    else
+                    {
+                        List<string> facName = new List<string>();
+                        foreach (var facility in item.zFacility)
                         {
-                            <p>None</p>;
+                            facName.Add(facility.FacilityName);
                         }
-                        else
-                        {
-                            List<string> facName = new List<string>();
-                            foreach (var facility in item.zFacility)
-                            {
-                                facName.Add(facility.FacilityName);
-                            }
-                            <p>@string.Join(", ", facName)</p>
-                        }
-                        </td>
-                    </tr>
-                }
+                        <p>@string.Join(", ", facName)</p>
+                    }
+                    </td>
+                </tr>
             }
-        </tbody>
+        }
     </table>
 }
 <script>
@@ -124,7 +117,9 @@
         $("#capacity").val(value);
     }
 
-    $(function () {
-        $('#keywords').tablesorter();
-    });
+    function Sort(rooms, facilities, sortCode)
+    {
+        alert("hello!");
+    }
+
 </script>

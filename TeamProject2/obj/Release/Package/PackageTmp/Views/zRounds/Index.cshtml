@@ -17,97 +17,88 @@
     }
 </p>
 
-<table id="keywords">
-    <thead>
-        <tr>
-            <th></th>
-            <th>
-                Round Number
-            </th>
-            <th>
-                Start Date
-            </th>
-            <th>
-                End Date
-            </th>
-            <th>
-                Number of Requests
-            </th>
-            <th>
-                Results Viewable?
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model) {
-            <tr>
-                <td>
-                    @if (@Html.Encode(User.Identity.Name) == "CA")
-                    {
-                        if(item.Viewable)
-                        {
-                            @Html.ActionLink("Details", "Details", new { id = item.RoundNo })
-                        }
-                        else
-                        {
-                            @Html.ActionLink("Edit", "Edit", new { id = item.RoundNo })
-                            @Html.ActionLink("Details", "Details", new { id = item.RoundNo })
-                            @Html.ActionLink("Delete", "Delete", new { id = item.RoundNo })
-                        }
+<table>
+    <tr>
+        <th></th>
+        <th>
+            Round Number
+        </th>
+        <th>
+            Start Date
+        </th>
+        <th>
+            End Date
+        </th>
+        <th>
+            Number of Requests
+        </th>
+        <th>
+            Results Viewable?
+        </th>
+    </tr>
 
-                        var roundend = true;
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @if (@Html.Encode(User.Identity.Name) == "CA")
+            {
+                if(item.Viewable)
+                {
+                    @Html.ActionLink("Details", "Details", new { id = item.RoundNo })
+                }
+                else
+                {
+                    @Html.ActionLink("Edit", "Edit", new { id = item.RoundNo })
+                    @Html.ActionLink("Details", "Details", new { id = item.RoundNo })
+                    @Html.ActionLink("Delete", "Delete", new { id = item.RoundNo })
+                }
 
-                        if (DateTime.Compare(DateTime.Now, item.EndDate) < 0)
-                        {
-                            roundend = false;
-                        }
-                        foreach (var request in item.zRequest)
-                        {
-                            if (request.zStatus.StatusValue == "Submitted")
-                            {
-                                roundend = false;
-                            }
-                        }
-                        if (item.Viewable)
-                        {
-                            roundend = false;
-                        }
-                        if (roundend)
-                        {
-                            @Html.ActionLink("Send Results", "Viewable", new { id = item.RoundNo })
-                        }
+                var roundend = true;
 
-                    }
-                    else
+                if (DateTime.Compare(DateTime.Now, item.EndDate) < 0)
+                {
+                    roundend = false;
+                }
+                foreach (var request in item.zRequest)
+                {
+                    if (request.zStatus.StatusValue == "Submitted")
                     {
-                        @Html.ActionLink("Details", "Details", new { id = item.RoundNo })
+                        roundend = false;
                     }
-                </td>
-                <td>
-                    @if (item.RoundNo == -1)
-                    {
-                        <text>Ad-Hoc</text> 
-                    }
-                    else
-                    {
-                        @item.RoundNo.ToString()
-                    }
-                </td>
-                <td>
-			        @String.Format("{0:g}", item.StartDate)
-                </td>
-                <td>
-			        @String.Format("{0:g}", item.EndDate)
-                </td>
-                <td>
-			        @(item.zRequest == null ? "None" : item.zRequest.Count.ToString())
-                </td>
-                <td>
-                    @item.Viewable
-                </td>
-            </tr>
-        }
-    </tbody>
+                }
+                if (item.Viewable)
+                {
+                    roundend = false;
+                }
+                if (roundend)
+                {
+                    @Html.ActionLink("Send Results", "Viewable", new { id = item.RoundNo })
+                }
+
+            }
+            else
+            {
+                @Html.ActionLink("Details", "Details", new { id = item.RoundNo })
+            }
+        </td>
+        <td>
+            @item.RoundNo.ToString()
+        </td>
+        <td>
+			@String.Format("{0:g}", item.StartDate)
+        </td>
+        <td>
+			@String.Format("{0:g}", item.EndDate)
+        </td>
+        <td>
+			@(item.zRequest == null ? "None" : item.zRequest.Count.ToString())
+        </td>
+        <td>
+            @item.Viewable
+        </td>
+    </tr>
+}
+
 </table>
 
 

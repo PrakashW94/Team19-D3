@@ -64,8 +64,7 @@ $(document).ready(function ()
         }
     });
 
-    $("#Building").change(function ()
-    {
+    $("#Building").change(function () {
         if ($("#Building").val() != "Any")
         {
             buildingCode = $("#Building").val().split(" ")[0];
@@ -125,28 +124,6 @@ $(document).ready(function ()
         }
     });
 
-    $("#Room").change(function ()
-    {
-        if ($("#Room").val() != "Any")
-        {
-            $.ajax(
-            {
-                url: "../zRequests/getCapacity",
-                type: "POST",
-                data: { room: $("#Room").val() },
-                success: function (capacity)
-                {
-                    $("#capacity").val(parseInt(capacity));
-                    $("#capOutput").val(parseInt(capacity));
-                },
-                error: function ()
-                {
-                    alert("Error setting capacity value!");
-                }
-            });
-        }
-    });
-
     if ($("#Rooms").val() != "")
     {
         selectedRooms = $("#Rooms").val().split(",");
@@ -155,162 +132,182 @@ $(document).ready(function ()
 
     $("#AddRoom").click(function ()
     {
-        if ($("#RoomDisp option").length < 3)
+        park = $("#Park").val();
+        building = $("#Building").val();
+        room = $("#Room").val();
+        capacity = $("#capOutput").val();
+        roomDisp = $("#RoomDisp");
+        if (park == "Any")
         {
-            if ($("#Room").val() != "None available") {
-                park = $("#Park").val();
-                building = $("#Building").val();
-                room = $("#Room").val();
-                capacity = $("#capOutput").val();
-                roomDisp = $("#RoomDisp");
-                if (park == "Any") {
-                    if (building == "Any") {
-                        if (room == "Any") {
-                            selectedRooms.push("0");
-                            selectedRoomsCap.push(capacity);
-                            roomDisp.append("<option>" + capacity + " in any Room </option>");
-                            //alert("any room");
-                        }
-                        else {
-                            var dup = false;
-                            for (var i = 0; i < selectedRooms.length; i++) {
-                                if (selectedRooms[i].substring(1) == room) {
-                                    dup = true;
-                                }
-                            }
-                            if (dup) {
-                                alert("Cannot add the same room twice!");
-                            }
-                            else {
-                                $.ajax(
-                                {
-                                    url: "../zRequests/RoomCapacityCheck",
-                                    type: "POST",
-                                    data: { room: room, capacity: capacity },
-                                    success: function (result) {
-                                        if (result.correct) {
-                                            selectedRooms.push("3" + room);
-                                            selectedRoomsCap.push(capacity);
-                                            roomDisp.append("<option> " + capacity + " in " + room + "</option>");
-                                            updateOutputValues();
-                                        }
-                                        else {
-                                            alert("Selected room is not big enough!");
-                                        }
-                                    },
-                                    error: function () {
-                                        alert("Error checking capacity!");
-                                    }
-                                });
-                            }
-                        }
-                    }
-                    else {
-                        if (room == "Any") {
-                            var buildingCode = building.split(" ")[0];
-                            selectedRooms.push("2" + buildingCode);
-                            selectedRoomsCap.push(capacity);
-                            roomDisp.append("<option> " + capacity + " in any room in " + building + " </option>");
-                            //alert("Any room in that building");
-                        }
-                        else {
-                            var dup = false;
-                            for (var i = 0; i < selectedRooms.length; i++) {
-                                if (selectedRooms[i].substring(1) == room) {
-                                    dup = true;
-                                }
-                            }
-                            if (dup) {
-                                alert("Cannot add the same room twice!");
-                            }
-                            else {
-                                $.ajax(
-                                {
-                                    url: "../zRequests/RoomCapacityCheck",
-                                    type: "POST",
-                                    data: { room: room, capacity: capacity },
-                                    success: function (result) {
-                                        if (result.correct) {
-                                            selectedRooms.push("3" + room);
-                                            selectedRoomsCap.push(capacity);
-                                            roomDisp.append("<option> " + capacity + " in " + room + "</option>");
-                                            updateOutputValues();
-                                        }
-                                        else {
-                                            alert("Selected room is not big enough!");
-                                        }
-                                    },
-                                    error: function () {
-                                        alert("Error checking capacity!");
-                                    }
-                                });
-                            }
-                        }
-                    }
+            if (building == "Any")
+            {
+                if (room == "Any")
+                {
+                    selectedRooms.push("0");
+                    selectedRoomsCap.push(capacity);
+                    roomDisp.append("<option>" + capacity + " in any Room </option>");
+                    //alert("any room");
                 }
-                else {
-                    if (building == "Any") {
-                        selectedRooms.push("1" + park)
-                        selectedRoomsCap.push(capacity);
-                        roomDisp.append("<option> " + capacity + " in any room in the " + park + " Park" + " </option>");
-                        //alert("any room in that park");
-                    }
-                    else {
-                        if (room == "Any") {
-                            buildingCode = building.split(" ")[0];
-                            selectedRooms.push("2" + buildingCode);
-                            selectedRoomsCap.push(capacity);
-                            roomDisp.append("<option> " + capacity + " in any room in " + building + " </option>");
-                            //alert("any room in that building");
+                else
+                {
+                    var dup = false;
+                    for (var i = 0; i < selectedRooms.length; i++)
+                    {
+                        if (selectedRooms[i].substring(1) == room)
+                        {
+                            dup = true;
                         }
-                        else {
-                            var dup = false;
-                            for (var i = 0; i < selectedRooms.length; i++) {
-                                if (selectedRooms[i].substring(1) == room) {
-                                    dup = true;
-                                }
-                            }
-                            if (dup) {
-                                alert("Cannot add the same room twice!");
-                            }
-                            else {
-                                $.ajax(
+                    }
+                    if (dup)
+                    {
+                        alert("Cannot add the same room twice!");
+                    }
+                    else
+                    {
+                        $.ajax(
+                        {
+                            url: "../zRequests/RoomCapacityCheck",
+                            type: "POST",
+                            data: { room: room, capacity: capacity },
+                            success: function (result)
+                            {
+                                if (result.correct)
                                 {
-                                    url: "../zRequests/RoomCapacityCheck",
-                                    type: "POST",
-                                    data: { room: room, capacity: capacity },
-                                    success: function (result) {
-                                        if (result.correct) {
-                                            selectedRooms.push("3" + room);
-                                            selectedRoomsCap.push(capacity);
-                                            roomDisp.append("<option> " + capacity + " in " + room + "</option>");
-                                            updateOutputValues();
-                                        }
-                                        else
-                                        {
-                                            alert("Selected room is not big enough!");
-                                        }
-                                    },
-                                    error: function ()
-                                    {
-                                        alert("Error checking capacity!");
-                                    }
-                                });
+                                    selectedRooms.push("3" + room);
+                                    selectedRoomsCap.push(capacity);
+                                    roomDisp.append("<option> " + capacity + " in " + room + "</option>");
+                                    updateOutputValues();
+                                }
+                                else
+                                {
+                                    alert("Selected room is not big enough!");
+                                }
+                            },
+                            error: function ()
+                            {
+                                alert("Error checking capacity!");
                             }
-                        }
-                    }
+                        });
+                    } 
                 }
-                updateOutputValues();
             }
             else
             {
-                alert("Please select a valid room!")
+                if (room == "Any")
+                {
+                    var buildingCode = building.split(" ")[0];
+                    selectedRooms.push("2" + buildingCode);
+                    selectedRoomsCap.push(capacity);
+                    roomDisp.append("<option> " + capacity + " in any room in " + building + " </option>");
+                    //alert("Any room in that building");
+                }
+                else
+                {
+                    var dup = false;
+                    for (var i = 0; i < selectedRooms.length; i++)
+                    {
+                        if (selectedRooms[i].substring(1) == room)
+                        {
+                            dup = true;
+                        }
+                    }
+                    if (dup)
+                    {
+                        alert("Cannot add the same room twice!");
+                    }
+                    else
+                    {
+                        $.ajax(
+                        {
+                            url: "../zRequests/RoomCapacityCheck",
+                            type: "POST",
+                            data: { room: room, capacity: capacity },
+                            success: function (result)
+                            {
+                                if (result.correct)
+                                {
+                                    selectedRooms.push("3" + room);
+                                    selectedRoomsCap.push(capacity);
+                                    roomDisp.append("<option> " + capacity + " in " + room + "</option>");
+                                    updateOutputValues();
+                                }
+                                else
+                                {
+                                    alert("Selected room is not big enough!");
+                                }
+                            },
+                            error: function ()
+                            {
+                                alert("Error checking capacity!");
+                            }
+                        });
+                    }
+                }
             }
         }
         else
         {
-            alert("You cannot add more than three rooms in a single request!")
+            if (building == "Any")
+            {
+                selectedRooms.push("1" + park)
+                selectedRoomsCap.push(capacity);
+                roomDisp.append("<option> " + capacity + " in any room in the " + park + " Park" + " </option>");
+                //alert("any room in that park");
+            }
+            else
+            {
+                if (room == "Any")
+                {
+                    buildingCode = building.split(" ")[0];
+                    selectedRooms.push("2" + buildingCode);
+                    selectedRoomsCap.push(capacity);
+                    roomDisp.append("<option> " + capacity + " in any room in " + building + " </option>");
+                    //alert("any room in that building");
+                }
+                else
+                {
+                    var dup = false;
+                    for (var i = 0; i < selectedRooms.length; i++)
+                    {
+                        if (selectedRooms[i].substring(1) == room)
+                        {
+                            dup = true;
+                        }
+                    }
+                    if (dup)
+                    {
+                        alert("Cannot add the same room twice!");
+                    }
+                    else
+                    {
+                        $.ajax(
+                        {
+                            url: "../zRequests/RoomCapacityCheck",
+                            type: "POST",
+                            data: { room: room, capacity: capacity },
+                            success: function (result) {
+                                if (result.correct)
+                                {
+                                    selectedRooms.push("3" + room);
+                                    selectedRoomsCap.push(capacity);
+                                    roomDisp.append("<option> " + capacity + " in " + room + "</option>");
+                                    updateOutputValues();
+                                }
+                                else
+                                {
+                                    alert("Selected room is not big enough!");
+                                }
+                            },
+                            error: function ()
+                            {
+                                alert("Error checking capacity!");
+                            }
+                        });
+                    }
+                }
+            }
         }
+        updateOutputValues();
     })
 
     function updateOutputValues()

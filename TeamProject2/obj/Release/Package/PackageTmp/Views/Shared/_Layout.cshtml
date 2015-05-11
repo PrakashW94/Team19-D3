@@ -5,8 +5,9 @@
     <script src="~/Scripts/jquery-1.8.2.js"></script>
     <script src="~/Scripts/jquery-ui-1.8.24.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-    <script src="~/Scripts/jquery.tablesorter.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="~/Content/tables.css" />
+    
+    <link rel="stylesheet" type="text/css" href="~/Content/jquery.datetimepicker.css" />
+    <script src="~/Scripts/jquery.datetimepicker.js"></script>
     <link rel="stylesheet" type="text/css" href="~/Content/Site.css" />
     
     @*
@@ -27,11 +28,8 @@
     <header>
         <div class="content-wrapper">
             <div class="float-left">
-                 <img id="img_logo" alt="Logo" src="@Url.Content("~/Content/Images/logo.png")" /> 
-                <br>
-                <br />
-                <p class="site-title">@Html.ActionLink("Loughborough Timetabling System", "Index", "zRequests")</p>
-                 </div>
+                <p class="site-title">@Html.ActionLink("Loughborough Timetabling System", "Index", "Home")</p>
+            </div>
             <div class="float-right">
                 
                <div id="Identity">
@@ -48,9 +46,9 @@
                                   <li>@Html.ActionLink("Make a Request", "Index", "zRequests")</li>
                                   <li>@Html.ActionLink("View Timetable", "Index", "Timetable")</li>
                                   <li> <a href="#">Manage Stored Data</a>
+                                   
                                  <ul id="submenu" class="nested">
-                                   <li>@Html.ActionLink("Room Availability", "Availability", "zRooms")</li>
-                                     <li>@Html.ActionLink("View Rooms", "Index", "zRooms")</li>
+                                   <li>@Html.ActionLink("View Rooms", "Availability", "zRooms")</li>
                                     <li>@Html.ActionLink("View Facilities", "Index", "zFacilities") </li>
                                      <li>@Html.ActionLink("View Rounds", "Index", "zRounds")</li>
                                      <li>@Html.ActionLink("Manage Programmes", "Index", "zProgrammes")</li>
@@ -86,4 +84,6 @@
     </footer>
     
 </body>
+
+
 </html>
